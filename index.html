@@ -1,0 +1,1040 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grupo L - Asignación de Choferes y Unidades</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        /* Modern CSS Design */
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f9fa;
+            color: #212529;
+        }
+
+        header {
+            background: linear-gradient(90deg, #007bff, #6610f2);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            margin: 0;
+        }
+
+        header p {
+            font-size: 1.2rem;
+            margin: 0.5rem 0 0;
+            color: #d1d1d1;
+        }
+
+        nav {
+            display: flex;
+            justify-content: center;
+            background: #343a40;
+            padding: 1rem;
+            box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        nav a {
+            color: #f8f9fa;
+            text-decoration: none;
+            margin: 0 1rem;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        nav a:hover {
+            color: #007bff;
+        }
+
+        main {
+            max-width: 1100px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        section {
+            margin-bottom: 2rem;
+        }
+
+        h2 {
+            color: #007bff;
+            font-size: 1.8rem;
+            border-bottom: 2px solid #007bff;
+            display: inline-block;
+            margin-bottom: 1rem;
+        }
+
+        .button {
+            display: inline-block;
+            padding: 0.75rem 1.5rem;
+            background: linear-gradient(90deg, #007bff, #6610f2);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            text-align: center;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background 0.3s ease;
+        }
+
+        .button:hover {
+            background: linear-gradient(90deg, #0056b3, #520dbf);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+            background: #f8f9fa;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        table, th, td {
+            border: 1px solid #dee2e6;
+        }
+
+        th, td {
+            padding: 1rem;
+            text-align: left;
+            font-size: 0.9rem;
+        }
+
+        th {
+            background: #007bff;
+            color: white;
+        }
+
+        .upload-container {
+            margin-top: 1rem;
+            padding: 1.5rem;
+            background: #f1f1f1;
+            border: 2px dashed #007bff;
+            border-radius: 10px;
+            text-align: center;
+            transition: background 0.3s ease;
+        }
+
+        .upload-container:hover {
+            background: #e9ecef;
+        }
+
+        .upload-container input {
+            margin-top: 1rem;
+            padding: 0.5rem;
+            font-size: 1rem;
+        }
+
+        .error-message {
+            color: #dc3545;
+            font-weight: bold;
+            margin-top: 1rem;
+        }
+
+        .success-message {
+            color: #28a745;
+            font-weight: bold;
+            margin-top: 1rem;
+        }
+
+        footer {
+            background: #343a40;
+            color: #f8f9fa;
+            text-align: center;
+            padding: 1rem;
+            margin-top: 2rem;
+            border-top: 2px solid #007bff;
+        }
+
+        footer p {
+            margin: 0;
+            font-size: 0.9rem;
+        }
+    </style>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const baseData = {
+                choferesUnidades: [
+                    { patente: 'AC726MN', chofer: 'Acosta Alfredo', capacidad: 5000, tipo: 'CAMION', transportista: 'Grupo L' },
+                    { patente: 'OTH320', chofer: 'Mosto Lucas', capacidad: 3000, tipo: 'CAMION', transportista: 'Grupo L' },
+                    { patente: 'AB130PD', chofer: 'Ramirez Maximiliano', capacidad: 3000, tipo: 'CAMION', transportista: 'Grupo L' },
+{ patente: 'AA203YP', chofer: 'Sanchez Nelson', capacidad: 3000, tipo: 'CAMION', transportista: 'Grupo L' },
+{ patente: 'AB096MH', chofer: 'Torres Jonathan', capacidad: 3000, tipo: 'CAMION', transportista: 'Grupo L' },
+{ patente: 'AA203YQ', chofer: 'Amado Daniel', capacidad: 1500, tipo: 'camioneta', transportista: 'Grupo L' },
+{ patente: 'AB288WB', chofer: 'Atencio Jorge', capacidad: 600, tipo: 'MINIFLET', transportista: 'Grupo L' },
+{ patente: 'AA535IH', chofer: 'Achilli Alfredo', capacidad: 1500, tipo: 'CAMIONETA', transportista: 'Monotributista' },
+{ patente: 'LMG882', chofer: 'Alconi Nicole', capacidad: 500, tipo: 'MINIFLET', transportista: 'Monotributista' },
+{ patente: 'NRL739', chofer: 'Alconi Victor', capacidad: 600, tipo: 'MINIFLET', transportista: 'Monotributista' },
+{ patente: 'KJZ410', chofer: 'ALMIRON CARLOS', capacidad: 500, tipo: 'MINIFLET', transportista: 'Monotributista' },
+{ patente: 'AVL751', chofer: 'Ambrosio Gerardo', capacidad: 3700, tipo: 'CAMION', transportista: 'Monotributista' },
+{ patente: 'NOP673', chofer: 'Arias Miguel', capacidad: 1500, tipo: 'CAMIONETA', transportista: 'Monotributista' },
+{ patente: 'NJL315', chofer: 'Arraras Martin', capacidad: 1500, tipo: 'CAMIONETA', transportista: 'Monotributista' },
+{ patente: 'LEF923', chofer: 'Arraras Walter', capacidad: 1500, tipo: 'CAMIONETA', transportista: 'Monotributista' },
+{ patente: 'LMH205', chofer: 'Avido Manuel', capacidad: 1500, tipo: 'CAMIONETA', transportista: 'Monotributista' },
+{ patente: 'EYF456', chofer: 'Bidal Sebastian', capacidad: 1500, tipo: 'CAMIONETA', transportista: 'Monotributista' },
+{ patente: 'MRL923', chofer: 'Bogado Enrique', capacidad: 1500, tipo: 'CAMIONETA', transportista: 'Monotributista' },
+{ patente: 'NDY096', chofer: 'Chavez Daniel', capacidad: 1500, tipo: 'CAMIONETA', transportista: 'Monotributista' },
+{ patente: 'LET397', chofer: 'Cordoba Marcelo', capacidad: 3000, tipo: 'CAMION', transportista: 'Monotributista' },
+{ patente: 'AC150FD', chofer: 'Coro Milton', capacidad: 5000, tipo: 'camion', transportista: 'Monotributista' },
+{ patente: 'GEZ636', chofer: 'Cuevas Matias', capacidad: 1500, tipo: 'camioneta', transportista: 'Monotributista' },
+{ patente: 'AHC004', chofer: 'Da Cunha Agustin', capacidad: 3000, tipo: 'CAMION', transportista: 'Monotributista' },
+{ patente: 'DTJ560', chofer: 'De Quesada Lucas', capacidad: 1500, tipo: 'CAMIONETA', transportista: 'Monotributista' },
+{ patente: 'GZQ375', chofer: 'De Tommaso Silvia', capacidad: 1500, tipo: 'CAMIONETA', transportista: 'Monotributista' },
+{ patente: 'AF404YP', chofer: 'Denis Sergio', capacidad: 1500, tipo: 'CAMIONETA', transportista: 'Monotributista' },
+{ patente: 'AEV797', chofer: 'Fernandez Oscar', capacidad: 3000, tipo: 'CAMION', transportista: 'Monotributista' },
+{ patente: 'FXA995', chofer: 'Ferrara Diego', capacidad: 1500, tipo: 'CAMIONETA', transportista: 'Monotributista' },
+{ patente: 'DXU600', chofer: 'Flores Victor', capacidad: 1500, tipo: 'CAMIONETA', transportista: 'Monotributista' },
+{ patente: 'DKZ423', chofer: 'Gagliardi Franco', capacidad: 3500, tipo: 'CAMION', transportista: 'Monotributista' },
+{ patente: 'GLK571', chofer: 'Ghiso Walter', capacidad: 1500, tipo: 'CAMIONETA', transportista: 'Monotributista' },
+{ patente: 'verificar', chofer: 'Giusto Miguel', capacidad: 8000, tipo: 'CAMION', transportista: 'Monotributista' },
+{ patente: 'PDT939', chofer: 'Gomez Marcos', capacidad: 1500, tipo: 'CAMIONETA', transportista: 'Monotributista' },
+{ patente: 'IRQ311', chofer: 'irazoqui gerardo', capacidad: 1500, tipo: 'CAMIONETA', transportista: 'Monotributista' },
+{ patente: 'KVA562', chofer: 'Ledesma Adrian', capacidad: 1500, tipo: 'CAMIONETA', transportista: 'Monotributista' },
+{ patente: 'JWH787', chofer: 'Lind juan', capacidad: 1500, tipo: 'CAMIONETA', transportista: 'Monotributista' },
+{ patente: 'KUF302', chofer: 'LOPEZ DIEGO', capacidad: 1500, tipo: 'camioneta', transportista: 'Monotributista' },
+{ patente: 'GEB471', chofer: 'Lopez Facundo', capacidad: 1500, tipo: 'CAMIONETA', transportista: 'Monotributista' },
+{ patente: 'CAY091', chofer: 'Lorenzo Daniel', capacidad: 3000, tipo: 'CAMION', transportista: 'Monotributista' },
+{ patente: 'LRS120', chofer: 'Martinez Emiliano', capacidad: 1500, tipo: 'CAMIONETA', transportista: 'Monotributista' },
+{ patente: 'HFH272', chofer: 'Martinez jose', capacidad: 1500, tipo: 'CAMIONETA', transportista: 'Monotributista' },
+{ patente: 'RWS708', chofer: 'Mastroiacovo Cristian', capacidad: 3500, tipo: 'CAMION', transportista: 'Monotributista' },
+{ patente: 'HCP141', chofer: 'Maza Adrian', capacidad: 1500, tipo: 'CAMIONETA', transportista: 'Monotributista' },
+{ patente: 'KEX308', chofer: 'More Angel', capacidad: 1500, tipo: 'CAMIONETA', transportista: 'Monotributista' },
+{ patente: 'IYF036', chofer: 'Nogueroles Federico', capacidad: 3000, tipo: 'CAMION', transportista: 'Monotributista' },
+{ patente: 'AID462', chofer: 'Omar Santucci', capacidad: 8000, tipo: 'CAMION', transportista: 'Monotributista' },
+{ patente: 'DCG276', chofer: 'Perez Hector', capacidad: 8000, tipo: 'CAMION', transportista: 'Monotributista' },
+{ patente: 'CYM792', chofer: 'Policiccio Pablo', capacidad: 8000, tipo: 'CAMION', transportista: 'Monotributista' },
+{ patente: 'ISM408', chofer: 'Ponce Javier', capacidad: 500, tipo: 'MINIFLET', transportista: 'Monotributista' },
+{ patente: 'AD045LZ', chofer: 'Portillo David', capacidad: 1500, tipo: 'CAMIONETA', transportista: 'Monotributista' },
+{ patente: 'KUF302', chofer: 'Prado Dylan', capacidad: 1500, tipo: 'CAMIONETA', transportista: 'Monotributista' },
+{ patente: 'AE700DT', chofer: 'Quevedo Julio', capacidad: 1500, tipo: 'CAMIONETA', transportista: 'Monotributista' },
+{ patente: 'VPQ813', chofer: 'Rafael Josue', capacidad: 3000, tipo: 'CAMION', transportista: 'Monotributista' },
+{ patente: 'OOE687', chofer: 'Ramos Juan', capacidad: 600, tipo: 'MINIFLET', transportista: 'Monotributista' },
+{ patente: 'CHN343', chofer: 'Rosalez Gonzalo', capacidad: 8000, tipo: 'CAMION', transportista: 'Monotributista' },
+{ patente: 'IML795', chofer: 'Santucci Bruno', capacidad: 1500, tipo: 'CAMIONETA', transportista: 'Monotributista' },
+{ patente: 'LAC463', chofer: 'Santucci Marcelo', capacidad: 900, tipo: 'MINIFLET', transportista: 'Monotributista' },
+{ patente: 'GNO958', chofer: 'Sosa Cayetano', capacidad: 1500, tipo: 'CAMIONETA', transportista: 'Monotributista' },
+{ patente: 'JBE736', chofer: 'Sotelo Daniel', capacidad: 1500, tipo: 'CAMIONETA', transportista: 'Monotributista' },
+{ patente: 'ENM066', chofer: 'Suarez Martin', capacidad: 3500, tipo: 'CAMION', transportista: 'Monotributista' },
+{ patente: 'AD095MN', chofer: 'TORO FRANCISCO', capacidad: 500, tipo: 'MINIFLET', transportista: 'Monotributista' },
+{ patente: 'AC335KB', chofer: 'Trujillo Achu', capacidad: 3500, tipo: 'CAMIONETA', transportista: 'Monotributista' },
+{ patente: 'SIL574', chofer: 'Urrutia Juan', capacidad: 3000, tipo: 'CAMION', transportista: 'Monotributista' },
+{ patente: 'DEI992', chofer: 'Vanegas Emiliano', capacidad: 5000, tipo: 'CAMION', transportista: 'Monotributista' },
+{ patente: 'GIO255', chofer: 'DEL MORO CARLOS', capacidad: 1500, tipo: 'camioneta', transportista: 'Monotributista' },
+{ patente: 'FPM635', chofer: 'ENCINAS DIEGO', capacidad: 1500, tipo: 'camioneta', transportista: 'Monotributista' },
+{ patente: 'HNV150', chofer: 'Herrero Lucas', capacidad: 1500, tipo: 'camioneta', transportista: 'Monotributista' },
+{ patente: 'HAB110', chofer: 'Pillud Marcos', capacidad: 3000, tipo: 'CAMION', transportista: 'Monotributista' },
+{ patente: 'CJV089', chofer: 'Hilario Hector', capacidad: 5000, tipo: 'camion', transportista: 'Monotributista' },
+{ patente: 'ERL927', chofer: 'Gonzalo Vesga', capacidad: 4000, tipo: 'camion', transportista: 'Transporte LM' },
+{ patente: 'RVY586', chofer: 'Cristian Garretto', capacidad: 3000, tipo: 'camion', transportista: 'Transporte LM' },
+{ patente: 'CRH916', chofer: 'Martin Vesga', capacidad: 8500, tipo: 'camion', transportista: 'Transporte LM' },
+{ patente: 'CNN588', chofer: 'Visciglia Martin', capacidad: 8000, tipo: 'camion', transportista: 'Transporte LM' },
+{ patente: 'verificar', chofer: 'Diez Jose', capacidad: 1500, tipo: 'CAMIONETA', transportista: 'Tte Diez' },
+{ patente: 'OEF205', chofer: 'Diez Nahuel', capacidad: 500, tipo: 'CAMIONETA', transportista: 'Tte Diez' },
+{ patente: 'LCO329', chofer: 'Ontiveros Facundo', capacidad: 3500, tipo: 'CAMION', transportista: 'Tte Diez' },
+{ patente: 'BWB215', chofer: 'Quiroz Cristian', capacidad: 1500, tipo: 'camioneta', transportista: 'Tte Diez' },
+{ patente: 'AA630GR', chofer: 'ALMARAZ Garbi', capacidad: 10000, tipo: 'CHASIS', transportista: 'Tte Garbi' },
+{ patente: 'JTJ179', chofer: 'BALDIVIESO Garbi', capacidad: 12000, tipo: 'BALANCIN', transportista: 'Tte Garbi' },
+{ patente: 'AB016RY', chofer: 'CORDOBA Garbi', capacidad: 16000, tipo: 'BALANCIN', transportista: 'Tte Garbi' },
+{ patente: 'DIH538', chofer: 'Coria Garbi', capacidad: 10000, tipo: 'CHASIS', transportista: 'Tte Garbi' },
+{ patente: 'ECF019', chofer: 'GARCIA Garbi', capacidad: 10000, tipo: 'CHASIS', transportista: 'Tte Garbi' },
+{ patente: 'NOB964', chofer: 'lema Garbi', capacidad: 12000, tipo: 'CHASIS', transportista: 'Tte Garbi' },
+{ patente: 'TEX309', chofer: 'IBAÑEZ Garbi', capacidad: 10000, tipo: 'CHASIS', transportista: 'Tte Garbi' },
+{ patente: 'DLE263', chofer: 'Sanchez Garbi', capacidad: 10000, tipo: 'CHASIS', transportista: 'Tte Garbi' },
+{ patente: 'DDU645', chofer: 'Acosta Garbi', capacidad: 28000, tipo: 'SEMI', transportista: 'Tte Garbi' },
+{ patente: 'ABE853', chofer: 'Braga Garbi', capacidad: 28000, tipo: 'SEMI', transportista: 'Tte Garbi' },
+{ patente: 'STW148', chofer: 'paez Garbi', capacidad: 28000, tipo: 'SEMI', transportista: 'Tte Garbi' },
+{ patente: 'MFW921', chofer: 'Caro Garbi', capacidad: 28000, tipo: 'SEMI', transportista: 'Tte Garbi' },
+{ patente: 'MFW921', chofer: 'Suchenia garbi', capacidad: 28000, tipo: 'SEMI', transportista: 'Tte Garbi' },
+{ patente: 'RKX631', chofer: 'gurtner Garbi', capacidad: 12000, tipo: 'CHASIS', transportista: 'Tte Garbi' },
+{ patente: 'LBZ433', chofer: 'Acosta Laudan', capacidad: 14000, tipo: 'BALANCIN', transportista: 'Tte Laudan' },
+{ patente: 'JUM400', chofer: 'Acuña Favio LAUDAN', capacidad: 12000, tipo: 'BALANCIN', transportista: 'Tte Laudan' },
+{ patente: 'LCU542', chofer: 'ACUÑA YOEL LAUDAN', capacidad: 8000, tipo: 'BALANCIN', transportista: 'Tte Laudan' },
+{ patente: 'KNZ200', chofer: 'Alaluf Laudan', capacidad: 10000, tipo: 'BALANCIN', transportista: 'Tte Laudan' },
+{ patente: 'GQX138', chofer: 'Orellano Laudan', capacidad: 10000, tipo: 'BALANCIN', transportista: 'Tte Laudan' },
+{ patente: 'GYI720', chofer: 'Caruzo Laudan', capacidad: 12000, tipo: 'BALANCIN', transportista: 'Tte Laudan' },
+{ patente: 'PLP055', chofer: 'Lubo Laudan', capacidad: 12000, tipo: 'BALANCIN', transportista: 'Tte Laudan' },
+{ patente: 'KLY490', chofer: 'Aguero Daniel', capacidad: 1500, tipo: 'camioneta', transportista: 'Tte Luna' },
+{ patente: 'AF755TF', chofer: 'FOLLA ARNALDO', capacidad: 1500, tipo: 'CAMIONETA', transportista: 'Tte Luna' },
+{ patente: 'LXK870', chofer: 'GOMEZ MATIAS', capacidad: 1700, tipo: 'CAMIONETA', transportista: 'Tte Luna' },
+{ patente: 'HMA290', chofer: 'Mendez Jose', capacidad: 1500, tipo: 'camioneta', transportista: 'Tte Luna' },
+{ patente: 'CNE236', chofer: 'Acevedo Norberto', capacidad: 12000, tipo: 'BALANCIN', transportista: 'Tte Norberto' },
+{ patente: 'AB876BM', chofer: 'Ambrossi Norberto', capacidad: 10000, tipo: 'BALANCIN', transportista: 'Tte Norberto' },
+{ patente: 'NPK747', chofer: 'AVOLA NORBERTO', capacidad: 12000, tipo: 'balancin', transportista: 'Tte Norberto' },
+{ patente: 'FKT778', chofer: 'Guevara Norberto', capacidad: 12000, tipo: 'balancin', transportista: 'Tte Norberto' },
+{ patente: 'AB228RB', chofer: 'Ledesma Norberto', capacidad: 12000, tipo: 'BALANCIN', transportista: 'Tte Norberto' },
+{ patente: 'QPW550', chofer: 'IVAN CESAR Norberto', capacidad: 16000, tipo: 'BALANCIN', transportista: 'Tte Norberto' },
+{ patente: 'PED695', chofer: 'Ojeda Norberto', capacidad: 12000, tipo: 'BALANCIN', transportista: 'Tte Norberto' },
+{ patente: 'NGA308', chofer: 'Quintiero Norberto', capacidad: 26000, tipo: 'SEMI', transportista: 'Tte Norberto' },
+{ patente: 'CQU074', chofer: 'BARRIENTOS Norberto', capacidad: 10000, tipo: 'BALANCIN', transportista: 'Tte Norberto' },
+{ patente: 'HMZ785', chofer: 'Acosta Gabriel', capacidad: 6000, tipo: 'camion', transportista: 'Tte Rago' },
+{ patente: 'FAB734', chofer: 'Aldo Echeverry', capacidad: 4000, tipo: 'camion', transportista: 'Tte Rago' },
+{ patente: 'HVT645', chofer: 'Ayala Andres', capacidad: 4000, tipo: 'camion', transportista: 'Tte Rago' },
+{ patente: 'AE894PG', chofer: 'Colomba Juan', capacidad: 2500, tipo: 'camion', transportista: 'Tte Rago' },
+{ patente: 'DCY625', chofer: 'Correa Lucas', capacidad: 1500, tipo: 'camioneta', transportista: 'Tte Rago' },
+{ patente: 'KIV063', chofer: 'Daniel Samper', capacidad: 2000, tipo: 'CAMION', transportista: 'Tte Rago' },
+{ patente: 'DNH030', chofer: 'Maldonado Alejandro ', capacidad: 2500, tipo: 'camion', transportista: 'Tte Rago' },
+{ patente: 'AG295DC', chofer: 'Caffarelli Tomas', capacidad: 1500, tipo: 'camioneta', transportista: 'Tte Rago' },
+{ patente: 'OQX002', chofer: 'Cancian Carlos', capacidad: 2500, tipo: 'camion', transportista: 'Tte Rago' },
+{ patente: 'WMG932', chofer: 'Carfora Damian', capacidad: 1500, tipo: 'camioneta', transportista: 'Tte Rago' },
+{ patente: 'GXG101', chofer: 'Castro Juan', capacidad: 2500, tipo: 'camion', transportista: 'Tte Rago' },
+{ patente: 'GLT985', chofer: 'Claudio Gonzalez', capacidad: 1500, tipo: 'camioneta', transportista: 'Tte Rago' },
+{ patente: 'KIV063', chofer: 'Davalos Carlos', capacidad: 2000, tipo: 'CAMION', transportista: 'Tte Rago' },
+{ patente: 'DHZ010', chofer: 'Eduardo Sanchez', capacidad: 2500, tipo: 'camion', transportista: 'Tte Rago' },
+{ patente: 'AUD211', chofer: 'Rivera Enzo', capacidad: 1500, tipo: 'camioneta', transportista: 'Tte Rago' },
+{ patente: 'FKI609', chofer: 'Ferrandini Armando', capacidad: 1500, tipo: 'camioneta', transportista: 'Tte Rago' },
+{ patente: 'PNV452', chofer: 'Gamarra Walter', capacidad: 1500, tipo: 'CAMIONETA', transportista: 'Tte Rago' },
+{ patente: 'WCY546', chofer: 'Gaston Castro', capacidad: 1500, tipo: 'camioneta', transportista: 'Tte Rago' },
+{ patente: 'PFK165', chofer: 'Gimenez Alejandro', capacidad: 1500, tipo: 'camioneta', transportista: 'Tte Rago' },
+{ patente: 'BRE919', chofer: 'Juan Ottonelo', capacidad: 2000, tipo: 'camion', transportista: 'Tte Rago' },
+{ patente: 'MOX136', chofer: 'Jonatan Leiva', capacidad: 2000, tipo: 'CAMION', transportista: 'Tte Rago' },
+{ patente: 'NTL332', chofer: 'Mansilla Enzo', capacidad: 2500, tipo: 'CAMION', transportista: 'Tte Rago' },
+{ patente: 'HJQ305', chofer: 'Marcelo Ciarapica', capacidad: 2500, tipo: 'camion', transportista: 'Tte Rago' },
+{ patente: 'SJR949', chofer: 'Romito Martin', capacidad: 1500, tipo: 'camioneta', transportista: 'Tte Rago' },
+{ patente: 'BDX519', chofer: 'Mateo Gomez', capacidad: 4000, tipo: 'camion', transportista: 'Tte Rago' },
+{ patente: 'NBX449', chofer: 'Matias Gonzalez', capacidad: 1500, tipo: 'camioneta', transportista: 'Tte Rago' },
+{ patente: 'UIG735', chofer: 'Montenegro Gustavo', capacidad: 8000, tipo: 'chasis', transportista: 'Tte Rago' },
+{ patente: 'BDI934', chofer: 'Nestor Diaz', capacidad: 2500, tipo: 'camion', transportista: 'Tte Rago' },
+{ patente: 'LUS407', chofer: 'Nicolas Carbone', capacidad: 6000, tipo: 'chasis', transportista: 'Tte Rago' },
+{ patente: 'GDQ217', chofer: 'Ortuño Fredy', capacidad: 8000, tipo: 'camion', transportista: 'Tte Rago' },
+{ patente: 'AC367SC', chofer: 'Pereyra Fernando', capacidad: 4500, tipo: 'camion', transportista: 'Tte Rago' },
+{ patente: 'PDI992', chofer: 'Rios Ezequiel', capacidad: 1500, tipo: 'camioneta', transportista: 'Tte Rago' },
+{ patente: 'KTM962', chofer: 'RIVAS EZEQUIEL', capacidad: 1500, tipo: 'camioneta', transportista: 'Tte Rago' },
+{ patente: 'AG295DC', chofer: 'Tomas Cañon', capacidad: 1500, tipo: 'camioneta', transportista: 'Tte Rago' },
+{ patente: 'AG295DC', chofer: 'Zarate Alexis', capacidad: 1500, tipo: 'camioneta', transportista: 'Tte Rago' },
+{ patente: 'TKY034', chofer: 'Bruno Malvarez', capacidad: 6000, tipo: 'chasis', transportista: 'Tte Rago' },
+{ patente: 'LWG767', chofer: 'INES FERREYRA', capacidad: 1500, tipo: 'CAMIONETA', transportista: 'Tte Rago' },
+{ patente: 'AC594CS', chofer: 'Lucas Gonzalez', capacidad: 2000, tipo: 'CAMION', transportista: 'Tte Rago' },
+{ patente: 'CRT942', chofer: 'Nicolas Coria', capacidad: 8000, tipo: 'camion', transportista: 'Tte Rago' },
+{ patente: 'CTR980', chofer: 'Zaracho Marcelo', capacidad: 1500, tipo: 'CAMIONETA', transportista: 'Tte Rago' },
+{ patente: 'JJV624', chofer: 'Diego Balmudi', capacidad: 2000, tipo: 'CAMION', transportista: 'Tte Rago' },
+{ patente: 'LTP841', chofer: 'Maximiliano Montenegro', capacidad: 2000, tipo: 'CAMION', transportista: 'Tte Rago' },
+{ patente: 'NTL332', chofer: 'Nicolas Yacovone', capacidad: 2500, tipo: 'camion', transportista: 'Tte Rago' },
+{ patente: 'PNV452', chofer: 'Gamarra Walter', capacidad: 1500, tipo: 'camioneta', transportista: 'Tte Rago' },
+{ patente: 'WQU168', chofer: 'Gustavo Coria', capacidad: 8000, tipo: 'camioneta', transportista: 'Tte Rago' },
+{ patente: 'AF456XS', chofer: 'Arcucci Gabriel', capacidad: 1500, tipo: 'camioneta', transportista: 'Tte Ruedo' },
+{ patente: 'AG106KS', chofer: 'Escot Ivan', capacidad: 1500, tipo: 'camioneta', transportista: 'Tte Ruedo' },
+{ patente: 'PDB264', chofer: 'GOMEZ PEREYRA', capacidad: 1500, tipo: 'camioneta', transportista: 'Tte Ruedo' },
+{ patente: 'KMC571', chofer: 'Torres Rueddo', capacidad: 500, tipo: 'MINIFLET', transportista: 'Tte Ruedo' }
+ ],
+                vueltas: [
+                    { recorrido: 'AYSA 2.1', vuelta: '1°' },
+                    { recorrido: '3DF.C.1', vuelta: '1°' },
+                    { recorrido: '3DF.C.2', vuelta: '1°' }
+                ],
+                horarios: [
+                { recorrido: 'AYSA 2.1', horario: '22:00:00' },
+{ recorrido: 'J. 3df 1', horario: '10:00:00' },
+{ recorrido: 'J. 3df 2', horario: '10:00:00' },
+{ recorrido: 'J. 3df 3', horario: '10:00:00' },
+{ recorrido: '3DF.C.1', horario: '06:00:00' },
+{ recorrido: '3DF.C.2', horario: '06:00:00' },
+{ recorrido: '3DF.C.3', horario: '05:00:00' },
+{ recorrido: '3DF.E.1', horario: '06:00:00' },
+{ recorrido: '3DF.E.2 + VIANDAS PARADOR LORCA', horario: '06:00:00' },
+{ recorrido: '3DF.N.1 ', horario: '06:00:00' },
+{ recorrido: '3DF.N.2 + TALLERES PROTEGIDOS', horario: '06:00:00' },
+{ recorrido: '3DF.S.1', horario: '06:00:00' },
+{ recorrido: 'AUSA PIEDRAS', horario: '04:00:00' },
+{ recorrido: 'RETIRO HELADERAS', horario: '10:00:00' },
+{ recorrido: 'C. SMIGUEL', horario: '08:00:00' },
+{ recorrido: 'C.SMIGUEL2', horario: '08:00:00' },
+{ recorrido: 'C.SMIGUEL3', horario: '07:00:00' },
+{ recorrido: 'CASINO TRILLENIUM', horario: '06:00:00' },
+{ recorrido: 'COLFARMA', horario: '05:00:00' },
+{ recorrido: 'FINOCHIETTO', horario: '06:00:00' },
+{ recorrido: 'FINOCHIETTO', horario: '09:00:00' },
+{ recorrido: 'HOGAR BALESTRA', horario: '06:00:00' },
+{ recorrido: 'HOGAR EVA PERON', horario: '06:00:00' },
+{ recorrido: 'HOGAR OBLIGADO', horario: '06:00:00' },
+{ recorrido: 'HOSPITAL THOMPSON', horario: '06:00:00' },
+{ recorrido: 'HTALES CABA X 1', horario: '13:00:00' },
+{ recorrido: 'HTALES CABA X 2', horario: '05:30:00' },
+{ recorrido: 'HUR SAE TT', horario: '11:00:00' },
+{ recorrido: 'HUR SAE.E', horario: '05:00:00' },
+{ recorrido: 'HUR SAE.N', horario: '05:00:00' },
+{ recorrido: 'HUR SAE.S', horario: '06:00:00' },
+{ recorrido: 'CIUDADELA - MORENO', horario: '09:30:00' },
+{ recorrido: 'ISLAND AMENABAR', horario: '05:00:00' },
+{ recorrido: 'ISLAND PILAR', horario: '06:00:00' },
+{ recorrido: 'LCT 01.03', horario: '04:00:00' },
+{ recorrido: 'LCT 01.06', horario: '04:30:00' },
+{ recorrido: 'LCT 02.01 ', horario: '10:00:00' },
+{ recorrido: 'LCT 03.01', horario: '10:00:00' },
+{ recorrido: 'LCT 03.02', horario: '10:00:00' },
+{ recorrido: 'LCT 04.02', horario: '10:00:00' },
+{ recorrido: 'LCT 04.04', horario: '10:00:00' },
+{ recorrido: 'LCT 04.06', horario: '10:00:00' },
+{ recorrido: 'LCT 04.08', horario: '04:00:00' },
+{ recorrido: 'LCT 04.09', horario: '10:00:00' },
+{ recorrido: 'LCT 04.10', horario: '04:00:00' },
+{ recorrido: 'LCT 05.01', horario: '10:00:00' },
+{ recorrido: 'LCT 06.01', horario: '10:00:00' },
+{ recorrido: 'LCT 06.03', horario: '10:00:00' },
+{ recorrido: 'LCT 07.02', horario: '04:00:00' },
+{ recorrido: 'LCT 07.04', horario: '10:00:00' },
+{ recorrido: 'LCT 08.01', horario: '10:00:00' },
+{ recorrido: 'LCT 08.03', horario: '10:00:00' },
+{ recorrido: 'LCT 08.06', horario: '04:00:00' },
+{ recorrido: 'LCT 08.08', horario: '10:00:00' },
+{ recorrido: 'LCT 08.09', horario: '05:00:00' },
+{ recorrido: 'LCT 08.11', horario: '10:00:00' },
+{ recorrido: 'LCT 09.02', horario: '04:00:00' },
+{ recorrido: 'LCT 10.01', horario: '04:00:00' },
+{ recorrido: 'LCT 10.02', horario: '10:00:00' },
+{ recorrido: 'LCT 10.04', horario: '10:00:00' },
+{ recorrido: 'LCT 11.02', horario: '04:00:00' },
+{ recorrido: 'LCT 11.04', horario: '10:00:00' },
+{ recorrido: 'LCT 12.02', horario: '10:00:00' },
+{ recorrido: 'LCT 13.01', horario: '10:00:00' },
+{ recorrido: 'LCT 14.01', horario: '10:00:00' },
+{ recorrido: 'LCT 15.01', horario: '04:30:00' },
+{ recorrido: 'LCT 15.02', horario: '10:00:00' },
+{ recorrido: 'LCT mini 1', horario: '10:00:00' },
+{ recorrido: 'L DMC ESTE', horario: '03:00:00' },
+{ recorrido: 'L DMC NORTE', horario: '03:00:00' },
+{ recorrido: 'L DMC OESTE', horario: '03:00:00' },
+{ recorrido: 'L DMC SUR', horario: '03:30:00' },
+{ recorrido: 'L DMC SUR ESTE', horario: '03:00:00' },
+{ recorrido: 'LANUS TT', horario: '08:00:00' },
+{ recorrido: 'MINISTERIO EDUCACION + DG DAI ( LANTERI )', horario: '05:00:00' },
+{ recorrido: 'MORON DMC1', horario: '04:00:00' },
+{ recorrido: 'MORON DMC2', horario: '06:00:00' },
+{ recorrido: 'MORON DMC3', horario: '06:30:00' },
+{ recorrido: 'MORON DMC4', horario: '06:00:00' },
+{ recorrido: 'MORON DMC5', horario: '06:00:00' },
+{ recorrido: 'MORON TT', horario: '10:00:00' },
+{ recorrido: 'OTAMENDI', horario: '04:00:00' },
+{ recorrido: 'CIUDADELA - USPALLATA', horario: '10:30:00' },
+{ recorrido: 'CIUDADELA - USPALLATA', horario: '17:30:00' },
+{ recorrido: 'PARQUE INNNOVACION', horario: '10:30:00' },
+{ recorrido: 'RURHURPUMPEN', horario: '06:00:00' },
+{ recorrido: 'UCSA CD HERRERA', horario: '08:00:00' },
+{ recorrido: 'SANAT. LAS LOMAS', horario: '05:00:00' },
+{ recorrido: 'SOPORTE', horario: '05:00:00' },
+{ recorrido: 'UCSA TERESA', horario: '09:00:00' },
+{ recorrido: 'VARIFARMA', horario: '05:00:00' },
+{ recorrido: 'VL TT', horario: '09:00:00' },
+{ recorrido: 'VL Z2', horario: '04:00:00' },
+{ recorrido: 'VL Z3', horario: '04:00:00' },
+{ recorrido: 'VL Z4', horario: '05:00:00' },
+{ recorrido: 'VL Z5', horario: '04:00:00' },
+{ recorrido: '7.1 + 7.1 CPI', horario: '03:00:00' },
+{ recorrido: '7.1 TRASBORDO', horario: '06:00:00' },
+{ recorrido: '7.2 + 7.2 CPI', horario: '04:00:00' },
+{ recorrido: '6.4 + 6.4 R1 + 6.4 R2 + 6.4 CPI', horario: '10:00:00' },
+{ recorrido: '7.1 + 7.1 CPI', horario: '09:00:00' },
+{ recorrido: 'AYSA 2.1', horario: '22:00:00' },
+{ recorrido: '3DF.C.1', horario: '06:00:00' },
+{ recorrido: '3DF.C.2', horario: '06:00:00' },
+{ recorrido: '3DF.C.3', horario: '05:00:00' },
+{ recorrido: '3DF.E.1', horario: '06:00:00' },
+{ recorrido: '3DF.E.2 + VIANDAS PARADOR LORCA', horario: '06:00:00' },
+{ recorrido: '3DF.N.1 ', horario: '06:00:00' },
+{ recorrido: '3DF.N.2 + TALLERES PROTEGIDOS', horario: '06:00:00' },
+{ recorrido: 'AUSA PARQUE AVELLANEDA', horario: '05:00:00' },
+{ recorrido: 'C.SMIGUEL2', horario: '10:00:00' },
+{ recorrido: 'C.SMIGUEL3', horario: '10:00:00' },
+{ recorrido: 'CHEFF GOURMET', horario: '10:00:00' },
+{ recorrido: 'COSTANERA', horario: '09:00:00' },
+{ recorrido: 'FAVALORO', horario: '04:00:00' },
+{ recorrido: 'FINOCHIETTO', horario: '06:00:00' },
+{ recorrido: 'FINOCHIETTO', horario: '09:00:00' },
+{ recorrido: 'HOGAR BALESTRA', horario: '06:00:00' },
+{ recorrido: 'HOGAR EVA PERON', horario: '06:00:00' },
+{ recorrido: 'HOGAR OBLIGADO', horario: '06:00:00' },
+{ recorrido: ' Hosp S M 2', horario: '10:00:00' },
+{ recorrido: 'Hosp S M 1 ', horario: '10:00:00' },
+{ recorrido: 'HUR SAE.E', horario: '05:30:00' },
+{ recorrido: 'HUR SAE.N', horario: '06:00:00' },
+{ recorrido: 'HUR SAE.S', horario: '05:00:00' },
+{ recorrido: 'HURG SAE TT', horario: '12:00:00' },
+{ recorrido: 'INDELVAL', horario: '07:00:00' },
+{ recorrido: 'CIUDADELA - MORENO', horario: '09:30:00' },
+{ recorrido: 'INTERPLANTA', horario: '12:00:00' },
+{ recorrido: 'J. 3df 2', horario: '10:00:00' },
+{ recorrido: 'J. 3df 3', horario: '09:00:00' },
+{ recorrido: 'LCT 01.01', horario: '10:00:00' },
+{ recorrido: 'LCT 01.02 ', horario: '10:00:00' },
+{ recorrido: 'LCT 01.05', horario: '04:00:00' },
+{ recorrido: 'LCT 02.02 ', horario: '10:00:00' },
+{ recorrido: 'LCT 03.03', horario: '10:00:00' },
+{ recorrido: 'LCT 04.01', horario: '04:00:00' },
+{ recorrido: 'LCT 04.03', horario: '10:00:00' },
+{ recorrido: 'LCT 04.05', horario: '10:00:00' },
+{ recorrido: 'LCT 04.07', horario: '10:00:00' },
+{ recorrido: 'LCT 04.12', horario: '11:00:00' },
+{ recorrido: 'LCT 05.02', horario: '10:00:00' },
+{ recorrido: 'LCT 05.03', horario: '10:00:00' },
+{ recorrido: 'LCT 06.02', horario: '10:00:00' },
+{ recorrido: 'LCT 07.01', horario: '04:00:00' },
+{ recorrido: 'LCT 07.03', horario: '10:00:00' },
+{ recorrido: 'LCT 07.05', horario: '10:00:00' },
+{ recorrido: 'LCT 08.02', horario: '12:00:00' },
+{ recorrido: 'LCT 08.04', horario: '04:30:00' },
+{ recorrido: 'LCT 08.05', horario: '10:00:00' },
+{ recorrido: 'LCT 08.07', horario: '04:30:00' },
+{ recorrido: 'LCT 08.10', horario: '09:00:00' },
+{ recorrido: 'LCT 09.01', horario: '05:30:00' },
+{ recorrido: 'LCT 09.03', horario: '10:00:00' },
+{ recorrido: 'LCT 09.04', horario: '10:00:00' },
+{ recorrido: 'LCT 10.03', horario: '10:00:00' },
+{ recorrido: 'LCT 11.03', horario: '10:00:00' },
+{ recorrido: 'LCT 12.01', horario: '10:00:00' },
+{ recorrido: 'LCT 12.03', horario: '10:00:00' },
+{ recorrido: 'LCT 13.02', horario: '10:00:00' },
+{ recorrido: 'LCT 14.02', horario: '10:00:00' },
+{ recorrido: 'LCT 15.03', horario: '10:00:00' },
+{ recorrido: 'LCT mini 2', horario: '05:00:00' },
+{ recorrido: 'LCT mini 3', horario: '05:00:00' },
+{ recorrido: 'LCT mini 4', horario: '05:45:00' },
+{ recorrido: 'LCT0TT', horario: '12:00:00' },
+{ recorrido: 'L DMC ESTE', horario: '03:00:00' },
+{ recorrido: 'L DMC NORTE', horario: '03:00:00' },
+{ recorrido: 'L DMC OESTE', horario: '03:00:00' },
+{ recorrido: 'L DMC SUR', horario: '03:30:00' },
+{ recorrido: 'L DMC SUR ESTE', horario: '03:00:00' },
+{ recorrido: 'MP1.1', horario: '05:30:00' },
+{ recorrido: 'MP1.2', horario: '05:30:00' },
+{ recorrido: 'MP1.3', horario: '05:00:00' },
+{ recorrido: 'MP1.4', horario: '05:00:00' },
+{ recorrido: 'MORON DMC1', horario: '04:00:00' },
+{ recorrido: 'MORON DMC2', horario: '06:00:00' },
+{ recorrido: 'MORON DMC3', horario: '06:30:00' },
+{ recorrido: 'MORON DMC4', horario: '05:00:00' },
+{ recorrido: 'MORON DMC5', horario: '06:00:00' },
+{ recorrido: 'MORON TT', horario: '10:30:00' },
+{ recorrido: 'MORON TERMINAL', horario: '06:00:00' },
+{ recorrido: 'OTAMENDI', horario: '04:00:00' },
+{ recorrido: 'BEPO GHEZZI', horario: '12:00:00' },
+{ recorrido: 'CIUDADELA - USPALLATA - LA BOCA', horario: '10:30:00' },
+{ recorrido: 'CIUDADELA - USPALLATA - LA BOCA', horario: '17:30:00' },
+{ recorrido: 'PARADORES DGDAI', horario: '05:00:00' },
+{ recorrido: 'POLO SEGURIDAD', horario: '10:00:00' },
+{ recorrido: 'UCSA CD HERRERA', horario: '08:00:00' },
+{ recorrido: 'RURHURPUMPEN', horario: '06:00:00' },
+{ recorrido: 'SOPORTE', horario: '05:00:00' },
+{ recorrido: 'SOPORTE', horario: '05:00:00' },
+{ recorrido: 'COLONS', horario: '04:30:00' },
+{ recorrido: 'UCSA TERESA', horario: '09:30:00' },
+{ recorrido: 'VL Z2 + VL ZONA 2', horario: '05:00:00' },
+{ recorrido: 'VL Z3', horario: '05:00:00' },
+{ recorrido: 'VL Z4', horario: '05:00:00' },
+{ recorrido: 'VL Z5', horario: '04:00:00' },
+{ recorrido: 'VL Z6', horario: '05:00:00' },
+{ recorrido: 'VL Z7', horario: '05:00:00' },
+{ recorrido: 'VL ZTT', horario: '09:00:00' },
+{ recorrido: 'VUELTA DE OBLIGADO', horario: '08:45:00' },
+{ recorrido: 'MORENO - MERCADO', horario: '16:00:00' },
+{ recorrido: 'MORENO - MERCADO 3 DF', horario: '16:00:00' },
+{ recorrido: 'MORENO - MERCADO CENTRAL', horario: '16:00:00' },
+{ recorrido: 'MORENO - CIUDADELA', horario: '11:00:00' },
+{ recorrido: 'MORENO - CIUDADELA', horario: '11:00:00' },
+{ recorrido: 'SOPORTE MODULOS SAE', horario: '08:00:00' },
+{ recorrido: '6.1 R1 + 6.1 R2 + 6.1 CPI + 6.1 FINDE', horario: '06:00:00' },
+{ recorrido: '8.2 + 8.2 CAS + 8.2 COPITO + 8.2 FINDE + 8.2 CPI', horario: '04:00:00' },
+{ recorrido: '8.3.2', horario: '04:45:00' },
+{ recorrido: '8.4 + 8.4.1 + 8.4 CPI + 8.4 FINDE', horario: '05:00:00' },
+{ recorrido: '8.5 + 8.5 CPI', horario: '05:00:00' },
+{ recorrido: '8.5 + 8.5 CPI', horario: '03:00:00' },
+{ recorrido: '8.6 + 8.7 + 8.7 CPI', horario: '05:15:00' },
+{ recorrido: 'H Capital1', horario: '05:00:00' },
+{ recorrido: 'UCSA SOPORTE', horario: '04:30:00' },
+{ recorrido: 'UCSA SOPORTE', horario: '04:30:00' },
+{ recorrido: '6.2 + 6.2 R1 + 6.2 R2 + 6.2 CPI + 6.2 FINDE', horario: '05:00:00' },
+{ recorrido: '6.3 + 6.3 R1 + 6.3 R2 + 6.3 FINDE', horario: '12:00:00' },
+{ recorrido: '6.4 + 6.4 R1 + 6.4 R2 + 6.4 CPI', horario: '06:00:00' },
+{ recorrido: 'H Capital2', horario: '06:00:00' },
+{ recorrido: 'AYSA 2.1', horario: '22:00:00' },
+{ recorrido: '3DF.C.1', horario: '06:00:00' },
+{ recorrido: '3DF.C.2', horario: '06:00:00' },
+{ recorrido: '3DF.C.3', horario: '05:00:00' },
+{ recorrido: '3DF.E.1', horario: '06:00:00' },
+{ recorrido: '3DF.E.2 + VIANDAS PARADOR LORCA', horario: '05:30:00' },
+{ recorrido: '3DF.N.1 ', horario: '06:00:00' },
+{ recorrido: '3DF.N.2 + TALLERES PROTEGIDOS', horario: '06:00:00' },
+{ recorrido: '3DF.S.1', horario: '06:00:00' },
+{ recorrido: 'AUSA PIEDRAS', horario: '05:00:00' },
+{ recorrido: 'J. 3df 3', horario: '06:00:00' },
+{ recorrido: 'LCT 01.04', horario: '04:00:00' },
+{ recorrido: 'LCT 01.06', horario: '04:30:00' },
+{ recorrido: 'LCT 02.01 ', horario: '10:00:00' },
+{ recorrido: 'LCT 03.01', horario: '10:00:00' },
+{ recorrido: 'LCT 03.02', horario: '10:00:00' },
+{ recorrido: 'LCT 04.02', horario: '10:00:00' },
+{ recorrido: 'LCT 04.04', horario: '10:00:00' },
+{ recorrido: 'LCT 04.06', horario: '10:00:00' },
+{ recorrido: 'LCT 04.08', horario: '04:00:00' },
+{ recorrido: 'LCT 04.09', horario: '10:00:00' },
+{ recorrido: 'LCT 04.10', horario: '04:30:00' },
+{ recorrido: 'LCT 05.01', horario: '10:00:00' },
+{ recorrido: 'LCT 06.01', horario: '10:00:00' },
+{ recorrido: 'LCT 06.03', horario: '10:00:00' },
+{ recorrido: 'LCT 07.02', horario: '04:00:00' },
+{ recorrido: 'LCT 07.04', horario: '10:00:00' },
+{ recorrido: 'LCT 08.01', horario: '10:00:00' },
+{ recorrido: 'LCT 08.03', horario: '10:00:00' },
+{ recorrido: 'LCT 08.06', horario: '04:30:00' },
+{ recorrido: 'LCT 08.08', horario: '10:00:00' },
+{ recorrido: 'LCT 08.09', horario: '04:00:00' },
+{ recorrido: 'LCT 08.11', horario: '10:00:00' },
+{ recorrido: 'LCT 09.02', horario: '04:30:00' },
+{ recorrido: 'LCT 10.01', horario: '04:00:00' },
+{ recorrido: 'LCT 10.02', horario: '10:00:00' },
+{ recorrido: 'LCT 10.04', horario: '10:00:00' },
+{ recorrido: 'LCT 11.02', horario: '04:30:00' },
+{ recorrido: 'LCT 12.02', horario: '10:00:00' },
+{ recorrido: 'LCT 13.01', horario: '10:00:00' },
+{ recorrido: 'LCT 14.01', horario: '10:00:00' },
+{ recorrido: 'LCT 15.01', horario: '05:00:00' },
+{ recorrido: 'LCT 15.02', horario: '10:00:00' },
+{ recorrido: 'LCT mini 1', horario: '10:00:00' },
+{ recorrido: 'L DMC ESTE', horario: '03:00:00' },
+{ recorrido: 'L DMC NORTE', horario: '03:00:00' },
+{ recorrido: 'L DMC OESTE', horario: '03:00:00' },
+{ recorrido: 'L DMC SUR', horario: '03:30:00' },
+{ recorrido: 'L DMC SUR ESTE', horario: '03:00:00' },
+{ recorrido: 'MORON DMC1', horario: '04:00:00' },
+{ recorrido: 'MORON DMC2', horario: '06:00:00' },
+{ recorrido: 'MORON DMC3', horario: '07:00:00' },
+{ recorrido: 'MORON DMC4', horario: '06:00:00' },
+{ recorrido: 'MORON DMC5', horario: '06:00:00' },
+{ recorrido: 'MORON TT', horario: '10:30:00' },
+{ recorrido: 'OTAMENDI', horario: '04:00:00' },
+{ recorrido: 'PARADOR  DG-DAI', horario: '06:00:00' },
+{ recorrido: 'CIUDADELA - USPALLATA - LA BOCA', horario: '10:30:00' },
+{ recorrido: 'CIUDADELA - USPALLATA - LA BOCA', horario: '17:30:00' },
+{ recorrido: 'PARQUE INNOVACION', horario: '10:00:00' },
+{ recorrido: 'UCSA CD HERRERA', horario: '08:00:00' },
+{ recorrido: 'SANAT LAS LOMAS', horario: '05:00:00' },
+{ recorrido: 'SERVICIO INDEPENDIENTE', horario: '09:00:00' },
+{ recorrido: 'SOPORTE', horario: '05:00:00' },
+{ recorrido: 'SOPORTE', horario: '05:00:00' },
+{ recorrido: 'SOPORTE', horario: '05:00:00' },
+{ recorrido: 'UCSA TERESA', horario: '09:00:00' },
+{ recorrido: 'VL TT', horario: '09:00:00' },
+{ recorrido: 'VL Z2', horario: '05:00:00' },
+{ recorrido: 'VL Z3', horario: '05:00:00' },
+{ recorrido: 'VL Z4', horario: '05:00:00' },
+{ recorrido: 'VL Z5', horario: '04:00:00' },
+{ recorrido: 'VL Z6', horario: '05:00:00' },
+{ recorrido: 'VL Z7', horario: '05:00:00' },
+{ recorrido: 'MERCADO 3 DF - MORENO', horario: '00:01:00' },
+{ recorrido: 'MERCADO CENTRAL - MORENO', horario: '04:00:00' },
+{ recorrido: 'MERCADO CENTRAL - MORENO', horario: '02:30:00' },
+{ recorrido: 'MERCADO CENTRAL - MORENO', horario: '02:30:00' },
+{ recorrido: 'MERCADO CENTRAL - MORENO', horario: '02:30:00' },
+{ recorrido: 'MERCADO CENTRAL - MORENO', horario: '02:30:00' },
+{ recorrido: 'MERCADO CENTRAL - MORENO', horario: '02:30:00' },
+{ recorrido: 'MORENO - CIUDADELA', horario: '04:45:00' },
+{ recorrido: 'MORENO - CIUDADELA', horario: '12:00:00' },
+{ recorrido: 'SOPORTE MODULOS SAE', horario: '08:00:00' },
+{ recorrido: '6.1 R1 + 6.1 R2 + 6.1 CPI + 6.1 FINDE', horario: '03:00:00' },
+{ recorrido: '6.2 + 6.2 R1 + 6.2 R2 + 6.2 CPI + 6.2 FINDE', horario: '03:00:00' },
+{ recorrido: '6.3 + 6.3 R1 + 6.3 R2 + 6.3 FINDE', horario: '04:00:00' },
+{ recorrido: '8.5 + 8.5 CPI', horario: '05:00:00' },
+{ recorrido: '8.6 + 8.7 + 8.7 CPI', horario: '05:15:00' },
+{ recorrido: 'UCSA SOPORTE', horario: '04:30:00' },
+{ recorrido: 'UCSA SOPORTE', horario: '04:30:00' },
+{ recorrido: '6.2 + 6.2 R1 + 6.2 R2 + 6.2 CPI + 6.2 FINDE', horario: '09:00:00' },
+{ recorrido: '6.3 + 6.3 R1 + 6.3 R2 + 6.3 FINDE', horario: '11:00:00' },
+{ recorrido: '6.4 + 6.4 R1 + 6.4 R2 + 6.4 CPI', horario: '10:00:00' },
+{ recorrido: 'UCSA H. ZONA OESTE', horario: '10:00:00' },
+{ recorrido: 'AYSA 2.1', horario: '22:00:00' },
+{ recorrido: 'AYSA 2.1', horario: '22:00:00' },
+{ recorrido: '3DF.C.1', horario: '06:00:00' },
+{ recorrido: '3DF.C.2', horario: '06:00:00' },
+{ recorrido: '3DF.C.3', horario: '05:00:00' },
+{ recorrido: '3DF.E.1', horario: '06:00:00' },
+{ recorrido: '3DF.E.2 + VIANDAS PARADOR LORCA', horario: '06:00:00' },
+{ recorrido: '3DF.N.1 ', horario: '06:00:00' },
+{ recorrido: '3DF.N.2 + TALLERES PROTEGIDOS', horario: '06:00:00' },
+{ recorrido: '3DF.S.1', horario: '06:00:00' },
+{ recorrido: 'AUSA PIEDRAS', horario: '05:00:00' },
+{ recorrido: 'FAVALORO', horario: '03:00:00' },
+{ recorrido: 'FINOCHIETTO', horario: '06:00:00' },
+{ recorrido: 'FINOCHIETTO', horario: '09:00:00' },
+{ recorrido: 'HOGAR BALESTRA', horario: '06:00:00' },
+{ recorrido: 'HOGAR EVA PERON', horario: '06:00:00' },
+{ recorrido: 'HOGAR OBLIGADO', horario: '06:00:00' },
+{ recorrido: 'HTAL. PASTEUR (BELGRANO)', horario: '04:30:00' },
+{ recorrido: 'HTAL PASTEUR ( CONGRESO ) + ( CENTRAL )', horario: '03:30:00' },
+{ recorrido: 'HOSPITAL THOMPSON', horario: '07:00:00' },
+{ recorrido: 'HUR SAE.E', horario: '05:00:00' },
+{ recorrido: 'HUR SAE.N', horario: '06:00:00' },
+{ recorrido: 'HUR SAE.S', horario: '05:00:00' },
+{ recorrido: 'HURG SAE TT', horario: '11:00:00' },
+{ recorrido: 'CIUDADELA - MORENO', horario: '09:30:00' },
+{ recorrido: 'ISLAND AMENABAR', horario: '05:00:00' },
+{ recorrido: 'J. 3df 1', horario: '09:30:00' },
+{ recorrido: 'J. 3df 2', horario: '10:00:00' },
+{ recorrido: 'J. 3df 3', horario: '10:00:00' },
+{ recorrido: 'LCT 01.01', horario: '05:00:00' },
+{ recorrido: 'LCT 01.02 ', horario: '05:30:00' },
+{ recorrido: 'LCT 01.05', horario: '05:00:00' },
+{ recorrido: 'LCT 02.02', horario: '09:00:00' },
+{ recorrido: 'LCT 02.03', horario: '10:00:00' },
+{ recorrido: 'LCT 03.03', horario: '10:00:00' },
+{ recorrido: 'LCT 08.07', horario: '04:30:00' },
+{ recorrido: 'LCT 08.10', horario: '09:00:00' },
+{ recorrido: 'LCT 09.01', horario: '04:30:00' },
+{ recorrido: 'LCT 09.03 ', horario: '10:00:00' },
+{ recorrido: 'LCT 09.04', horario: '10:00:00' },
+{ recorrido: 'LCT 10.03', horario: '10:00:00' },
+{ recorrido: 'LCT 11.01', horario: '04:00:00' },
+{ recorrido: 'LCT 11.03', horario: '10:00:00' },
+{ recorrido: 'LCT 12.01', horario: '10:00:00' },
+{ recorrido: 'LCT 12.03', horario: '10:00:00' },
+{ recorrido: 'LCT 13.02', horario: '10:00:00' },
+{ recorrido: 'LCT 14.02', horario: '06:30:00' },
+{ recorrido: 'LCT 15.03', horario: '10:00:00' },
+{ recorrido: 'LCT mini 2', horario: '05:30:00' },
+{ recorrido: 'LCT mini 3', horario: '05:00:00' },
+{ recorrido: 'LCT mini 4', horario: '05:45:00' },
+{ recorrido: 'L DMC ESTE', horario: '03:00:00' },
+{ recorrido: 'L DMC NORTE', horario: '03:00:00' },
+{ recorrido: 'L DMC OESTE', horario: '03:00:00' },
+{ recorrido: 'L DMC SUR', horario: '03:30:00' },
+{ recorrido: 'L DMC SUR ESTE', horario: '03:00:00' },
+{ recorrido: 'MP1.1', horario: '05:00:00' },
+{ recorrido: 'MP1.2', horario: '05:30:00' },
+{ recorrido: 'MP1.3 + MP 4.7', horario: '05:30:00' },
+{ recorrido: 'MP1.4', horario: '05:00:00' },
+{ recorrido: 'MORON DMC1', horario: '04:00:00' },
+{ recorrido: 'MORON DMC2', horario: '06:00:00' },
+{ recorrido: 'MORON DMC3', horario: '06:30:00' },
+{ recorrido: 'MORON TT', horario: '10:30:00' },
+{ recorrido: 'OP FRIO 3DF', horario: '17:00:00' },
+{ recorrido: 'OTAMENDI', horario: '04:00:00' },
+{ recorrido: 'CIUDADELA - USPALLATA + LA BOCA', horario: '10:30:00' },
+{ recorrido: 'CIUDADELA - USPALLATA + LA BOCA', horario: '10:30:00' },
+{ recorrido: 'PARADORES DGDAI', horario: '05:30:00' },
+{ recorrido: 'Pqe Innovacion Evento', horario: '11:15:00' },
+{ recorrido: 'RURHURPUMPEN', horario: '06:00:00' },
+{ recorrido: 'UCSA CD HERRERA', horario: '08:00:00' },
+{ recorrido: 'Retorno Evento ', horario: '17:00:00' },
+{ recorrido: 'SOPORTE', horario: '05:00:00' },
+{ recorrido: 'SOPORTE', horario: '05:00:00' },
+{ recorrido: 'UCSA TERESA', horario: '08:00:00' },
+{ recorrido: 'VL Z2', horario: '04:00:00' },
+{ recorrido: 'VL Z3', horario: '05:00:00' },
+{ recorrido: 'VL Z4', horario: '05:00:00' },
+{ recorrido: 'VL Z5', horario: '04:00:00' },
+{ recorrido: 'VL Z6', horario: '05:00:00' },
+{ recorrido: 'VL Z7', horario: '05:00:00' },
+{ recorrido: 'VL ZTT', horario: '09:30:00' },
+{ recorrido: 'VUELTA DE OBLIGADO', horario: '09:00:00' },
+{ recorrido: 'MORENO - MERCADO', horario: '16:00:00' },
+{ recorrido: 'MORENO - MERCADO 3 DF', horario: '16:00:00' },
+{ recorrido: 'MORENO - MERCADO CENTRAL', horario: '16:00:00' },
+{ recorrido: 'MORENO - MERCADO CENTRAL', horario: '16:00:00' },
+{ recorrido: 'MORENO - MERCADO CENTRAL', horario: '16:00:00' },
+{ recorrido: 'MORENO - CIUDADELA', horario: '04:45:00' },
+{ recorrido: 'SOPORTE MODULOS SAE', horario: '08:00:00' },
+{ recorrido: '6.1 R1 + 6.1 R2 + 6.1 CPI + 6.1 FINDE', horario: '11:00:00' },
+{ recorrido: '6.1 R1 + 6.1 R2 + 6.1 CPI + 6.1 FINDE', horario: '03:00:00' },
+{ recorrido: '6.2 + 6.2 R1 + 6.2 R2 + 6.2 CPI + 6.2 FINDE', horario: '03:00:00' },
+{ recorrido: '6.3 + 6.3 R1 + 6.3 R2 + 6.3 FINDE', horario: '04:00:00' },
+{ recorrido: '6.4 + 6.4 R1 + 6.4 R2 + 6.4 CPI', horario: '04:00:00' },
+{ recorrido: '6.5', horario: '04:00:00' },
+{ recorrido: '6.5 CPI + 6.5.1 CPI', horario: '04:00:00' },
+{ recorrido: '7.1 + 7.1 CPI', horario: '03:00:00' },
+{ recorrido: '7.1 TRASBORDO', horario: '06:00:00' },
+{ recorrido: '7.2 + 7.2 CPI', horario: '04:00:00' },
+{ recorrido: '7.2.1 + 7.3.2 + 7.3.3', horario: '04:30:00' },
+{ recorrido: '7.3 + 7.3 CPI', horario: '04:00:00' },
+{ recorrido: '8.2 TT', horario: '15:00:00' },
+{ recorrido: 'H Zona N 2', horario: '09:30:00' },
+{ recorrido: '3DF.C.1', horario: '06:00:00' },
+{ recorrido: '3DF.C.2', horario: '06:00:00' },
+{ recorrido: '3DF.C.3', horario: '05:00:00' },
+{ recorrido: '3DF.E.1', horario: '06:00:00' },
+{ recorrido: '3DF.E.2 + VIANDAS PARADOR LORCA', horario: '06:00:00' },
+{ recorrido: '3DF.N.1 ', horario: '06:00:00' },
+{ recorrido: '3DF.N.2 + TALLERES PROTEGIDOS', horario: '06:00:00' },
+{ recorrido: '3DF.S.1', horario: '06:00:00' },
+{ recorrido: 'AUSA 1 & AUSA 2', horario: '05:00:00' },
+{ recorrido: 'C. SAN MIGUEL 2 Y 3', horario: '06:30:00' },
+{ recorrido: 'CASINO TRILLENIUM', horario: '08:00:00' },
+{ recorrido: 'COLFARMA + RU 2', horario: '04:00:00' },
+{ recorrido: 'Frig Bernal', horario: '05:00:00' },
+{ recorrido: 'MERCADO - CIUDADELA', horario: '02:30:00' },
+{ recorrido: 'COSTANERA', horario: '12:00:00' },
+{ recorrido: 'Don. FCon', horario: '10:00:00' },
+{ recorrido: 'FINOCHIETTO', horario: '06:00:00' },
+{ recorrido: 'FINOCHIETTO', horario: '09:00:00' },
+{ recorrido: 'FINOCHIETTO', horario: '06:00:00' },
+{ recorrido: 'FINOCHIETTO', horario: '09:00:00' },
+{ recorrido: 'FOSFOROS', horario: '11:00:00' },
+{ recorrido: 'HOGAR BALESTRA', horario: '06:00:00' },
+{ recorrido: 'HOGAR EVA PERON', horario: '06:00:00' },
+{ recorrido: 'HOGAR OBLIGADO', horario: '06:00:00' },
+{ recorrido: 'BUFFET HOSPITAL POSADAS', horario: '10:00:00' },
+{ recorrido: 'HOSPITAL THOMPSON', horario: '07:00:00' },
+{ recorrido: 'H CABA F + STA LUCIA', horario: '05:30:00' },
+{ recorrido: 'H CABA UDAONDO', horario: '14:00:00' },
+{ recorrido: 'HUR SAE.E', horario: '05:00:00' },
+{ recorrido: 'HUR SAE.N', horario: '06:00:00' },
+{ recorrido: 'HUR SAE.S', horario: '05:00:00' },
+{ recorrido: 'HURG SAE TT', horario: '11:00:00' },
+{ recorrido: 'J. 3df 1', horario: '10:00:00' },
+{ recorrido: 'J. 3df 2', horario: '10:00:00' },
+{ recorrido: 'J. 3df 3', horario: '10:00:00' },
+{ recorrido: 'LCT 01.01', horario: '05:00:00' },
+{ recorrido: 'LCT 01.02 ', horario: '05:30:00' },
+{ recorrido: 'LCT 01.05', horario: '05:00:00' },
+{ recorrido: 'LCT 02.02', horario: '10:00:00' },
+{ recorrido: 'LCT 02.03', horario: '10:00:00' },
+{ recorrido: 'LCT 03.03', horario: '10:00:00' },
+{ recorrido: 'LCT 04.03', horario: '10:00:00' },
+{ recorrido: 'LCT 04.05', horario: '10:00:00' },
+{ recorrido: 'LCT 04.07 ', horario: '10:00:00' },
+{ recorrido: 'LCT 04.11', horario: '04:00:00' },
+{ recorrido: 'LCT 04.12', horario: '11:00:00' },
+{ recorrido: 'LCT 05.02', horario: '10:00:00' },
+{ recorrido: 'LCT 05.03', horario: '10:00:00' },
+{ recorrido: 'LCT 06.02', horario: '10:00:00' },
+{ recorrido: 'LCT 07.01', horario: '10:00:00' },
+{ recorrido: 'LCT 07.03', horario: '10:00:00' },
+{ recorrido: 'LCT 07.05 ', horario: '10:00:00' },
+{ recorrido: 'LCT 08.02', horario: '12:00:00' },
+{ recorrido: 'LCT 08.04', horario: '04:30:00' },
+{ recorrido: 'LCT 08.05', horario: '10:00:00' },
+{ recorrido: 'LCT 08.07', horario: '04:30:00' },
+{ recorrido: 'LCT 08.10', horario: '09:00:00' },
+{ recorrido: 'LCT 09.01', horario: '04:30:00' },
+{ recorrido: 'LCT 09.03 ', horario: '10:00:00' },
+{ recorrido: 'L DMC NORTE', horario: '03:00:00' },
+{ recorrido: 'L DMC OESTE', horario: '03:00:00' },
+{ recorrido: 'L DMC SUR', horario: '03:30:00' },
+{ recorrido: 'L DMC SUR ESTE', horario: '03:00:00' },
+{ recorrido: 'MINISTERIO EDUCACION + DG DAI ( LANTERI )', horario: '05:00:00' },
+{ recorrido: 'MORON DMC1', horario: '04:00:00' },
+{ recorrido: 'MORON DMC2', horario: '06:00:00' },
+{ recorrido: 'MORON DMC3', horario: '06:30:00' },
+{ recorrido: 'MORON DMC4', horario: '06:00:00' },
+{ recorrido: 'MORON DMC5', horario: '06:00:00' },
+{ recorrido: 'MORON TT', horario: '10:30:00' },
+{ recorrido: 'OPERATIVO FRIO', horario: '17:00:00' },
+{ recorrido: 'OTAMENDI', horario: '04:00:00' },
+{ recorrido: 'DG DAI', horario: '06:00:00' },
+{ recorrido: 'BEPO GHEZZI', horario: '13:00:00' },
+{ recorrido: 'CIUDADELA - USPALLATA - LA BOCA', horario: '17:30:00' },
+{ recorrido: 'CIUDADELA - USPALLATA - LA BOCA', horario: '10:30:00' },
+{ recorrido: 'POLO SEGURIDAD', horario: '10:00:00' },
+{ recorrido: 'Pqe Innovacion', horario: '10:30:00' },
+{ recorrido: 'UCSA CD HERRERA', horario: '08:00:00' },
+{ recorrido: 'SANAT. LAS LOMAS', horario: '05:00:00' },
+{ recorrido: 'SERVICIO INDEPENDIENTE', horario: '10:00:00' },
+{ recorrido: 'SHERWIN WILLIAMS', horario: '04:00:00' },
+{ recorrido: 'SOPORTE', horario: '05:00:00' },
+{ recorrido: 'SOPORTE', horario: '05:00:00' },
+{ recorrido: 'COLONS', horario: '04:30:00' },
+{ recorrido: 'UCSA TERESA', horario: '09:30:00' },
+{ recorrido: 'VL TT ', horario: '09:00:00' },
+{ recorrido: 'VL Z2', horario: '05:00:00' },
+{ recorrido: 'VL Z3', horario: '05:00:00' },
+{ recorrido: 'VL Z4', horario: '05:00:00' },
+{ recorrido: 'VL Z5', horario: '05:00:00' },
+{ recorrido: 'VL Z6', horario: '05:00:00' },
+{ recorrido: 'VL Z7', horario: '05:00:00' },
+{ recorrido: 'MERCADO 3DF - MORENO', horario: '00:01:00' },
+{ recorrido: 'MERCADO CENTRAL - MORENO', horario: '04:00:00' },
+{ recorrido: 'MERCADO CENTRAL - MORENO', horario: '02:30:00' },
+{ recorrido: 'MERCADO CENTRAL - CIUDADELA', horario: '02:30:00' },
+{ recorrido: 'LIMPIEZA CD CIUDADELA', horario: '11:00:00' },
+{ recorrido: 'LIMPIEZA CD CIUDADELA', horario: '11:00:00' },
+{ recorrido: 'MORENO - CIUDADELA', horario: '10:50:00' },
+{ recorrido: ' LIMPIEZA SHERWIN WILLIAMS', horario: '10:00:00' },
+{ recorrido: 'LIMPIEZA Ausa 1 + Ausa 2', horario: '06:00:00' },
+{ recorrido: 'LIMPIEZA ECOPARQUE', horario: '09:00:00' },
+{ recorrido: 'LIMPIEZA EZETA', horario: '09:00:00' },
+{ recorrido: 'LIMPIEZA FAVALORO', horario: '06:00:00' },
+{ recorrido: 'LIMPIEZA FOSFOROS', horario: '10:00:00' },
+{ recorrido: 'LIMPIEZA H CABA F + H CABA SL + H CABA U', horario: '06:00:00' },
+{ recorrido: 'LIMPIEZA INDELVAL', horario: '06:00:00' },
+{ recorrido: 'LIMPIEZA INDEPENDIENTE', horario: '10:00:00' },
+{ recorrido: 'LIMPIEZA ISLAND AMENABAR', horario: '06:00:00' },
+{ recorrido: 'LIMPIEZA OTAMENDI', horario: '10:00:00' },
+{ recorrido: 'LIMPIEZA Otamendi + LIMPIEZA San. Lomas', horario: '06:00:00' },
+{ recorrido: 'LIMPIEZA POSADAS BUFFET', horario: '13:00:00' },
+{ recorrido: 'LIMPIEZA TEATRO COLON', horario: '06:00:00' },
+{ recorrido: 'SOPORTE MODULOS SAE', horario: '08:00:00' },
+{ recorrido: '6.1 R1 + 6.1 R2 + 6.1 CPI + 6.1 FINDE', horario: '03:00:00' },
+{ recorrido: '6.2 + 6.2 R1 + 6.2 R2 + 6.2 CPI + 6.2 FINDE', horario: '03:00:00' },
+{ recorrido: '6.3 + 6.3 R1 + 6.3 R2 + 6.3 FINDE', horario: '04:00:00' },
+{ recorrido: 'Ucsa Esp11', horario: '06:00:00' },
+{ recorrido: 'Ucsa Esp12', horario: '07:00:00' },
+{ recorrido: 'Ucsa Esp13', horario: '06:00:00' },
+{ recorrido: 'Ucsa Esp3', horario: '10:00:00' },
+{ recorrido: 'Ucsa Esp8', horario: '07:00:00' },
+{ recorrido: 'Ucsa Especial', horario: '10:00:00' },
+{ recorrido: 'UCSA HOGARES Z. SUR', horario: '07:00:00' },
+{ recorrido: 'UCSA TERESA', horario: '10:00:00' },
+{ recorrido: 'MORENO - MERCADO CENTRAL', horario: '16:00:00' },
+
+                ],
+                ayudantes: [
+                    { chofer: 'Acosta Alfredo', ayudante: 'PISO + LASTRA T' },
+                    { chofer: 'Mosto Lucas', ayudante: 'PALACIOS M' },
+                    { chofer: 'Ramirez Maximiliano', ayudante: 'BOBADILLA' }
+                ]
+            };
+
+            const fileInput = document.getElementById('file-input');
+            const dataDisplay = document.getElementById('data-display');
+            const messageDisplay = document.createElement('div');
+            dataDisplay.before(messageDisplay);
+
+            let assignedChoferes = new Set(); // Track assigned choferes
+
+            fileInput.addEventListener('change', async (event) => {
+                const file = event.target.files[0];
+                if (file) {
+                    try {
+                        const data = await file.text();
+                        const rows = data.split('\n').map(row => row.split(';').map(cell => cell.trim()));
+                        if (!validateHeaders(rows[0])) {
+                            throw new Error('El archivo no tiene las columnas requeridas: RECORRIDO, demandaKG.');
+                        }
+                        processAndAssign(rows);
+                        messageDisplay.innerHTML = '<p class="success-message">Archivo procesado exitosamente.</p>';
+                    } catch (error) {
+                        messageDisplay.innerHTML = `<p class="error-message">Error: ${error.message}</p>`;
+                    }
+                }
+            });
+
+            function validateHeaders(headers) {
+                const requiredHeaders = ['RECORRIDO', 'demandaKG'];
+                return requiredHeaders.every(required => headers.some(header => header.toLowerCase() === required.toLowerCase()));
+            }
+
+            function processAndAssign(data) {
+                const headers = data[0].map(h => h.trim());
+                const assignments = data.slice(1).filter(row => row.length === headers.length).map(row => {
+                    const recorrido = row[headers.indexOf('RECORRIDO')].trim();
+                    const peso = parseFloat(row[headers.indexOf('demandaKG')]);
+
+                    if (isNaN(peso) || !recorrido) {
+                        return {
+                            Recorrido: recorrido || 'Desconocido',
+                            Peso: peso || 'Desconocido',
+                            Chofer: 'Sin asignar',
+                            Ayudante: 'Sin asignar',
+                            Patente: 'Sin asignar',
+                            Capacidad: 'N/A',
+                            'Porcentaje de Ocupación': 'N/A',
+                            Horario: 'Sin horario',
+                            Vuelta: 'Sin vuelta',
+                            Observaciones: 'Datos incompletos'
+                        };
+                    }
+
+                    // Find the appropriate unit and chofer not already assigned
+                    const unit = baseData.choferesUnidades.find(u => u.capacidad >= peso && !assignedChoferes.has(u.chofer));
+                    if (!unit) {
+                        return {
+                            Recorrido: recorrido,
+                            Peso: peso,
+                            Chofer: 'Sin asignar',
+                            Ayudante: 'Sin asignar',
+                            Patente: 'Sin asignar',
+                            Capacidad: 'N/A',
+                            'Porcentaje de Ocupación': 'N/A',
+                            Horario: baseData.horarios.find(h => h.recorrido === recorrido)?.horario || 'Sin horario',
+                            Vuelta: baseData.vueltas.find(v => v.recorrido === recorrido)?.vuelta || 'Sin vuelta',
+                            Observaciones: 'Capacidad insuficiente o chofer no disponible'
+                        };
+                    }
+
+                    assignedChoferes.add(unit.chofer); // Mark chofer as assigned
+
+                    const horario = baseData.horarios.find(h => h.recorrido === recorrido)?.horario || 'Sin horario';
+                    const vuelta = baseData.vueltas.find(v => v.recorrido === recorrido)?.vuelta || 'Sin vuelta';
+                    const ayudante = baseData.ayudantes.find(a => a.chofer === unit.chofer)?.ayudante || 'Sin ayudante';
+
+                    const porcentajeOcupacion = ((peso / unit.capacidad) * 100).toFixed(2) + '%';
+
+                    return {
+                        Recorrido: recorrido,
+                        Peso: peso,
+                        Chofer: unit.chofer,
+                        Ayudante: ayudante,
+                        Patente: unit.patente,
+                        Capacidad: unit.capacidad,
+                        'Porcentaje de Ocupación': porcentajeOcupacion,
+                        Horario: horario,
+                        Vuelta: vuelta,
+                        Observaciones: 'Asignación completada'
+                    };
+                });
+
+                displayAssignments(assignments);
+            }
+
+            function displayAssignments(assignments) {
+                const table = document.createElement('table');
+                const headerRow = document.createElement('tr');
+
+                Object.keys(assignments[0]).forEach(header => {
+                    const th = document.createElement('th');
+                    th.textContent = header;
+                    headerRow.appendChild(th);
+                });
+                table.appendChild(headerRow);
+
+                assignments.forEach(assignment => {
+                    const row = document.createElement('tr');
+                    Object.values(assignment).forEach(value => {
+                        const td = document.createElement('td');
+                        td.textContent = value;
+                        row.appendChild(td);
+                    });
+                    table.appendChild(row);
+                });
+
+                dataDisplay.innerHTML = '';
+                dataDisplay.appendChild(table);
+            }
+        });
+    </script>
+</head>
+<body>
+    <header>
+        <h1>Grupo L - Asignación de Choferes y Unidades</h1>
+        <p>Herramienta para el sector Logística y Distribución</p>
+    </header>
+    <nav>
+        <a href="#unidades-choferes">Unidades y Choferes</a>
+        <a href="#recorridos">Recorridos</a>
+        <a href="#asignacion">Asignación Automática</a>
+        <a href="#ayudantes">Ayudantes</a>
+    </nav>
+    <main>
+        <!-- Sección de Importación de Datos -->
+        <section id="import-data">
+            <h2>Importar Datos</h2>
+            <div class="upload-container">
+                <label for="file-input">Subir archivo CSV:</label>
+                <input type="file" id="file-input" accept=".csv">
+            </div>
+            <div id="data-display"></div>
+        </section>
+    </main>
+    <footer>
+        <p>© 2024 Grupo L - Logística y Distribución</p>
+    </footer>
+</body>
+</html>
+
