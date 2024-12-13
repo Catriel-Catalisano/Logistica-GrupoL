@@ -1,0 +1,156 @@
+/* Modern, Technological, and Captivating CSS Design */
+
+body {
+    font-family: 'Roboto', sans-serif;
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(135deg, #007ac2, #00c8ff);
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+header {
+    background: #004680;
+    padding: 1rem 2rem;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
+    text-align: center;
+}
+
+header h1 {
+    font-size: 3rem;
+    color: #ffc107;
+    text-transform: uppercase;
+    margin: 0.5rem 0;
+}
+
+header p {
+    color: #e0e0e0;
+    font-style: italic;
+    margin: 0;
+}
+
+main {
+    flex-grow: 1;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+section {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 15px;
+    padding: 1.5rem;
+    box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.7);
+}
+
+section h2 {
+    color: #ffc107;
+    font-size: 2rem;
+    border-bottom: 2px solid #ffc107;
+    padding-bottom: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+input[type="file"] {
+    padding: 0.5rem;
+    border: 2px dashed #ffc107;
+    border-radius: 10px;
+    background: transparent;
+    color: #fff;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+input[type="file"]:hover {
+    background: rgba(255, 193, 7, 0.2);
+}
+
+.styled-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 25px 0;
+    font-size: 1rem;
+    background: #003354;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.7);
+}
+
+.styled-table thead tr {
+    background-color: #ffc107;
+    color: #003354;
+    text-align: left;
+    font-size: 1.2rem;
+}
+
+.styled-table th, .styled-table td {
+    padding: 12px 15px;
+}
+
+.styled-table tbody tr {
+    border-bottom: 1px solid #ddd;
+}
+
+.styled-table tbody tr:nth-of-type(even) {
+    background-color: #004680;
+}
+
+.styled-table tbody tr:hover {
+    background-color: #005a9e;
+}
+
+.styled-table tbody td {
+    color: #fff;
+}
+
+button {
+    padding: 0.7rem 1.5rem;
+    border: none;
+    border-radius: 5px;
+    background: #ffc107;
+    color: #004680;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+button:hover {
+    background: #ffa000;
+}
+
+footer {
+    background: #004680;
+    padding: 1rem;
+    text-align: center;
+    color: #e0e0e0;
+    font-size: 0.9rem;
+    box-shadow: 0px -4px 10px rgba(0, 0, 0, 0.5);
+}
+
+.charts {
+    display: grid;
+    justify-content: space-around;
+    align-items: center;
+    gap: 1rem;
+}
+
+.charts canvas {
+    background: #003354;
+    border-radius: 10px;
+    box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.7);
+    width: 260px; /* Adjusted size for smaller pie chart */
+    height: 260px; /* Ensures uniformity */
+}
+
+.summary p {
+    font-size: 1.5rem;
+    margin: 0.5rem 0;
+}
+
+.summary span {
+    font-weight: bold;
+    color: #ffc107;
+}
