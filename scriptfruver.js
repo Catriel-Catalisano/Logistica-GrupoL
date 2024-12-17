@@ -97,7 +97,6 @@ const baseDataFruver = {
   
     ]
 };
-
 // Evento para cargar archivo
 document.getElementById('addPlan').addEventListener('click', () => {
     fileInput.click();
@@ -109,24 +108,17 @@ fileInput.addEventListener('change', async (event) => {
         try {
             // Leer archivo
             const data = await file.text();
-            console.log("Contenido del archivo:", data); // DEBUG: Ver el contenido
             const rows = data.split('\n').map(row => row.split(',').map(cell => cell.trim()));
-            console.log("Filas procesadas:", rows); // DEBUG: Ver filas divididas
-
             const headers = rows[0].map(h => h.toLowerCase());
-            console.log("Encabezados encontrados:", headers); // DEBUG: Ver encabezados
 
             if (!validateHeaders(headers)) {
                 throw new Error('El archivo no tiene las columnas requeridas: sucursal, demanda de kg.');
             }
 
             const assignments = processAssignments(rows.slice(1), headers);
-            console.log("Asignaciones procesadas:", assignments); // DEBUG: Ver asignaciones
-
             displayTable(assignments);
             message.textContent = 'Archivo procesado exitosamente.';
         } catch (error) {
-            console.error("Error encontrado:", error); // DEBUG: Mostrar errores en la consola
             message.textContent = error.message;
         }
     }
@@ -152,13 +144,19 @@ function processAssignments(dataRows, headers) {
         const sucursalData = baseDataFruver.sucursales.find(s => s.sucursal === sucursal);
 
         if (sucursalData) {
-            const { recorrido } = sucursalData;
+            const { recorrido, direccion } = sucursalData;
 
             if (!assignments[recorrido]) {
-                assignments[recorrido] = { recorrido, sucursales: [], totalKg: 0 };
+                assignments[recorrido] = { 
+                    recorrido, 
+                    sucursales: [], 
+                    direcciones: [], 
+                    totalKg: 0 
+                };
             }
 
             assignments[recorrido].sucursales.push(sucursal);
+            assignments[recorrido].direcciones.push(direccion);
             assignments[recorrido].totalKg += demanda;
         } else {
             console.warn(`Sucursal no encontrada en la base de datos: ${sucursal}`);
@@ -168,7 +166,8 @@ function processAssignments(dataRows, headers) {
     // Agregar tipo de vehículo basado en el total de kg
     return Object.values(assignments).map(a => ({
         ...a,
-        tipoVehiculo: determineVehicleType(a.totalKg)
+        tipoVehiculo: determineVehicleType(a.totalKg),
+        direcciones: a.direcciones.join(' + ')
     }));
 }
 
@@ -190,11 +189,12 @@ function displayTable(assignments) {
     }
 
     dataDisplay.innerHTML = `
-        <table class="styled-table">
+        <table class="styled-table" id="assignmentsTable">
             <thead>
                 <tr>
                     <th>Recorrido</th>
                     <th>Sucursales</th>
+                    <th>Direcciones</th>
                     <th>Kg Total</th>
                     <th>Tipo de Vehículo</th>
                 </tr>
@@ -204,11 +204,34 @@ function displayTable(assignments) {
                     <tr>
                         <td>${a.recorrido}</td>
                         <td>${a.sucursales.join(', ')}</td>
+                        <td>${a.direcciones}</td>
                         <td>${a.totalKg.toFixed(2)} kg</td>
                         <td>${a.tipoVehiculo}</td>
                     </tr>
                 `).join('')}
             </tbody>
         </table>
+        <button id="exportButton">Exportar a Excel</button>
     `;
+
+    document.getElementById('exportButton').addEventListener('click', () => exportToExcel(assignments));
+}
+
+// Exportar a Excel
+function exportToExcel(assignments) {
+    const rows = [
+        ["Recorrido", "Sucursales", "Direcciones", "Kg Total", "Tipo de Vehículo"],
+        ...assignments.map(a => [
+            a.recorrido,
+            a.sucursales.join(', '),
+            a.direcciones,
+            `${a.totalKg.toFixed(2)} kg`,
+            a.tipoVehiculo
+        ])
+    ];
+
+    const workbook = XLSX.utils.book_new();
+    const worksheet = XLSX.utils.aoa_to_sheet(rows);
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Asignaciones Fru-Ver");
+    XLSX.writeFile(workbook, "asignaciones_fruver.xlsx");
 }
