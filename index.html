@@ -29,16 +29,18 @@
         const loginError = document.getElementById('login-error');
 
         // Credenciales válidas simuladas
-        const validCredentials = {
-            username: "catriel.catalisano",
-            password: "abcd123"
-        };
+        const validCredentials = [
+            { username: "catriel.catalisano", password: "abcd123" },
+            { username: "pfoco", password: "abcd123" },
+            { username: "dpou", password: "abcd123" },
+            { username: "jpatron", password: "abcd123" }
+        ];
 
         loginForm.addEventListener('submit', (event) => {
             event.preventDefault();
 
-            const username = document.getElementById('username').value;
-            const password = document.getElementById('password').value;
+            const username = document.getElementById('username').value.trim();
+            const password = document.getElementById('password').value.trim();
 
             if (validateCredentials(username, password)) {
                 redirectToDashboard(username); // Redirige al dashboard
@@ -48,7 +50,10 @@
         });
 
         function validateCredentials(username, password) {
-            return username === validCredentials.username && password === validCredentials.password;
+            // Valida las credenciales buscando en la lista
+            return validCredentials.some(user => 
+                user.username === username && user.password === password
+            );
         }
 
         function redirectToDashboard(username) {
@@ -66,7 +71,9 @@
             window.location.href = 'menu.html'; // Redirige a la herramienta principal
         }
     </script>
+
     <div class="watermark">Creado por Catriel Catalisano</div>
 
 </body>
 </html>
+
