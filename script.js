@@ -4158,27 +4158,39 @@ const fileInput = document.getElementById('file-input');
 const dataDisplay = document.getElementById('data-display');
 const messageDisplay = document.getElementById('message');
 
-fileInput.addEventListener('change', async (event) => {
+fileInput.addEventListener('change', (event) => {
     const file = event.target.files[0];
     if (file) {
-        try {
-            const data = await file.text();
-            const rows = data.split('\n').map(row => row.split(',').map(cell => cell.trim()));
-            const headers = rows[0].map(h => h.toLowerCase());
+        const reader = new FileReader();
 
-            if (!validateHeaders(headers)) {
-                throw new Error('El archivo no tiene las columnas requeridas: RECORRIDO, demandaKG.');
+        reader.onload = function (e) {
+            try {
+                const data = e.target.result;
+                const rows = data.split(/\r?\n/).map(row => row.split(',').map(cell => cell.trim()));
+                const headers = rows[0].map(h => h.toLowerCase());
+
+                if (!validateHeaders(headers)) {
+                    throw new Error('El archivo no tiene las columnas requeridas: RECORRIDO, demandaKG.');
+                }
+
+                const assignments = processAssignments(rows.slice(1), headers);
+                displayTable(assignments);
+                updateDashboard(assignments);
+                messageDisplay.innerHTML = '<p class="success-message">Archivo procesado exitosamente.</p>';
+            } catch (error) {
+                console.error(error);
+                messageDisplay.innerHTML = `<p class="error-message">${error.message}</p>`;
             }
+        };
 
-            const assignments = processAssignments(rows.slice(1), headers);
-            displayTable(assignments);
-            updateDashboard(assignments);
-            messageDisplay.innerHTML = '<p class="success-message">Archivo procesado exitosamente.</p>';
-        } catch (error) {
-            messageDisplay.innerHTML = `<p class="error-message">${error.message}</p>`;
-        }
+        reader.onerror = function () {
+            messageDisplay.innerHTML = '<p class="error-message">Error al leer el archivo.</p>';
+        };
+
+        reader.readAsText(file);
     }
 });
+
 
 function validateHeaders(headers) {
     const requiredHeaders = ['recorrido', 'demandakg'];
@@ -4488,101 +4500,4 @@ function updateDashboard(assignments) {
             }
         }
     });
-}
-
-const fileInput = document.getElementById('file-input');
-const dataDisplay = document.getElementById('data-display');
-const message = document.getElementById('message');
-
-// Evento para agregar nueva planificación
-document.getElementById('addPlan').addEventListener('click', () => {
-    fileInput.click();
-});
-
-fileInput.addEventListener('change', async (event) => {
-    const file = event.target.files[0];
-    if (file) {
-        try {
-            const data = await file.text();
-            const rows = data
-                .split('\n')
-                .map(row => row.split(',').map(cell => cell.trim()))
-                .filter(row => row.length > 1); // Filtramos filas vacías
-
-            const headers = rows[0].map(h => h.toLowerCase());
-
-            if (!validateHeaders(headers)) {
-                throw new Error('El archivo no tiene las columnas requeridas: sucursal, demanda de kg.');
-            }
-
-            const assignments = processAssignments(rows.slice(1), headers);
-            displayTable(assignments);
-            message.textContent = 'Archivo procesado exitosamente.';
-        } catch (error) {
-            message.textContent = error.message;
-        }
-    }
-});
-
-function validateHeaders(headers) {
-    const requiredHeaders = ['sucursal', 'demanda de kg'];
-    return requiredHeaders.every(header => headers.includes(header));
-}
-
-function processAssignments(dataRows, headers) {
-    const assignments = {};
-
-    dataRows.forEach(row => {
-        const sucursal = row[headers.indexOf('sucursal')];
-        const demandaStr = row[headers.indexOf('demanda de kg')];
-        const demanda = parseFloat(demandaStr);
-
-        // Validar valores de entrada
-        if (!sucursal || isNaN(demanda)) return; // Ignorar filas con datos inválidos
-
-        const sucursalData = baseDataFruver.sucursales.find(s => s.sucursal === sucursal);
-
-        if (sucursalData) {
-            const { recorrido } = sucursalData;
-
-            if (!assignments[recorrido]) {
-                assignments[recorrido] = { recorrido, sucursales: [], totalKg: 0 };
-            }
-
-            assignments[recorrido].sucursales.push(sucursal);
-            assignments[recorrido].totalKg += demanda;
-        } else {
-            console.warn(`Sucursal no encontrada en la base de datos: ${sucursal}`);
-        }
-    });
-
-    return Object.values(assignments);
-}
-
-function displayTable(assignments) {
-    if (assignments.length === 0) {
-        dataDisplay.innerHTML = '<p>No se encontraron asignaciones válidas.</p>';
-        return;
-    }
-
-    dataDisplay.innerHTML = `
-        <table class="styled-table">
-            <thead>
-                <tr>
-                    <th>Recorrido</th>
-                    <th>Sucursales</th>
-                    <th>Kg Total</th>
-                </tr>
-            </thead>
-            <tbody>
-                ${assignments.map(a => `
-                    <tr>
-                        <td>${a.recorrido}</td>
-                        <td>${a.sucursales.join(', ')}</td>
-                        <td>${a.totalKg.toFixed(2)} kg</td>
-                    </tr>
-                `).join('')}
-            </tbody>
-        </table>
-    `;
 }
