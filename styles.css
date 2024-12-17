@@ -156,10 +156,27 @@ footer {
 }
 
 
-
 .login-container h1 {
     color: black;
 }
+label {
+    color: #000000; /* Cambia este color */
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 5px;
+    display: block; /* Asegura que esté en una línea separada */
+}
+.watermark {
+    position: fixed;
+    bottom: 10px; /* Ubicación desde el fondo */
+    right: 10px; /* Ubicación desde el lado derecho */
+    font-size: 12px; /* Tamaño de la fuente */
+    color: rgba(0, 0, 0, 0.5); /* Color gris con transparencia */
+    pointer-events: none; /* Evita que interfiera con los clics */
+    z-index: 9999; /* Asegura que esté encima de otros elementos */
+}
+
+
 .login-container, .dashboard-container {
     background: white;
     padding: 30px;
@@ -220,3 +237,16 @@ color: black;
     color: black;
     
     }
+
+    .whatsapp-button {
+        background-color: #25D366;
+        color: white;
+        border: none;
+        padding: 5px 10px;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+    .whatsapp-button:hover {
+        background-color: #1EBE57;
+    }
+    
