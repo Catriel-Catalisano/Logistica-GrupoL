@@ -14,11 +14,18 @@
         <!-- Menú de opciones -->
         <div class="option-menu">
             <ul>
-                <li><a href="#">Ver Planificación Actual</a></li>
-                <li><a href="#">Agregar Nueva Planificación</a></li>
-                <li><a href="#">Exportar Datos</a></li>
+                <li><a href="#" id="viewPlan">Ver Planificación Actual</a></li>
+                <li>
+                    <a href="#" id="addPlan">Agregar Nueva Planificación</a>
+                    <input type="file" id="file-input" accept=".csv" style="display: none;">
+                </li>
+                <li><a href="#" id="exportPlan">Exportar Datos</a></li>
             </ul>
         </div>
+
+        <!-- Tabla para mostrar la asignación -->
+        <div id="data-display"></div>
+        <p id="message" class="error-message"></p>
 
         <!-- Botón para volver al menú principal -->
         <div>
@@ -26,6 +33,7 @@
         </div>
     </div>
 
-    <div class="watermark">Creado por Catriel Catalisano</div>
+    <script src="scriptfruver.js"></script>
 </body>
 </html>
+
