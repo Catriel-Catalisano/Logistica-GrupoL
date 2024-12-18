@@ -15,6 +15,7 @@ const baseDataFruver = {
     sucursales: [
         { sucursal: 'L´OREAL ARGENTINA', recorrido: 'BENAVIDEZ', direccion: 'Plataforma Logística NORLOG. Av. Presidente Perón, NO 4749 Benavidez, 06:30 a 12hs' },
 { sucursal: 'ALBANO COZZUOL S.A.', recorrido: 'BENAVIDEZ', direccion: 'GELLY Y OBES 1079, BENAVIDEZ, 07 a 21' },
+{ sucursal: 'ALBANO COZZUOL S.A', recorrido: 'BENAVIDEZ', direccion: 'GELLY Y OBES 1079, BENAVIDEZ, 07 a 21' },
 { sucursal: 'SOC. PANAMERICANA PLAZA -SADESA-', recorrido: 'Caba Centro', direccion: 'PLAZA 4891, CABA, 06 a 08' },
 { sucursal: 'HSBC', recorrido: 'Caba Centro', direccion: 'FLORIDA 229, CABA, 7 a 8 30 hs ' },
 { sucursal: 'GOOGLE - MAFALDA', recorrido: 'Caba Centro', direccion: 'Alicia Moreau de Justo 388. Pi, CABA, 6 a 10 hs ' },
