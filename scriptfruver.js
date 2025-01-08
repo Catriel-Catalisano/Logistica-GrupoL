@@ -8,7 +8,8 @@ const vehicleLogic = [
     { maxKg: 1700, tipo: "3 PALLETS" },
     { maxKg: 2000, tipo: "4 PALLETS" },
     { maxKg: 2500, tipo: "5 PALLETS" },
-    { maxKg: 10000, tipo: "chasis" }
+    { maxKg: 15000, tipo: "chasis" },
+    { maxKg: 23000, tipo: "chasis" }
 
 ];
 const baseDataFruver = {
@@ -127,7 +128,7 @@ fileInput.addEventListener('change', async (event) => {
             const headers = rows[0].map(h => h.toLowerCase());
 
             if (!validateHeaders(headers)) {
-                throw new Error('El archivo no tiene las columnas requeridas: sucursal, demanda de kg.');
+                throw new Error('El archivo no tiene las columnas requeridas: sucursal, demanda de kg');
             }
 
             const assignments = processAssignments(rows.slice(1), headers);
