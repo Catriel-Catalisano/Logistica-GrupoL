@@ -7,203 +7,184 @@
     <style>
         /* Estilo general del cuerpo */
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f9;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(to bottom right, #f0f8ff, #e6f7ff);
             color: #333;
             margin: 0;
-            padding: 20px;
+            padding: 0;
         }
 
         /* Encabezado */
         h1 {
             text-align: center;
-            color: #4CAF50;
+            font-size: 2.5em;
+            color: #2a7d8c;
+            margin-top: 20px;
         }
 
-        /* Estilo para el botón de procesar */
-        button {
-            display: block;
-            margin: 20px auto;
-            padding: 10px 20px;
-            background-color: #4CAF50;
+        /* Contenedor del menú */
+        .menu-container {
+            text-align: center;
+            margin: 30px auto;
+            padding: 20px;
+            background: #ffffff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+            width: 80%;
+            max-width: 700px;
+        }
+
+        .menu-container h2 {
+            color: #2a7d8c;
+            font-size: 1.8em;
+            margin-bottom: 20px;
+        }
+
+        .menu-container ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .menu-container li {
+            margin: 10px 0;
+        }
+
+        .menu-container a {
+            text-decoration: none;
             color: white;
-            border: none;
+            background: #2a7d8c;
+            padding: 12px 20px;
             border-radius: 5px;
-            font-size: 16px;
-            cursor: pointer;
+            font-size: 1.1em;
+            font-weight: bold;
+            transition: all 0.3s ease;
         }
 
-        button:hover {
-            background-color: #45a049;
+        .menu-container a:hover {
+            background: #226d7b;
+            transform: scale(1.05);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
         }
 
         /* Entrada de archivo */
         input[type="file"] {
             display: block;
             margin: 20px auto;
-            padding: 10px;
-            border: 1px solid #ccc;
+            padding: 12px;
+            border: 2px dashed #2a7d8c;
             border-radius: 5px;
-            font-size: 14px;
+            background-color: #f9f9f9;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        input[type="file"]:hover {
+            background-color: #eef8fa;
+        }
+
+        /* Botón de procesar */
+        button {
+            display: block;
+            margin: 20px auto;
+            padding: 12px 25px;
+            background-color: #2a7d8c;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.2em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        button:hover {
+            background-color: #226d7b;
+            transform: scale(1.05);
         }
 
         /* Tabla */
         table {
-            width: 80%;
+            width: 90%;
             margin: 20px auto;
             border-collapse: collapse;
-            background-color: white;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            background: white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
         }
 
         table thead {
-            background-color: #4CAF50;
+            background-color: #2a7d8c;
             color: white;
         }
 
         table th,
         table td {
-            padding: 10px;
+            padding: 15px;
             text-align: center;
             border: 1px solid #ddd;
         }
 
-        table tbody tr:hover {
-            background-color: #f1f1f1;
+        table tbody tr:nth-child(odd) {
+            background-color: #f9f9f9;
         }
 
-        /* Celda vacía */
-        table td:empty {
-            background-color: #ffcccc;
+        table tbody tr:nth-child(even) {
+            background-color: #ffffff;
+        }
+
+        table tbody tr:hover {
+            background-color: #e6f7ff;
         }
 
         /* Responsividad */
         @media screen and (max-width: 768px) {
             table {
                 width: 100%;
+                font-size: 0.9em;
+            }
+
+            button,
+            input[type="file"] {
+                font-size: 1em;
+            }
+
+            .menu-container a {
+                font-size: 1em;
             }
         }
-        .menu-container {
-    text-align: center;
-    margin-top: 50px;
-    padding: 20px;
-    background-color: #f9f9f9;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-    border-radius: 10px;
-}
-
-/* Estilo base para la lista no ordenada */
-.menu-container ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
-
-/* Estilos para cada elemento de la lista */
-.menu-container li {
-    margin: 15px 0; /* Espaciado entre los ítems */
-    font-size: 18px;
-}
-
-/* Estilos para los enlaces */
-.menu-container a {
-    text-decoration: none; /* Quita el subrayado */
-    color: #333; /* Color de texto predeterminado */
-    display: block; /* Ocupa toda la línea del <li> */
-    background-color: #4CAF50; /* Fondo verde */
-    color: white;
-    padding: 10px 20px;
-    border-radius: 5px; /* Bordes redondeados */
-    transition: all 0.3s ease; /* Transición suave */
-    font-weight: bold;
-}
-
-/* Estilo cuando el cursor pasa sobre el enlace */
-.menu-container a:hover {
-    background-color: #45a049; /* Cambia el fondo al pasar el mouse */
-    transform: scale(1.05); /* Efecto de agrandamiento ligero */
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2); /* Sombra para resaltar */
-}
-
-/* Estilo activo o seleccionado */
-.menu-container a:active {
-    background-color: #388e3c; /* Color más oscuro cuando se hace clic */
-}
-/* Contenedor principal del menú */
-.option-menu {
-    width: 100%;
-    max-width: 600px; /* Ancho máximo del menú */
-    margin: 40px auto; /* Centrado vertical y horizontal */
-    background-color: #f1f1f1;
-    border-radius: 8px;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-    overflow: hidden; /* Evita que sobresalgan elementos */
-}
-
-/* Eliminar estilos predeterminados de la lista */
-.option-menu ul {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-}
-
-/* Estilo de cada elemento de lista */
-.option-menu li {
-    border-bottom: 1px solid #ddd; /* Línea divisoria entre elementos */
-}
-
-/* Estilo para los enlaces */
-.option-menu a {
-    display: block;
-    text-decoration: none;
-    color: #333; /* Color de texto oscuro */
-    font-size: 18px;
-    font-weight: bold;
-    padding: 15px 20px; /* Espaciado interno */
-    transition: background-color 0.3s ease, color 0.3s ease;
-}
-
-/* Efecto al pasar el mouse sobre los enlaces */
-.option-menu a:hover {
-    background-color: #4CAF50; /* Fondo verde */
-    color: #fff; /* Texto en blanco */
-    padding-left: 25px; /* Efecto de desplazamiento de texto */
-    transition: all 0.3s ease;
-}
-
-/* Eliminar borde del último elemento */
-.option-menu li:last-child {
-    border-bottom: none;
-}
-       
     </style>
 </head>
-<header>
-    <h1>Calcular Peso por Recorrido</h1>
-    <div class="menu-container">
-        <h2>Menú Principal</h2>
-        <ul>
-            <li><a href="planificacion-fruver.html">Planificación Fru-Ver</a></li>
-            <li><a href="index.html">Ciudadela</a></li>
-            <li><a href="calcular_peso.html">Calcular Peso</a></li>
-        </ul>
-    </div>
-</header>
 <body>
-    
-    <input type="file" id="fileInput" accept=".csv">
-    <button id="processButton">Procesar Archivo</button>
-    <table border="1" id="resultTable">
-        <thead>
-            <tr>
-                <th>Recorrido (Flete)</th>
-                <th>Peso Total (kg)</th>
-            </tr>
-        </thead>
-        <tbody>
-            <!-- Los resultados se mostrarán aquí -->
-        </tbody>
-    </table>
+    <header>
+        <h1>Calcular Peso por Recorrido</h1>
+        <div class="menu-container">
+            <h2>Menú Principal</h2>
+            <ul>
+                <li><a href="planificacion-fruver.html">Planificación Fru-Ver</a></li>
+                <li><a href="index.html">Ciudadela</a></li>
+                <li><a href="calcular_peso.html">Calcular Peso</a></li>
+            </ul>
+        </div>
+    </header>
+    <main>
+        <input type="file" id="fileInput" accept=".csv">
+        <button id="processButton">Procesar Archivo</button>
+        <table id="resultTable">
+            <thead>
+                <tr>
+                    <th>Recorrido (Flete)</th>
+                    <th>Peso Total (kg)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Los resultados se mostrarán aquí -->
+            </tbody>
+        </table>
+    </main>
     <script src="calcular_peso.js"></script>
 </body>
 </html>
