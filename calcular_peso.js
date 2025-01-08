@@ -6049,8 +6049,6 @@ const articleWeights = {
 
 };
 
-
-
 document.getElementById('processButton').addEventListener('click', () => {
     const fileInput = document.getElementById('fileInput');
     const file = fileInput.files[0];
@@ -6094,7 +6092,7 @@ function processCSV(csvData) {
             return;
         }
 
-        const recorrido = row[recorridoIndex] || '';
+        const recorrido = row[recorridoIndex]?.trim() || '';
         const codigoArticulo = row[codigoArticuloIndex]?.replace(/["']/g, '').trim() || '';
         const cantidad = parseFloat(row[cantidadIndex]?.replace(/["']/g, '').trim()) || 0;
 
@@ -6117,22 +6115,25 @@ function processCSV(csvData) {
         recorridoWeights[recorrido] += pesoTotal;
     });
 
-    console.log('Resultados intermedios:', recorridoWeights);
-    displayResults(recorridoWeights);
+    console.log('Recorridos detectados:', Array.from(recorridosDetectados));
+    console.log('Pesos totales por recorrido:', recorridoWeights);
+
+    displayResults(recorridoWeights, recorridosDetectados);
 }
 
-function displayResults(recorridoWeights) {
+function displayResults(recorridoWeights, recorridosDetectados) {
     const tbody = document.getElementById('resultTable').querySelector('tbody');
     tbody.innerHTML = '';
 
-    Object.entries(recorridoWeights).forEach(([recorrido, pesoTotal]) => {
+    // Mostrar todos los recorridos detectados, incluso si no tienen peso calculado
+    recorridosDetectados.forEach(recorrido => {
         const row = document.createElement('tr');
 
         const recorridoCell = document.createElement('td');
         recorridoCell.textContent = recorrido;
 
         const pesoCell = document.createElement('td');
-        pesoCell.textContent = pesoTotal.toFixed(2); // Mostrar hasta 2 decimales
+        pesoCell.textContent = (recorridoWeights[recorrido] || 0).toFixed(2);
 
         row.appendChild(recorridoCell);
         row.appendChild(pesoCell);
