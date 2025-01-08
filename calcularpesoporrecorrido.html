@@ -6,7 +6,7 @@
     <title>Calcular Peso por Recorrido</title>
 </head>
 <body>
-    <h1>Calcular Peso por Recorrido nuevo</h1>
+    <h1>Calcular Peso por Recorrido</h1>
     <input type="file" id="fileInput" accept=".csv">
     <button id="processButton">Procesar Archivo</button>
     <table border="1" id="resultTable">
@@ -40,7 +40,7 @@
                 alert('Por favor, seleccione un archivo CSV.');
                 return;
             }
- 
+
             const reader = new FileReader();
             reader.onload = function (event) {
                 const csvData = event.target.result;
@@ -51,13 +51,15 @@
 
         function processCSV(csvData) {
             const lines = csvData.split('\n').filter(line => line.trim() !== '');
-            const header = lines[0].split(',').map(col => col.trim().toLowerCase()); // Normalizar encabezados
+            const header = lines[0].split(',').map(col => col.trim().toLowerCase());
             const data = lines.slice(1).map(line => line.split(',').map(col => col.trim()));
 
-            // Buscar las columnas con mayor flexibilidad
-            const recorridoIndex = findColumnIndex(header, ['flete', 'recorrido']);
-            const codigoArticuloIndex = findColumnIndex(header, ['cod. artículo', 'codigo articulo', 'artículo']);
-            const cantidadIndex = findColumnIndex(header, ['cantidad', 'cantidad pedida']);
+            console.log('Encabezados detectados:', header);
+
+            // Mapear columnas del archivo
+            const recorridoIndex = header.indexOf('flete');
+            const codigoArticuloIndex = header.indexOf('cod. artículo');
+            const cantidadIndex = header.indexOf('cantidad');
 
             if (recorridoIndex === -1 || codigoArticuloIndex === -1 || cantidadIndex === -1) {
                 alert(`El archivo CSV no contiene las columnas necesarias.\n\nEncabezados detectados: ${header.join(', ')}`);
@@ -66,10 +68,12 @@
 
             const recorridoWeights = {};
 
-            data.forEach(row => {
+            data.forEach((row, index) => {
                 const recorrido = row[recorridoIndex] || '';
-                const codigoArticulo = row[codigoArticuloIndex]?.replace(/["']/g, '') || ''; // Eliminar comillas
-                const cantidad = parseFloat(row[cantidadIndex]?.replace(/["']/g, '')) || 0; // Convertir a número
+                const codigoArticulo = row[codigoArticuloIndex]?.replace(/["']/g, '') || '';
+                const cantidad = parseFloat(row[cantidadIndex]?.replace(/["']/g, '')) || 0;
+
+                console.log(`Procesando fila ${index + 1}:`, { recorrido, codigoArticulo, cantidad });
 
                 const pesoArticulo = articleWeights[codigoArticulo] || 0; // Peso del artículo
                 const pesoTotal = pesoArticulo * cantidad;
@@ -82,10 +86,6 @@
             });
 
             displayResults(recorridoWeights);
-        }
-
-        function findColumnIndex(header, possibleNames) {
-            return header.findIndex(col => possibleNames.includes(col.toLowerCase()));
         }
 
         function displayResults(recorridoWeights) {
