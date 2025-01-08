@@ -55,9 +55,9 @@
             const data = lines.slice(1).map(line => line.split(',').map(col => col.trim()));
 
             // Buscar las columnas con mayor flexibilidad
-            const recorridoIndex = header.indexOf('flete');
-            const codigoArticuloIndex = header.indexOf('cod. artículo');
-            const cantidadIndex = header.indexOf('cantidad');
+            const recorridoIndex = header.indexOf('Flete');
+            const codigoArticuloIndex = header.indexOf('Cod. Artículo');
+            const cantidadIndex = header.indexOf('Cantidad');
 
             if (recorridoIndex === -1 || codigoArticuloIndex === -1 || cantidadIndex === -1) {
                 alert(`El archivo CSV no contiene las columnas necesarias.\n\nEncabezados detectados: ${header.join(', ')}`);
