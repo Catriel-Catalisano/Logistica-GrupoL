@@ -6076,72 +6076,77 @@
         };
 
         document.getElementById('processButton').addEventListener('click', () => {
-            const fileInput = document.getElementById('fileInput');
-            const file = fileInput.files[0];
+    const fileInput = document.getElementById('fileInput');
+    const file = fileInput.files[0];
 
-            if (!file) {
-                alert('Por favor, seleccione un archivo CSV.');
-                return;
-            }
+    if (!file) {
+        alert('Por favor, seleccione un archivo CSV.');
+        return;
+    }
 
-            const reader = new FileReader();
-            reader.onload = function (event) {
-                const csvData = event.target.result;
-                processCSV(csvData);
-            };
-            reader.readAsText(file);
-        });
+    const reader = new FileReader();
+    reader.onload = function (event) {
+        const csvData = event.target.result;
+        processCSV(csvData);
+    };
+    reader.readAsText(file);
+});
 
-        function processCSV(csvData) {
-            const lines = csvData.split('\n').filter(line => line.trim() !== '');
-            const header = lines[0].split(',').map(col => col.trim().toLowerCase());
-            const data = lines.slice(1).map(line => line.split(',').map(col => col.trim()));
+function processCSV(csvData) {
+    const lines = csvData.split('\n').filter(line => line.trim() !== '');
+    const header = lines[0].split(',').map(col => col.trim().toLowerCase());
+    const data = lines.slice(1).map(line => line.split(',').map(col => col.trim()));
 
-            const recorridoIndex = header.indexOf('flete');
-            const codigoArticuloIndex = header.indexOf('cod. artículo');
-            const cantidadIndex = header.indexOf('cantidad');
+    const recorridoIndex = header.indexOf('flete');
+    const codigoArticuloIndex = header.indexOf('cod. artículo');
+    const cantidadIndex = header.indexOf('cantidad');
 
-            if (recorridoIndex === -1 || codigoArticuloIndex === -1 || cantidadIndex === -1) {
-                alert(`El archivo CSV no contiene las columnas necesarias.\n\nEncabezados detectados: ${header.join(', ')}`);
-                return;
-            }
+    if (recorridoIndex === -1 || codigoArticuloIndex === -1 || cantidadIndex === -1) {
+        alert(`El archivo CSV no contiene las columnas necesarias.\n\nEncabezados detectados: ${header.join(', ')}`);
+        return;
+    }
 
-            const recorridoWeights = {};
+    const recorridoWeights = {};
 
-            data.forEach(row => {
-                const recorrido = row[recorridoIndex] || '';
-                const codigoArticulo = row[codigoArticuloIndex] || '';
-                const cantidad = parseFloat(row[cantidadIndex]) || 0;
+    data.forEach(row => {
+        const recorrido = row[recorridoIndex] || '';
+        const codigoArticulo = row[codigoArticuloIndex] || '';
+        const cantidad = parseFloat(row[cantidadIndex]) || 0;
 
-                const pesoArticulo = articleWeights[codigoArticulo] || 0;
-                const pesoTotal = pesoArticulo * cantidad;
+        const pesoArticulo = articleWeights[codigoArticulo] || 0;
+        const pesoTotal = pesoArticulo * cantidad;
 
-                if (!recorridoWeights[recorrido]) {
-                    recorridoWeights[recorrido] = 0;
-                }
-
-                recorridoWeights[recorrido] += pesoTotal;
-            });
-
-            displayResults(recorridoWeights);
+        if (!recorridoWeights[recorrido]) {
+            recorridoWeights[recorrido] = 0;
         }
 
-        function displayResults(recorridoWeights) {
-            const tbody = document.getElementById('resultTable').querySelector('tbody');
-            tbody.innerHTML = '';
+        recorridoWeights[recorrido] += pesoTotal;
+    });
 
-            Object.entries(recorridoWeights).forEach(([recorrido, pesoTotal]) => {
-                const row = document.createElement('tr');
+    displayResults(recorridoWeights);
+}
 
-                const recorridoCell = document.createElement('td');
-                recorridoCell.textContent = recorrido;
+function displayResults(recorridoWeights) {
+    const tbody = document.getElementById('resultTable').querySelector('tbody');
+    tbody.innerHTML = '';
 
-                const pesoCell = document.createElement('td');
-                pesoCell.textContent = pesoTotal.toFixed(2);
+    Object.entries(recorridoWeights).forEach(([recorrido, pesoTotal]) => {
+        const row = document.createElement('tr');
 
-                row.appendChild(recorridoCell);
-                row.appendChild(pesoCell);
+        const recorridoCell = document.createElement('td');
+        recorridoCell.textContent = recorrido;
 
-                tbody.appendChild(row);
-            });
-        }
+        const pesoCell = document.createElement('td');
+        pesoCell.textContent = pesoTotal.toFixed(2);
+
+        row.appendChild(recorridoCell);
+        row.appendChild(pesoCell);
+
+        tbody.appendChild(row);
+    });
+}
+
+
+    </script>
+</body>
+</html>
