@@ -6,7 +6,7 @@
     <title>Calcular Peso por Recorrido</title>
 </head>
 <body>
-    <h1>Calcular Peso por Recorrido.</h1>
+    <h1>Calcular Peso por Recorrido</h1>
     <input type="file" id="fileInput" accept=".csv">
     <button id="processButton">Procesar Archivo</button>
     <table border="1" id="resultTable">
@@ -51,8 +51,8 @@
 
         function processCSV(csvData) {
             const lines = csvData.split('\n').filter(line => line.trim() !== '');
-            const header = lines[0].split(',').map(col => col.trim());
-            const data = lines.slice(1).map(line => line.split(',').map(col => col.trim()));
+            let header = lines[0].split(/[,;|\t]/).map(col => col.trim()); // Soporte para múltiples delimitadores
+            const data = lines.slice(1).map(line => line.split(/[,;|\t]/).map(col => col.trim()));
 
             console.log('Encabezados detectados:', header);
 
@@ -69,6 +69,11 @@
             const recorridoWeights = {};
 
             data.forEach((row, index) => {
+                if (row.length !== header.length) {
+                    console.warn(`Fila ${index + 1} mal formateada:`, row);
+                    return;
+                }
+
                 const recorrido = row[recorridoIndex] || '';
                 const codigoArticulo = row[codigoArticuloIndex]?.replace(/["']/g, '') || '';
                 const cantidad = parseFloat(row[cantidadIndex]?.replace(/["']/g, '')) || 0;
