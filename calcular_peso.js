@@ -6048,7 +6048,6 @@ const articleWeights = {
 '7798430440667': 0.200
 
 };
-
 document.getElementById('processButton').addEventListener('click', () => {
     const fileInput = document.getElementById('fileInput');
     const file = fileInput.files[0];
@@ -6068,45 +6067,35 @@ document.getElementById('processButton').addEventListener('click', () => {
 
 function processCSV(csvData) {
     const lines = csvData.split('\n').filter(line => line.trim() !== '');
-    let header = lines[0].split(/[,;|\t]/).map(col => col.trim()); // Soporte para múltiples delimitadores
+    let header = lines[0].split(/[,;|\t]/).map(col => col.trim());
     const data = lines.slice(1).map(line => line.split(/[,;|\t]/).map(col => col.trim()));
 
-    console.log('Encabezados detectados:', header);
-
-    // Mapear columnas exactas basadas en el archivo
     const recorridoIndex = header.indexOf('Flete');
     const codigoArticuloIndex = header.indexOf('Cod. Artículo');
+    const descripcionIndex = header.indexOf('Descripción Artículo');
     const cantidadIndex = header.indexOf('Cantidad');
 
-    if (recorridoIndex === -1 || codigoArticuloIndex === -1 || cantidadIndex === -1) {
+    if (recorridoIndex === -1 || codigoArticuloIndex === -1 || cantidadIndex === -1 || descripcionIndex === -1) {
         alert(`El archivo CSV no contiene las columnas necesarias.\n\nEncabezados detectados: ${header.join(', ')}`);
         return;
     }
 
     const recorridoWeights = {};
-    const recorridosDetectados = new Set();
+    const excludedProducts = [];
 
     data.forEach((row, index) => {
-        if (row.length !== header.length) {
-            console.warn(`Fila ${index + 1} mal formateada:`, row);
+        const recorrido = row[recorridoIndex];
+        const codigoArticulo = row[codigoArticuloIndex];
+        const descripcion = row[descripcionIndex];
+        const cantidad = parseFloat(row[cantidadIndex]) || 0;
+
+        if (!articleWeights[codigoArticulo]) {
+            excludedProducts.push({ codigoArticulo, descripcion, cantidad, recorrido });
             return;
         }
 
-        const recorrido = row[recorridoIndex]?.trim() || '';
-        const codigoArticulo = row[codigoArticuloIndex]?.replace(/["']/g, '').trim() || '';
-        const cantidad = parseFloat(row[cantidadIndex]?.replace(/["']/g, '').trim()) || 0;
-
-        recorridosDetectados.add(recorrido);
-
-        console.log(`Procesando fila ${index + 1}:`, { recorrido, codigoArticulo, cantidad });
-
-        if (!codigoArticulo || !articleWeights[codigoArticulo]) {
-            console.warn(`Código de artículo no encontrado o peso no definido: ${codigoArticulo}`);
-            return;
-        }
-
-        const pesoArticulo = articleWeights[codigoArticulo]; // Peso en kg por unidad
-        const pesoTotal = pesoArticulo * cantidad; // Peso total = peso por unidad * cantidad
+        const pesoArticulo = articleWeights[codigoArticulo];
+        const pesoTotal = pesoArticulo * cantidad;
 
         if (!recorridoWeights[recorrido]) {
             recorridoWeights[recorrido] = 0;
@@ -6115,28 +6104,53 @@ function processCSV(csvData) {
         recorridoWeights[recorrido] += pesoTotal;
     });
 
-    console.log('Recorridos detectados:', Array.from(recorridosDetectados));
-    console.log('Pesos totales por recorrido:', recorridoWeights);
-
-    displayResults(recorridoWeights, recorridosDetectados);
+    displayResults(recorridoWeights);
+    displayExcludedProducts(excludedProducts);
 }
 
-function displayResults(recorridoWeights, recorridosDetectados) {
+function displayResults(recorridoWeights) {
     const tbody = document.getElementById('resultTable').querySelector('tbody');
     tbody.innerHTML = '';
 
-    // Mostrar todos los recorridos detectados, incluso si no tienen peso calculado
-    recorridosDetectados.forEach(recorrido => {
+    Object.entries(recorridoWeights).forEach(([recorrido, pesoTotal]) => {
         const row = document.createElement('tr');
 
         const recorridoCell = document.createElement('td');
         recorridoCell.textContent = recorrido;
 
         const pesoCell = document.createElement('td');
-        pesoCell.textContent = (recorridoWeights[recorrido] || 0).toFixed(2);
+        pesoCell.textContent = pesoTotal.toFixed(2);
 
         row.appendChild(recorridoCell);
         row.appendChild(pesoCell);
+
+        tbody.appendChild(row);
+    });
+}
+
+function displayExcludedProducts(excludedProducts) {
+    const tbody = document.getElementById('excludedProductsTable').querySelector('tbody');
+    tbody.innerHTML = '';
+
+    excludedProducts.forEach(({ codigoArticulo, descripcion, cantidad, recorrido }) => {
+        const row = document.createElement('tr');
+
+        const codigoCell = document.createElement('td');
+        codigoCell.textContent = codigoArticulo;
+
+        const descripcionCell = document.createElement('td');
+        descripcionCell.textContent = descripcion;
+
+        const cantidadCell = document.createElement('td');
+        cantidadCell.textContent = cantidad;
+
+        const recorridoCell = document.createElement('td');
+        recorridoCell.textContent = recorrido;
+
+        row.appendChild(codigoCell);
+        row.appendChild(descripcionCell);
+        row.appendChild(cantidadCell);
+        row.appendChild(recorridoCell);
 
         tbody.appendChild(row);
     });
