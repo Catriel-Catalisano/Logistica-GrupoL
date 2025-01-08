@@ -6065,6 +6065,9 @@ document.getElementById('processButton').addEventListener('click', () => {
     reader.readAsText(file);
 });
 
+let recorridoWeights = {};
+let excludedProducts = [];
+
 function processCSV(csvData) {
     const lines = csvData.split('\n').filter(line => line.trim() !== '');
     let header = lines[0].split(/[,;|\t]/).map(col => col.trim());
@@ -6080,14 +6083,17 @@ function processCSV(csvData) {
         return;
     }
 
-    const recorridoWeights = {};
-    const excludedProducts = [];
+    recorridoWeights = {};
+    excludedProducts = [];
+    const recorridosSet = new Set();
 
-    data.forEach((row, index) => {
+    data.forEach(row => {
         const recorrido = row[recorridoIndex];
         const codigoArticulo = row[codigoArticuloIndex];
         const descripcion = row[descripcionIndex];
         const cantidad = parseFloat(row[cantidadIndex]) || 0;
+
+        recorridosSet.add(recorrido);
 
         if (!articleWeights[codigoArticulo]) {
             excludedProducts.push({ codigoArticulo, descripcion, cantidad, recorrido });
@@ -6104,28 +6110,52 @@ function processCSV(csvData) {
         recorridoWeights[recorrido] += pesoTotal;
     });
 
+    populateRecorridoFilter(recorridosSet);
     displayResults(recorridoWeights);
     displayExcludedProducts(excludedProducts);
 }
 
-function displayResults(recorridoWeights) {
+function populateRecorridoFilter(recorridosSet) {
+    const filterSelect = document.getElementById('filterRecorrido');
+    filterSelect.innerHTML = '<option value="all">Todos</option>';
+
+    recorridosSet.forEach(recorrido => {
+        const option = document.createElement('option');
+        option.value = recorrido;
+        option.textContent = recorrido;
+        filterSelect.appendChild(option);
+    });
+
+    filterSelect.addEventListener('change', () => {
+        const selectedRecorrido = filterSelect.value;
+        filterResults(selectedRecorrido);
+    });
+}
+
+function filterResults(selectedRecorrido) {
     const tbody = document.getElementById('resultTable').querySelector('tbody');
     tbody.innerHTML = '';
 
     Object.entries(recorridoWeights).forEach(([recorrido, pesoTotal]) => {
-        const row = document.createElement('tr');
+        if (selectedRecorrido === 'all' || selectedRecorrido === recorrido) {
+            const row = document.createElement('tr');
 
-        const recorridoCell = document.createElement('td');
-        recorridoCell.textContent = recorrido;
+            const recorridoCell = document.createElement('td');
+            recorridoCell.textContent = recorrido;
 
-        const pesoCell = document.createElement('td');
-        pesoCell.textContent = pesoTotal.toFixed(2);
+            const pesoCell = document.createElement('td');
+            pesoCell.textContent = pesoTotal.toFixed(2);
 
-        row.appendChild(recorridoCell);
-        row.appendChild(pesoCell);
+            row.appendChild(recorridoCell);
+            row.appendChild(pesoCell);
 
-        tbody.appendChild(row);
+            tbody.appendChild(row);
+        }
     });
+}
+
+function displayResults(recorridoWeights) {
+    filterResults('all'); // Mostrar todos inicialmente
 }
 
 function displayExcludedProducts(excludedProducts) {
