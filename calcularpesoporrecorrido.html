@@ -4,223 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Calcular Peso por Recorrido</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background: linear-gradient(to bottom right, #f0f4f8, #d9e8ff);
-            color: #333;
-        }
-        header {
-    background: #004680;
-    padding: 1rem 2rem;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
-    text-align: center;
-}
-
-header h1 {
-    font-size: 3rem;
-    color: #ffc107;
-    text-transform: uppercase;
-    margin: 0.5rem 0;
-}
-
-header p {
-    color: #e0e0e0;
-    font-style: italic;
-    margin: 0;
-}
-
-        h1 {
-            text-align: center;
-            margin: 20px 0;
-            color: #2a5d9f;
-        }
-
-        input[type="file"] {
-            display: block;
-            margin: 20px auto;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            background-color: #fff;
-            font-size: 16px;
-            box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.1);
-            transition: box-shadow 0.3s;
-        }
-
-        input[type="file"]:hover {
-            box-shadow: 2px 2px 12px rgba(0, 0, 0, 0.2);
-        }
-
-        button {
-            display: block;
-            margin: 20px auto;
-            padding: 10px 20px;
-            font-size: 16px;
-            color: #fff;
-            background-color: #2a5d9f;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s, transform 0.2s;
-            box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.1);
-        }
-
-        button:hover {
-            background-color: #1d4a7c;
-            transform: scale(1.05);
-        }
-
-        button:active {
-            transform: scale(1);
-        }
-
-        #resultTable {
-            width: 80%;
-            margin: 20px auto;
-            border-collapse: collapse;
-            box-shadow: 2px 2px 12px rgba(0, 0, 0, 0.1);
-            background-color: #fff;
-            border-radius: 5px;
-            overflow: hidden;
-        }
-
-        #resultTable thead {
-            background-color: #2a5d9f;
-            color: #fff;
-        }
-
-        #resultTable th, #resultTable td {
-            padding: 10px;
-            text-align: center;
-            border: 1px solid #ddd;
-        }
-
-        #resultTable tbody tr:nth-child(even) {
-            background-color: #f9f9f9;
-        }
-
-        #resultTable tbody tr:hover {
-            background-color: #f1f7ff;
-        }
-
-        #resultTable tbody td {
-            color: #555;
-            font-size: 16px;
-        }
-        .menu-container {
-    text-align: center;
-    margin-top: 50px;
-    padding: 20px;
-    background-color: #f9f9f9;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-    border-radius: 10px;
-}
-
-/* Estilo base para la lista no ordenada */
-.menu-container ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
-
-/* Estilos para cada elemento de la lista */
-.menu-container li {
-    margin: 15px 0; /* Espaciado entre los ítems */
-    font-size: 18px;
-}
-
-/* Estilos para los enlaces */
-.menu-container a {
-    text-decoration: none; /* Quita el subrayado */
-    color: #333; /* Color de texto predeterminado */
-    display: block; /* Ocupa toda la línea del <li> */
-    background-color: #4CAF50; /* Fondo verde */
-    color: white;
-    padding: 10px 20px;
-    border-radius: 5px; /* Bordes redondeados */
-    transition: all 0.3s ease; /* Transición suave */
-    font-weight: bold;
-}
-
-/* Estilo cuando el cursor pasa sobre el enlace */
-.menu-container a:hover {
-    background-color: #45a049; /* Cambia el fondo al pasar el mouse */
-    transform: scale(1.05); /* Efecto de agrandamiento ligero */
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2); /* Sombra para resaltar */
-}
-
-/* Estilo activo o seleccionado */
-.menu-container a:active {
-    background-color: #388e3c; /* Color más oscuro cuando se hace clic */
-}
-/* Contenedor principal del menú */
-.option-menu {
-    width: 100%;
-    max-width: 600px; /* Ancho máximo del menú */
-    margin: 40px auto; /* Centrado vertical y horizontal */
-    background-color: #f1f1f1;
-    border-radius: 8px;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-    overflow: hidden; /* Evita que sobresalgan elementos */
-}
-
-/* Eliminar estilos predeterminados de la lista */
-.option-menu ul {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-}
-
-/* Estilo de cada elemento de lista */
-.option-menu li {
-    border-bottom: 1px solid #ddd; /* Línea divisoria entre elementos */
-}
-
-/* Estilo para los enlaces */
-.option-menu a {
-    display: block;
-    text-decoration: none;
-    color: #333; /* Color de texto oscuro */
-    font-size: 18px;
-    font-weight: bold;
-    padding: 15px 20px; /* Espaciado interno */
-    transition: background-color 0.3s ease, color 0.3s ease;
-}
-
-/* Efecto al pasar el mouse sobre los enlaces */
-.option-menu a:hover {
-    background-color: #4CAF50; /* Fondo verde */
-    color: #fff; /* Texto en blanco */
-    padding-left: 25px; /* Efecto de desplazamiento de texto */
-    transition: all 0.3s ease;
-}
-
-/* Eliminar borde del último elemento */
-.option-menu li:last-child {
-    border-bottom: none;
-}
-
-/* Efecto activo (clic en enlace) */
-.option-menu a:active {
-    background-color: #388E3C; /* Verde más oscuro */
-    color: #fff;
-}
-    </style>
 </head>
-<header>
-    <h1>Grupo L</h1>
-    <div class="menu-container">
-        <h2>Menú Principal</h2>
-        <ul>
-            <li><a href="planificacion-fruver.html">Planificación Fru-Ver</a></li>
-            <li><a href="index.html">Ciudadela</a></li>
-            <li><a href="calcularpesoporrecorrido.html">Calcular Peso</a></li>
-        </ul>
-    </div>
-</header>
 <body>
     <h1>Calcular Peso por Recorrido</h1>
     <input type="file" id="fileInput" accept=".csv">
@@ -228,7 +12,7 @@ header p {
     <table border="1" id="resultTable">
         <thead>
             <tr>
-                <th>Recorrido</th>
+                <th>Recorrido (Flete)</th>
                 <th>Peso Total (kg)</th>
             </tr>
         </thead>
@@ -240,6 +24,7 @@ header p {
     <script>
         // Base de datos de peso por artículo (Cod. Artículo: Peso en kg)
         const articleWeights = {
+            '59526E+11': 1.0, // Peso en kg del artículo con este código (puedes añadir más)
             '7791813420583': 0.5,
             '7791813421528': 1.5,
             '7791813420521': 0.5,
@@ -265,43 +50,39 @@ header p {
         });
 
         function processCSV(csvData) {
-    const lines = csvData.split('\n').filter(line => line.trim() !== '');
-    const header = lines[0].split(',').map(col => col.trim().toLowerCase()); // Normaliza encabezados a minúsculas
-    const data = lines.slice(1).map(line => line.split(',').map(col => col.trim()));
+            const lines = csvData.split('\n').filter(line => line.trim() !== '');
+            const header = lines[0].split(',').map(col => col.trim());
+            const data = lines.slice(1).map(line => line.split(',').map(col => col.trim()));
 
-    const mapColumn = (columns, possibleNames) => {
-        return columns.findIndex(col => possibleNames.includes(col));
-    };
+            // Mapeo exacto de las columnas basado en el archivo proporcionado
+            const recorridoIndex = header.indexOf('Flete');
+            const codigoArticuloIndex = header.indexOf('Cod. Artículo');
+            const cantidadIndex = header.indexOf('Cantidad');
 
-    const recorridoIndex = mapColumn(header, ['flete', 'recorrido']);
-    const codigoArticuloIndex = mapColumn(header, ['cod. artículo', 'codigo articulo', 'codigo']);
-    const cantidadIndex = mapColumn(header, ['cantidad', 'cantidad pedida']);
+            if (recorridoIndex === -1 || codigoArticuloIndex === -1 || cantidadIndex === -1) {
+                alert(`El archivo CSV no contiene las columnas necesarias.\n\nEncabezados detectados: ${header.join(', ')}`);
+                return;
+            }
 
-    if (recorridoIndex === -1 || codigoArticuloIndex === -1 || cantidadIndex === -1) {
-        alert(`El archivo CSV no contiene las columnas necesarias.\n\nEncabezados detectados: ${header.join(', ')}`);
-        return;
-    }
+            const recorridoWeights = {};
 
-    const recorridoWeights = {};
+            data.forEach(row => {
+                const recorrido = row[recorridoIndex] || '';
+                const codigoArticulo = row[codigoArticuloIndex] || '';
+                const cantidad = parseFloat(row[cantidadIndex]) || 0;
 
-    data.forEach(row => {
-        const recorrido = row[recorridoIndex] || '';
-        const codigoArticulo = row[codigoArticuloIndex] || '';
-        const cantidad = parseFloat(row[cantidadIndex]) || 0;
+                const pesoArticulo = articleWeights[codigoArticulo] || 0; // Peso del artículo
+                const pesoTotal = pesoArticulo * cantidad;
 
-        const pesoArticulo = articleWeights[codigoArticulo] || 0;
-        const pesoTotal = pesoArticulo * cantidad;
+                if (!recorridoWeights[recorrido]) {
+                    recorridoWeights[recorrido] = 0;
+                }
 
-        if (!recorridoWeights[recorrido]) {
-            recorridoWeights[recorrido] = 0;
+                recorridoWeights[recorrido] += pesoTotal;
+            });
+
+            displayResults(recorridoWeights);
         }
-
-        recorridoWeights[recorrido] += pesoTotal;
-    });
-
-    displayResults(recorridoWeights);
-}
-
 
         function displayResults(recorridoWeights) {
             const tbody = document.getElementById('resultTable').querySelector('tbody');
