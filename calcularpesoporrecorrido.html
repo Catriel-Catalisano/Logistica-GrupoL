@@ -6097,9 +6097,12 @@ function processCSV(csvData) {
     const header = lines[0].split(',').map(col => col.trim().toLowerCase());
     const data = lines.slice(1).map(line => line.split(',').map(col => col.trim()));
 
-    const recorridoIndex = header.indexOf('flete');
-    const codigoArticuloIndex = header.indexOf('cod. artículo');
-    const cantidadIndex = header.indexOf('cantidad');
+    const getColumnIndex = (columns, columnName) =>
+        columns.findIndex(col => col === columnName.toLowerCase());
+
+    const recorridoIndex = getColumnIndex(header, 'flete');
+    const codigoArticuloIndex = getColumnIndex(header, 'cod. artículo');
+    const cantidadIndex = getColumnIndex(header, 'cantidad');
 
     if (recorridoIndex === -1 || codigoArticuloIndex === -1 || cantidadIndex === -1) {
         alert(`El archivo CSV no contiene las columnas necesarias.\n\nEncabezados detectados: ${header.join(', ')}`);
