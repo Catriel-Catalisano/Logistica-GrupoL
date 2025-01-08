@@ -6105,8 +6105,8 @@ function processCSV(csvData) {
             return;
         }
 
-        const pesoArticulo = articleWeights[codigoArticulo]; // Peso en kg
-        const pesoTotal = pesoArticulo * cantidad;
+        const pesoArticulo = articleWeights[codigoArticulo]; // Peso en kg por unidad
+        const pesoTotal = pesoArticulo * cantidad; // Peso total = peso por unidad * cantidad
 
         if (!recorridoWeights[recorrido]) {
             recorridoWeights[recorrido] = 0;
