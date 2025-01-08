@@ -6092,12 +6092,17 @@ function processCSV(csvData) {
         }
 
         const recorrido = row[recorridoIndex] || '';
-        const codigoArticulo = row[codigoArticuloIndex]?.replace(/["']/g, '') || '';
-        const cantidad = parseFloat(row[cantidadIndex]?.replace(/["']/g, '')) || 0;
+        const codigoArticulo = row[codigoArticuloIndex]?.replace(/["']/g, '').trim() || '';
+        const cantidad = parseFloat(row[cantidadIndex]?.replace(/["']/g, '').trim()) || 0;
 
         console.log(`Procesando fila ${index + 1}:`, { recorrido, codigoArticulo, cantidad });
 
-        const pesoArticulo = articleWeights[codigoArticulo] || 0; // Peso del artículo
+        if (!codigoArticulo || !articleWeights[codigoArticulo]) {
+            console.warn(`Código de artículo no encontrado o peso no definido: ${codigoArticulo}`);
+            return;
+        }
+
+        const pesoArticulo = articleWeights[codigoArticulo]; // Peso del artículo
         const pesoTotal = pesoArticulo * cantidad;
 
         if (!recorridoWeights[recorrido]) {
@@ -6107,6 +6112,7 @@ function processCSV(csvData) {
         recorridoWeights[recorrido] += pesoTotal;
     });
 
+    console.log('Resultados intermedios:', recorridoWeights);
     displayResults(recorridoWeights);
 }
 
