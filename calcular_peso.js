@@ -6049,6 +6049,8 @@ const articleWeights = {
 
 };
 
+
+
 document.getElementById('processButton').addEventListener('click', () => {
     const fileInput = document.getElementById('fileInput');
     const file = fileInput.files[0];
@@ -6084,6 +6086,7 @@ function processCSV(csvData) {
     }
 
     const recorridoWeights = {};
+    const recorridosDetectados = new Set();
 
     data.forEach((row, index) => {
         if (row.length !== header.length) {
@@ -6095,6 +6098,8 @@ function processCSV(csvData) {
         const codigoArticulo = row[codigoArticuloIndex]?.replace(/["']/g, '').trim() || '';
         const cantidad = parseFloat(row[cantidadIndex]?.replace(/["']/g, '').trim()) || 0;
 
+        recorridosDetectados.add(recorrido);
+
         console.log(`Procesando fila ${index + 1}:`, { recorrido, codigoArticulo, cantidad });
 
         if (!codigoArticulo || !articleWeights[codigoArticulo]) {
@@ -6102,7 +6107,7 @@ function processCSV(csvData) {
             return;
         }
 
-        const pesoArticulo = articleWeights[codigoArticulo]; // Peso del artículo
+        const pesoArticulo = articleWeights[codigoArticulo]; // Peso en kg
         const pesoTotal = pesoArticulo * cantidad;
 
         if (!recorridoWeights[recorrido]) {
@@ -6127,7 +6132,7 @@ function displayResults(recorridoWeights) {
         recorridoCell.textContent = recorrido;
 
         const pesoCell = document.createElement('td');
-        pesoCell.textContent = pesoTotal.toFixed(2);
+        pesoCell.textContent = pesoTotal.toFixed(2); // Mostrar hasta 2 decimales
 
         row.appendChild(recorridoCell);
         row.appendChild(pesoCell);
