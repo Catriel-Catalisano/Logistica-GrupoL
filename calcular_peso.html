@@ -12,26 +12,28 @@
             color: #333;
             margin: 0;
             padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
         /* Encabezado */
         h1 {
-            text-align: center;
             font-size: 2.5em;
             color: #2a7d8c;
-            margin-top: 20px;
+            margin: 20px 0;
         }
 
         /* Contenedor del menú */
         .menu-container {
             text-align: center;
-            margin: 30px auto;
+            margin: 20px auto;
             padding: 20px;
             background: #ffffff;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
             border-radius: 10px;
-            width: 80%;
-            max-width: 700px;
+            width: 90%;
+            max-width: 600px;
         }
 
         .menu-container h2 {
@@ -58,6 +60,7 @@
             border-radius: 5px;
             font-size: 1.1em;
             font-weight: bold;
+            display: inline-block;
             transition: all 0.3s ease;
         }
 
@@ -161,15 +164,15 @@
 <body>
     <header>
         <h1>Calcular Peso por Recorrido</h1>
-        <div class="menu-container">
-            <h2>Menú Principal</h2>
-            <ul>
-                <li><a href="planificacion-fruver.html">Planificación Fru-Ver</a></li>
-                <li><a href="index.html">Ciudadela</a></li>
-                <li><a href="calcular_peso.html">Calcular Peso</a></li>
-            </ul>
-        </div>
     </header>
+    <div class="menu-container">
+        <h2>Menú Principal</h2>
+        <ul>
+            <li><a href="planificacion-fruver.html">Planificación Fru-Ver</a></li>
+            <li><a href="index.html">Ciudadela</a></li>
+            <li><a href="calcular_peso.html">Calcular Peso</a></li>
+        </ul>
+    </div>
     <main>
         <input type="file" id="fileInput" accept=".csv">
         <button id="processButton">Procesar Archivo</button>
