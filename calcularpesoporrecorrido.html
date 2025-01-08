@@ -6094,24 +6094,24 @@
 
         function processCSV(csvData) {
             const lines = csvData.split('\n').filter(line => line.trim() !== '');
-            const header = lines[0].split(',');
-            const data = lines.slice(1).map(line => line.split(','));
+            const header = lines[0].split(',').map(col => col.trim().toLowerCase());
+            const data = lines.slice(1).map(line => line.split(',').map(col => col.trim()));
 
-            const recorridoIndex = header.indexOf('Flete');
-            const codigoArticuloIndex = header.indexOf('Cod. Artículo');
-            const cantidadIndex = header.indexOf('Cantidad');
+            const recorridoIndex = header.indexOf('flete');
+            const codigoArticuloIndex = header.indexOf('cod. artículo');
+            const cantidadIndex = header.indexOf('cantidad');
 
             if (recorridoIndex === -1 || codigoArticuloIndex === -1 || cantidadIndex === -1) {
-                alert('El archivo CSV no contiene las columnas necesarias.');
+                alert(`El archivo CSV no contiene las columnas necesarias.\n\nEncabezados detectados: ${header.join(', ')}`);
                 return;
             }
 
             const recorridoWeights = {};
 
             data.forEach(row => {
-                const recorrido = row[recorridoIndex].trim();
-                const codigoArticulo = row[codigoArticuloIndex].trim();
-                const cantidad = parseFloat(row[cantidadIndex].trim()) || 0;
+                const recorrido = row[recorridoIndex] || '';
+                const codigoArticulo = row[codigoArticuloIndex] || '';
+                const cantidad = parseFloat(row[cantidadIndex]) || 0;
 
                 const pesoArticulo = articleWeights[codigoArticulo] || 0;
                 const pesoTotal = pesoArticulo * cantidad;
@@ -6145,6 +6145,7 @@
                 tbody.appendChild(row);
             });
         }
+
     </script>
 </body>
 </html>
