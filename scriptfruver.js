@@ -8,8 +8,8 @@ const vehicleLogic = [
     { maxKg: 1700, tipo: "3 PALLETS" },
     { maxKg: 2000, tipo: "4 PALLETS" },
     { maxKg: 2500, tipo: "5 PALLETS" },
-    { maxKg: 15000, tipo: "chasis" },
-    { maxKg: 23000, tipo: "chasis" }
+    { maxKg: 15000, tipo: "CHASIS" },
+    { maxKg: 28000, tipo: "SEMI" }
 
 ];
 const baseDataFruver = {
