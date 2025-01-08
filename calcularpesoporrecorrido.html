@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calcular Peso por Recorrido nuevo</title>
+    <title>Calcular Peso por Recorrido</title>
 </head>
 <body>
-    <h1>Calcular Peso por Recorrido</h1>
+    <h1>Calcular Peso por Recorrido nuevo</h1>
     <input type="file" id="fileInput" accept=".csv">
     <button id="processButton">Procesar Archivo</button>
     <table border="1" id="resultTable">
@@ -40,7 +40,7 @@
                 alert('Por favor, seleccione un archivo CSV.');
                 return;
             }
-
+ 
             const reader = new FileReader();
             reader.onload = function (event) {
                 const csvData = event.target.result;
@@ -55,9 +55,9 @@
             const data = lines.slice(1).map(line => line.split(',').map(col => col.trim()));
 
             // Buscar las columnas con mayor flexibilidad
-            const recorridoIndex = header.indexOf('flete');
-            const codigoArticuloIndex = header.indexOf('cod. artículo');
-            const cantidadIndex = header.indexOf('cantidad');
+            const recorridoIndex = findColumnIndex(header, ['flete', 'recorrido']);
+            const codigoArticuloIndex = findColumnIndex(header, ['cod. artículo', 'codigo articulo', 'artículo']);
+            const cantidadIndex = findColumnIndex(header, ['cantidad', 'cantidad pedida']);
 
             if (recorridoIndex === -1 || codigoArticuloIndex === -1 || cantidadIndex === -1) {
                 alert(`El archivo CSV no contiene las columnas necesarias.\n\nEncabezados detectados: ${header.join(', ')}`);
@@ -82,6 +82,10 @@
             });
 
             displayResults(recorridoWeights);
+        }
+
+        function findColumnIndex(header, possibleNames) {
+            return header.findIndex(col => possibleNames.includes(col.toLowerCase()));
         }
 
         function displayResults(recorridoWeights) {
