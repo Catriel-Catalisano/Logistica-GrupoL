@@ -4,12 +4,12 @@ const message = document.getElementById('message');
 
 // Tabla de lógica para determinar tipo de vehículo
 const vehicleLogic = [
-    { maxKg: 1500, tipo: "2 PALLETS" },
-    { maxKg: 1700, tipo: "3 PALLETS" },
-    { maxKg: 2000, tipo: "4 PALLETS" },
-    { maxKg: 2500, tipo: "5 PALLETS" },
-    { maxKg: 15000, tipo: "CHASIS" },
-    { maxKg: 28000, tipo: "SEMI" }
+    { maxKg: 500, tipo: "2 PALLETS (chica)" },
+    { maxKg: 650, tipo: "2 PALLETS (grande)" },
+    { maxKg: 850, tipo: "3 PALLETS" },
+    { maxKg: 1200, tipo: "4 PALLETS" },
+    { maxKg: 1600, tipo: "6 PALLETS" },
+    { maxKg: 4000, tipo: "8 PALLETS" }
 
 ];
 const baseDataFruver = {
