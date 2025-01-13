@@ -6540,21 +6540,43 @@ function renderTotalWeightChart(totalWeight, totalExcluded) {
     });
 }
 document.getElementById('exportButton').addEventListener('click', () => {
-    exportTableToExcel('recorridosTable', 'Recorridos');
+    exportCategoriesToExcel('recorridosTable', 'RecorridosPorCategoria');
 });
 
-function exportTableToExcel(tableId, fileName) {
-    // Obtén la tabla
+function exportCategoriesToExcel(tableId, fileName) {
     const table = document.getElementById(tableId);
+    const rows = Array.from(table.querySelectorAll('tbody tr'));
 
-    // Crea una hoja de cálculo de XLSX desde la tabla
-    const worksheet = XLSX.utils.table_to_sheet(table);
+    // Procesar las filas para separar por categoría
+    const data = [];
+    rows.forEach(row => {
+        const flete = row.cells[0].innerText; // Columna Flete
+        const kilos = row.cells[1].innerText; // Columna Kilos
+        const deposito = row.cells[2].innerText; // Columna Depósito
+        const categorias = row.cells[3].innerHTML; // Columna Categoría (HTML con <br>)
 
-    // Crea un libro de trabajo y agrega la hoja
+        // Separar las categorías en líneas individuales
+        categorias.split('<br>').forEach(categoriaInfo => {
+            const [categoria, categoriaKilos] = categoriaInfo.split(':');
+            if (categoria && categoriaKilos) {
+                data.push({
+                    Flete: flete.trim(),
+                    Kilos: kilos.trim(),
+                    Depósito: deposito.trim(),
+                    Categoría: categoria.trim(),
+                    'Kilos por Categoría': categoriaKilos.replace('kg', '').trim()
+                });
+            }
+        });
+    });
+
+    // Crear la hoja de cálculo
+    const worksheet = XLSX.utils.json_to_sheet(data);
+
+    // Crear el libro de trabajo y agregar la hoja
     const workbook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(workbook, worksheet, 'Hoja1');
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'RecorridosPorCategoria');
 
-    // Exporta el archivo Excel
+    // Exportar el archivo Excel
     XLSX.writeFile(workbook, `${fileName}.xlsx`);
 }
-
