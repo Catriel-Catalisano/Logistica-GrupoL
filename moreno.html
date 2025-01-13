@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Recorridos</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 0;
+            background-color: #f4f4f9;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        #file-upload {
+            margin-bottom: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        table th, table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        table th {
+            background-color: #f2f2f2;
+            color: #333;
+        }
+
+        #output {
+            margin-top: 20px;
+        }
+
+        #filters {
+            margin-bottom: 20px;
+        }
+
+        #filters label {
+            margin-right: 10px;
+        }
+
+        #filters input, #filters button {
+            margin-right: 10px;
+        }
+
+        .details {
+            display: none;
+            margin-left: 20px;
+            font-size: 0.9em;
+        }
+
+        .toggle-button {
+            cursor: pointer;
+            color: blue;
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <h1>Gestión de Recorridos</h1>
+    <div id="file-upload">
+        <label for="csvFile">Cargar archivo CSV:</label>
+        <input type="file" id="csvFile" accept=".csv">
+        <button id="processFile">Procesar Archivo</button>
+    </div>
+
+
+    <h2>Filtrar Recorridos</h2>
+    <select id="recorridoFilter"></select>
+
+    <div id="output">
+        <h2>Recorridos Generados</h2>
+        <table id="recorridosTable">
+            <thead>
+                <tr>
+                    <th>Flete</th>
+                    <th>Kilos</th>
+                    <th>Depósito</th>
+                    <th>Categoría</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Contenido dinámico -->
+            </tbody>
+        </table>
+
+
+
+
+<h2>Artículos No Encontrados</h2>
+<table id="unknownTable">
+    <thead>
+        <tr>
+            <th>Código</th>
+            <th>Descripción</th>
+            <th>Categoría</th>
+        </tr>
+    </thead>
+    <tbody></tbody>
+</table>
+
+<h2>Artículos Faltantes</h2>
+<table id="missingArticlesTable">
+    <thead>
+        <tr>
+            <th>Código</th>
+            <th>Descripción</th>
+            <th>Cantidad</th>
+        </tr>
+    </thead>
+    <tbody></tbody>
+</table>
+
+    </div>
+
+    <script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
+    <script src="scriptmoreno.js"></script>
+</body>
+</html>
+
