@@ -6258,4 +6258,303 @@ function displayExcludedArticles(data) {
         `;
         tableBody.appendChild(row);
     });
+}let totalWeightChart; // Variable para el gráfico de peso total
+let categoryWeightChart; // Variable para el gráfico de peso por categoría
+
+function updateDashboard(groupedData, excludedArticles) {
+    // Total de artículos procesados
+    const totalArticles = groupedData.reduce((sum, group) => sum + group.articles.length, 0);
+
+    // Peso total de todos los recorridos
+    const totalWeight = groupedData.reduce((sum, group) => sum + group.kilos, 0);
+
+    // Cantidad de recorridos generados
+    const totalRecorridos = groupedData.length;
+
+    // Cantidad de artículos excluidos
+    const totalExcluded = excludedArticles.length;
+
+    // Peso por categoría
+    const categoryWeights = {};
+    groupedData.forEach(group => {
+        Object.entries(group.categorias).forEach(([categoria, peso]) => {
+            if (!categoryWeights[categoria]) {
+                categoryWeights[categoria] = 0;
+            }
+            categoryWeights[categoria] += peso;
+        });
+    });
+
+    // Crear los gráficos
+    renderTotalWeightChart(totalWeight, totalExcluded);
+    renderCategoryWeightChart(categoryWeights);
 }
+
+// Renderizar el gráfico de peso total y excluidos
+function renderTotalWeightChart(totalWeight, totalExcluded) {
+    const ctx = document.getElementById('totalWeightChart').getContext('2d');
+
+    // Destruir el gráfico anterior si existe
+    if (totalWeightChart) {
+        totalWeightChart.destroy();
+    }
+
+    totalWeightChart = new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+            labels: ['Peso Total (kg)', 'Artículos Excluidos'],
+            datasets: [{
+                data: [totalWeight, totalExcluded],
+                backgroundColor: ['#fff', '#fff']
+            }]
+        },
+        options: {
+            plugins: {
+                title: {
+                    display: true,
+                    text: 'Distribución de Peso y Artículos Excluidos'
+                }
+            }
+        }
+    });
+}
+
+function renderCategoryWeightChart(categoryWeights) {
+    const ctx = document.getElementById('categoryWeightChart').getContext('2d');
+
+    if (categoryWeightChart) {
+        categoryWeightChart.destroy();
+    }
+
+    const labels = Object.keys(categoryWeights);
+    const data = Object.values(categoryWeights);
+
+    categoryWeightChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Peso por Categoría (kg)',
+                data: data,
+                backgroundColor: '#fff'
+            }]
+        },
+        options: {
+            plugins: {
+                title: {
+                    display: true,
+                    text: 'Peso Total por Categoría',
+                    font: {
+                        size: 10,
+                        color: '#fff' // Color blanco para el título
+                    }
+                },
+                legend: {
+                    display: false // No mostrar leyenda para ahorrar espacio
+                }
+            },
+            responsive: false,
+            layout: {
+                padding: 5
+            },
+            scales: {
+                x: {
+                    title: {
+                        display: true,
+                        text: 'Categorías',
+                        font: {
+                            size: 10,
+                            color: '#fff' // Color blanco para el título del eje X
+                        }
+                    },
+                    ticks: {
+                        font: {
+                            size: 8,
+                            color: '#fff' // Color blanco para las etiquetas del eje X
+                        }
+                    }
+                },
+                y: {
+                    beginAtZero: true,
+                    title: {
+                        display: true,
+                        text: 'Peso (kg)',
+                        font: {
+                            size: 10,
+                            color: '#fff' // Color blanco para el título del eje Y
+                        }
+                    },
+                    ticks: {
+                        font: {
+                            size: 8,
+                            color: '#fff' // Color blanco para las etiquetas del eje Y
+                        }
+                    }
+                }
+            }
+        }
+    });
+}
+
+
+// Modifica el final de processCSV para incluir la actualización del dashboard
+function processCSV(csvData) {
+    const rows = csvData.trim().split('\n');
+    const headers = rows.shift().split(',');
+
+    const data = rows.map(row => {
+        const values = row.split(',');
+        return headers.reduce((acc, header, index) => {
+            acc[header.trim()] = values[index]?.trim();
+            return acc;
+        }, {});
+    });
+
+    groupedData = groupByFlete(data);
+    populateRecorridoFilter(groupedData);
+    displayGroupedData(groupedData);
+
+    const excludedArticles = getExcludedArticles(data);
+    displayExcludedArticles(data);
+
+    updateDashboard(groupedData, excludedArticles); // Actualiza el dashboard
+}
+
+// Función para obtener artículos excluidos
+function getExcludedArticles(data) {
+    const unknownItems = data.filter(item => !baseDataFruver[item['Cod. Artículo']]);
+    const missingArticles = data.filter(item => !baseDataFruver[item['Cod. Artículo']]);
+    return [...unknownItems, ...missingArticles];
+}
+function renderCategoryWeightChart(categoryWeights) {
+    const ctx = document.getElementById('categoryWeightChart').getContext('2d');
+
+    if (categoryWeightChart) {
+        categoryWeightChart.destroy();
+    }
+
+    const labels = Object.keys(categoryWeights);
+    const data = Object.values(categoryWeights);
+
+    categoryWeightChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Peso por Categoría (kg)',
+                data: data,
+                backgroundColor: '#fff'
+            }]
+        },
+        options: {
+            plugins: {
+                title: {
+                    display: true,
+                    text: 'Peso Total por Categoría',
+                    font: {
+                        size: 10
+                    }
+                },
+                legend: {
+                    display: false
+                }
+            },
+            responsive: false, // Usar el tamaño definido
+            layout: {
+                padding: 5
+            },
+            scales: {
+                x: {
+                    title: {
+                        display: true,
+                        text: 'Categorías',
+                        font: {
+                            size: 10
+                        }
+                    },
+                    ticks: {
+                        font: {
+                            size: 8
+                        }
+                    }
+                },
+                y: {
+                    beginAtZero: true,
+                    title: {
+                        display: true,
+                        text: 'Peso (kg)',
+                        font: {
+                            size: 10
+                        }
+                    },
+                    ticks: {
+                        font: {
+                            size: 8
+                        }
+                    }
+                }
+            }
+        }
+    });
+}
+function renderTotalWeightChart(totalWeight, totalExcluded) {
+    const ctx = document.getElementById('totalWeightChart').getContext('2d');
+
+    if (totalWeightChart) {
+        totalWeightChart.destroy();
+    }
+
+    totalWeightChart = new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+            labels: ['Peso Total (kg)', 'Artículos Excluidos'],
+            datasets: [{
+                data: [totalWeight, totalExcluded],
+                backgroundColor: ['#4caf50', '#f44336']
+            }]
+        },
+        options: {
+            plugins: {
+                title: {
+                    display: true,
+                    text: 'Peso Total vs Excluidos',
+                    font: {
+                        size: 10
+                    }
+                },
+                legend: {
+                    position: 'bottom',
+                    labels: {
+                        boxWidth: 10,
+                        font: {
+                            size: 8
+                        }
+                    }
+                }
+            },
+            layout: {
+                padding: 5
+            },
+            responsive: false // Desactivar tamaño responsivo
+        }
+    });
+}
+document.getElementById('exportButton').addEventListener('click', () => {
+    exportTableToExcel('recorridosTable', 'Recorridos');
+});
+
+function exportTableToExcel(tableId, fileName) {
+    // Obtén la tabla
+    const table = document.getElementById(tableId);
+
+    // Crea una hoja de cálculo de XLSX desde la tabla
+    const worksheet = XLSX.utils.table_to_sheet(table);
+
+    // Crea un libro de trabajo y agrega la hoja
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'Hoja1');
+
+    // Exporta el archivo Excel
+    XLSX.writeFile(workbook, `${fileName}.xlsx`);
+}
+

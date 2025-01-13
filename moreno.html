@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gestión de Recorridos</title>
     <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
+
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -98,7 +101,8 @@
 
     <h2>Filtrar Recorridos</h2>
     <select id="recorridoFilter"></select>
-
+    
+    
     <div id="output">
         <h2>Recorridos Generados</h2>
         <table id="recorridosTable">
@@ -115,7 +119,16 @@
                 <!-- Contenido dinámico -->
             </tbody>
         </table>
+        <button id="exportButton">Exportar Tabla a Excel</button>
 
+        <div id="dashboard">        
+            <h2>Dashboard</h2>
+            <div style="display: flex; gap: 20px; justify-content: center; flex-wrap: wrap;">
+                <canvas id="totalWeightChart" width="800" height="800"></canvas>
+                <canvas id="categoryWeightChart" width="900" height="700"></canvas>
+            </div>
+        </div>
+        
         <h2>Artículos Excluidos</h2>
 <table id="excludedArticlesTable">
     <thead>
@@ -130,6 +143,8 @@
     <tbody></tbody>
 </table>
 
+    
+</div>
     </div>
 
     <script src="scriptmoreno.js"></script>
