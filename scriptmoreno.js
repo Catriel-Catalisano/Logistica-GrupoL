@@ -1662,7 +1662,7 @@ const baseDataFruver = {
 "7790212060882": { peso: 1, descripcion: "QUESO PATEGRAS X KG", categoria: "FRESCOS" },
 "7798183230019": { peso: 0.4, descripcion: "FIDEO DE ARROZ AL HUEVO SIN TACC X400GR DOÑA ROSA", categoria: "SECOS" },
 "7790645003018": { peso: 0.38, descripcion: "CABALLA E/AyA X380G CARACAS", categoria: "SECOS" },
-"7790212040086": { peso: 3, descripcion: "SUPREMA REF X 15 K 3 ARROYOS", categoria: "FRESCOS" },
+"7790212040086": { peso: 15, descripcion: "SUPREMA REF X 15 K 3 ARROYOS", categoria: "FRESCOS" },
 "7790580322113": { peso: 0.1, descripcion: "CHOCOLATE PARA TAZA x100gr GODET", categoria: "SECOS" },
 "7798122380393": { peso: 0.025, descripcion: "BARRA CEREAL S/TACC MAN X25G", categoria: "SECOS" },
 "7790212030046": { peso: 2.2, descripcion: "POLLO T8 x U", categoria: "FRESCOS" },
@@ -6052,6 +6052,7 @@ const baseDataFruver = {
 
 
 };
+
 document.getElementById('processFile').addEventListener('click', () => {
     const fileInput = document.getElementById('csvFile');
     const file = fileInput.files[0];
@@ -6064,8 +6065,8 @@ document.getElementById('processFile').addEventListener('click', () => {
     const reader = new FileReader();
 
     reader.onload = (event) => {
-        const text = event.target.result;
-        processCSV(text);
+        const csvData = event.target.result;
+        processCSV(csvData);
     };
 
     reader.readAsText(file);
@@ -6089,8 +6090,7 @@ function processCSV(csvData) {
     groupedData = groupByFlete(data);
     populateRecorridoFilter(groupedData);
     displayGroupedData(groupedData);
-    displayUnknownItems(data);
-    displayMissingArticles(data);
+    displayExcludedArticles(data); // Unificar artículos excluidos
 }
 
 // Agrupar datos por recorrido (flete)
@@ -6106,10 +6106,7 @@ function groupByFlete(data) {
 
         if (!flete || cantidad <= 0) return;
 
-        if (!articulo) {
-            console.warn(`Artículo no encontrado: ${codArticulo}`);
-            return;
-        }
+        if (!articulo) return;
 
         const categoria = articulo.categoria || "Sin categoría";
         const pesoTotalArticulo = articulo.peso * cantidad;
@@ -6119,7 +6116,8 @@ function groupByFlete(data) {
                 flete,
                 kilos: 0,
                 deposito,
-                categorias: {}
+                categorias: {},
+                articles: []
             };
         }
 
@@ -6130,6 +6128,13 @@ function groupByFlete(data) {
         }
 
         grouped[flete].categorias[categoria] += pesoTotalArticulo;
+
+        grouped[flete].articles.push({
+            codigoArticulo: codArticulo,
+            descripcion: articulo.descripcion,
+            cantidad,
+            pesoTotal: pesoTotalArticulo
+        });
     });
 
     return Object.values(grouped);
@@ -6143,17 +6148,52 @@ function displayGroupedData(data) {
     data.forEach(({ flete, kilos, deposito, categorias }) => {
         const row = document.createElement('tr');
 
-        row.innerHTML = `
-            <td>${flete}</td>
-            <td>${kilos.toFixed(2)} kg</td>
-            <td>${deposito || "Sin ubicación"}</td>
-            <td>${Object.entries(categorias)
-                .map(([categoria, kilos]) => `${categoria}: ${kilos.toFixed(2)} kg`)
-                .join('<br>')}</td>
-        `;
+        const fleteCell = document.createElement('td');
+        fleteCell.textContent = flete;
+
+        const kilosCell = document.createElement('td');
+        kilosCell.textContent = `${kilos.toFixed(2)} kg`;
+
+        const depositoCell = document.createElement('td');
+        depositoCell.textContent = deposito || "Sin ubicación";
+
+        const categoriaCell = document.createElement('td');
+        categoriaCell.innerHTML = Object.entries(categorias)
+            .map(([categoria, kilos]) => `${categoria}: ${kilos.toFixed(2)} kg`)
+            .join('<br>');
+
+        const articlesCell = document.createElement('td');
+        const toggleButton = document.createElement('button');
+        toggleButton.textContent = 'Ver Artículos';
+        toggleButton.addEventListener('click', () => toggleArticles(flete, articlesCell));
+        articlesCell.appendChild(toggleButton);
+
+        row.appendChild(fleteCell);
+        row.appendChild(kilosCell);
+        row.appendChild(depositoCell);
+        row.appendChild(categoriaCell);
+        row.appendChild(articlesCell);
 
         tableBody.appendChild(row);
     });
+}
+
+// Mostrar artículos de un recorrido
+function toggleArticles(flete, articlesCell) {
+    const existingList = articlesCell.querySelector('ul');
+
+    if (existingList) {
+        existingList.remove();
+    } else {
+        const articles = groupedData.find(group => group.flete === flete)?.articles || [];
+        const ul = document.createElement('ul');
+        articles.forEach(article => {
+            const li = document.createElement('li');
+            li.textContent = `${article.descripcion} (Cantidad: ${article.cantidad}, Peso Total: ${article.pesoTotal.toFixed(2)} kg)`;
+            ul.appendChild(li);
+        });
+        articlesCell.appendChild(ul);
+    }
 }
 
 // Popular el filtro de recorridos
@@ -6178,36 +6218,43 @@ function populateRecorridoFilter(groupedData) {
     });
 }
 
-// Mostrar artículos no encontrados en base de datos
-function displayUnknownItems(data) {
-    const tableBody = document.querySelector('#unknownTable tbody');
+// Mostrar artículos excluidos
+function displayExcludedArticles(data) {
+    const tableBody = document.querySelector('#excludedArticlesTable tbody');
     tableBody.innerHTML = '';
 
+    // Artículos no encontrados
     const unknownItems = data.filter(item => !baseDataFruver[item['Cod. Artículo']]);
 
-    unknownItems.forEach(item => {
-        const row = document.createElement('tr');
-        row.innerHTML = `
-            <td>${item['Cod. Artículo']}</td>
-            <td>${item['Descripción Artículo'] || "Sin descripción"}</td>
-            <td>${item['Rubro 2'] || "Sin categoría"}</td>
-        `;
-        tableBody.appendChild(row);
-    });
-}
-
-// Mostrar artículos faltantes (excluidos)
-function displayMissingArticles(data) {
+    // Artículos faltantes (excluidos)
     const missingArticles = data.filter(item => !baseDataFruver[item['Cod. Artículo']]);
-    const tableBody = document.querySelector('#missingArticlesTable tbody');
-    tableBody.innerHTML = '';
 
-    missingArticles.forEach(({ 'Cod. Artículo': codArticulo, 'Descripción Artículo': descripcion, Cantidad: cantidad }) => {
+    // Combinar ambos tipos de artículos en una tabla
+    const excludedArticles = [
+        ...unknownItems.map(item => ({
+            codigo: item['Cod. Artículo'],
+            descripcion: item['Descripción Artículo'] || "Sin descripción",
+            categoria: item['Rubro 2'] || "Sin categoría",
+            cantidad: item['Cantidad'] || "0",
+            razon: "No encontrado en base de datos"
+        })),
+        ...missingArticles.map(item => ({
+            codigo: item['Cod. Artículo'],
+            descripcion: item['Descripción Artículo'] || "Sin descripción",
+            categoria: item['Rubro 2'] || "Sin categoría",
+            cantidad: item['Cantidad'] || "0",
+            razon: "Faltante"
+        }))
+    ];
+
+    excludedArticles.forEach(({ codigo, descripcion, categoria, cantidad, razon }) => {
         const row = document.createElement('tr');
         row.innerHTML = `
-            <td>${codArticulo}</td>
-            <td>${descripcion || "Sin descripción"}</td>
-            <td>${cantidad || "0"}</td>
+            <td>${codigo}</td>
+            <td>${descripcion}</td>
+            <td>${categoria}</td>
+            <td>${cantidad}</td>
+            <td>${razon}</td>
         `;
         tableBody.appendChild(row);
     });

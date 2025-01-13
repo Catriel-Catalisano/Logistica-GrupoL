@@ -75,7 +75,6 @@
         <button id="processFile">Procesar Archivo</button>
     </div>
 
-
     <h2>Filtrar Recorridos</h2>
     <select id="recorridoFilter"></select>
 
@@ -88,6 +87,7 @@
                     <th>Kilos</th>
                     <th>Depósito</th>
                     <th>Categoría</th>
+                    <th>Artículos</th>
                 </tr>
             </thead>
             <tbody>
@@ -95,28 +95,15 @@
             </tbody>
         </table>
 
-
-
-
-<h2>Artículos No Encontrados</h2>
-<table id="unknownTable">
+        <h2>Artículos Excluidos</h2>
+<table id="excludedArticlesTable">
     <thead>
         <tr>
             <th>Código</th>
             <th>Descripción</th>
             <th>Categoría</th>
-        </tr>
-    </thead>
-    <tbody></tbody>
-</table>
-
-<h2>Artículos Faltantes</h2>
-<table id="missingArticlesTable">
-    <thead>
-        <tr>
-            <th>Código</th>
-            <th>Descripción</th>
             <th>Cantidad</th>
+            <th>Razón</th>
         </tr>
     </thead>
     <tbody></tbody>
@@ -124,8 +111,6 @@
 
     </div>
 
-    <script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
     <script src="scriptmoreno.js"></script>
 </body>
 </html>
-
