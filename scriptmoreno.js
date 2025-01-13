@@ -6559,12 +6559,16 @@ function exportCategoriesToExcel(tableId, fileName) {
         categorias.split('<br>').forEach(categoriaInfo => {
             const [categoria, categoriaKilos] = categoriaInfo.split(':');
             if (categoria && categoriaKilos) {
+                // Convertir kilos por categoría a número entero
+                const kilosRedondeados = Math.round(
+                    parseFloat(categoriaKilos.replace('kg', '').trim())
+                );
                 data.push({
                     Flete: flete.trim(),
                     Kilos: kilos.trim(),
                     Depósito: deposito.trim(),
                     Categoría: categoria.trim(),
-                    'Kilos por Categoría': categoriaKilos.replace('kg', '').trim()
+                    'Kilos por Categoría': kilosRedondeados
                 });
             }
         });
