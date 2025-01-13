@@ -6049,6 +6049,10 @@ const baseDataFruver = {
 "LIM000242": { peso: 0.5, descripcion: "TOALLAS PAPEL x 2500 UNID", categoria: "DESCARTABLES" },
 "LIM000266": { peso: 0.2, descripcion: "BOLSA RESIDUO NEGRA 60X90X50U", categoria: "LIMPIEZA" },
 "LIM000470": { peso: 0.4, descripcion: "PULVERIZADORES C/GATILLO x 500CC TRANSPARENTE", categoria: "LIMPIEZA" },
+"7790580033408": { peso: 0.055, descripcion: "CHOCOLATE C/LECHE AIR X55G COFLER", categoria: "SECOS" },
+"77909930": { peso: 0.038, descripcion: "ALFAJOR BLANCO 38G TURIMAR", categoria: "SECOS" },
+"7793450000128": { peso: 0.15, descripcion: "GALLE HOJALDRE TRIANG X150G HOJALMAR", categoria: "SECOS" },
+"7793591040144": { peso: 0.5, descripcion: "GRASA VACUNA X500G DOÑA FLORA", categoria: "FRESCOS" },
 
 
 };
