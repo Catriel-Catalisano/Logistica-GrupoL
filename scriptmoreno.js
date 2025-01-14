@@ -9347,7 +9347,7 @@ function displayArticlesModal(articles) {
         <h2>Artículos del Recorrido</h2>
         ${modalContent}
         <br>
-        <button id="closeModal" style="padding: 10px 20px; background-color: #f44336; color: white; border: none; border-radius: 5px; cursor: pointer;">Cerrar</button>
+        <button id="closeModal" style="padding: 10px 20px; background-color: #f44336; color: black; border: none; border-radius: 5px; cursor: pointer;">Cerrar</button>
     `;
 
     document.body.appendChild(overlay);
