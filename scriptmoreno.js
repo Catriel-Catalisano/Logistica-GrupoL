@@ -9273,7 +9273,7 @@ function displayGroupedData(data) {
     const tableBody = document.querySelector('#recorridosTable tbody');
     tableBody.innerHTML = '';
 
-    data.forEach(({ flete, kilos, deposito, categorias }) => {
+    data.forEach(({ flete, kilos, deposito, categorias, articles }) => {
         // Buscar chofer fijo, ayudante fijo y horario según el recorrido
         const choferFijo = choferesFijos[flete] || 'Sin asignar';
         const ayudanteFijo = ayudantes.find(a => a.recorrido === flete)?.ayudante || 'Sin ayudante';
@@ -9293,9 +9293,76 @@ function displayGroupedData(data) {
             <td>${ayudanteFijo}</td>
             <td>${horario}</td>
             <td>${choferUnidad.patente || 'Sin patente'}</td>
+            <td><button class="view-articles">Ver Artículos</button></td>
         `;
 
         tableBody.appendChild(row);
+
+        // Añadir evento al botón "Ver Artículos"
+        const viewButton = row.querySelector('.view-articles');
+        viewButton.addEventListener('click', () => {
+            displayArticlesModal(articles);
+        });
+    });
+}
+
+// Mostrar artículos en un modal o alerta
+function displayArticlesModal(articles) {
+    const modalContent = articles.map(article => `
+        <p style="color: black;">
+            <strong>Código:</strong> ${article.codigoArticulo}<br>
+            <strong>Descripción:</strong> ${article.descripcion}<br>
+            <strong>Cantidad:</strong> ${article.cantidad}<br>
+            <strong>Peso Total:</strong> ${article.pesoTotal.toFixed(2)} kg
+        </p>
+    `).join('<hr>');
+
+    // Crear fondo oscuro para el modal
+    const overlay = document.createElement('div');
+    overlay.style.position = 'fixed';
+    overlay.style.top = '0';
+    overlay.style.left = '0';
+    overlay.style.width = '100%';
+    overlay.style.height = '100%';
+    overlay.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
+    overlay.style.zIndex = '999';
+
+    // Crear modal
+    const modal = document.createElement('div');
+    modal.style.position = 'fixed';
+    modal.style.top = '50%';
+    modal.style.left = '50%';
+    modal.style.transform = 'translate(-50%, -50%)';
+    modal.style.backgroundColor = 'white';
+    modal.style.padding = '20px';
+    modal.style.borderRadius = '10px';
+    modal.style.boxShadow = '0 4px 8px rgba(0, 0, 0, 0.2)';
+    modal.style.zIndex = '1000';
+    modal.style.maxWidth = '500px';
+    modal.style.width = '90%';
+    modal.style.maxHeight = '80vh';
+    modal.style.overflowY = 'auto';
+
+    modal.innerHTML = `
+        <h2>Artículos del Recorrido</h2>
+        ${modalContent}
+        <br>
+        <button id="closeModal" style="padding: 10px 20px; background-color: #f44336; color: white; border: none; border-radius: 5px; cursor: pointer;">Cerrar</button>
+    `;
+
+    document.body.appendChild(overlay);
+    document.body.appendChild(modal);
+
+    // Cerrar modal al hacer clic en el botón
+    document.getElementById('closeModal').addEventListener('click', () => {
+        document.body.removeChild(modal);
+        document.body.removeChild(overlay);
+    });
+
+    // Cerrar modal al hacer clic fuera de él
+    overlay.addEventListener('click', () => {
+        document.body.removeChild(modal);
+        document.body.removeChild(overlay);
     });
 }
 
