@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consolidación de Puntos y Generación de Rutas</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #1c1c1e;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+        h2, h3 {
+            color: #00d4ff;
+        }
+        #controls {
+            background: #2c2c2e;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            width: 80%;
+            max-width: 1000px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        label {
+            display: flex;
+            justify-content: space-between;
+            color: white;
+        }
+        input[type="file"], input[type="number"] {
+            padding: 8px;
+            border-radius: 5px;
+            border: none;
+            background: #f8f9fa;
+        }
+        button {
+            padding: 10px;
+            border-radius: 5px;
+            border: none;
+            background-color: #00d4ff;
+            color: black;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            background-color: #00a8cc;
+        }
+        #map {
+            width: 80%;
+            height: 500px;
+            margin-top: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        table {
+            width: 80%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        table th, table td {
+            border: 1px solid #444;
+            padding: 12px;
+            text-align: left;
+            background: #2c2c2e;
+        }
+        table th {
+            background: #00d4ff;
+            color: black;
+        }
+        table tr:nth-child(even) {
+            background: #333;
+        }
+        #instructions {
+            margin-top: 20px;
+            background: #2c2c2e;
+            padding: 15px;
+            border-radius: 10px;
+            color: #f8f9fa;
+            width: 80%;
+            max-width: 1000px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        header {
+    background: #004680;
+    padding: 1rem 2rem;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
+    text-align: center;
+}
+
+header h1 {
+    font-size: 3rem;
+    color: #ffc107;
+    text-transform: uppercase;
+    margin: 0.5rem 0;
+}
+
+header p {
+    color: #e0e0e0;
+    font-style: italic;
+    margin: 0;
+}
+.option-menu {
+    width: 100%;
+    max-width: 600px; /* Ancho máximo del menú */
+    margin: 40px auto; /* Centrado vertical y horizontal */
+    background-color: #f1f1f1;
+    border-radius: 8px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden; /* Evita que sobresalgan elementos */
+}
+
+/* Eliminar estilos predeterminados de la lista */
+.option-menu ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+/* Estilo de cada elemento de lista */
+.option-menu li {
+    border-bottom: 1px solid #ddd; /* Línea divisoria entre elementos */
+}
+
+/* Estilo para los enlaces */
+.option-menu a {
+    display: block;
+    text-decoration: none;
+    color: #333; /* Color de texto oscuro */
+    font-size: 18px;
+    font-weight: bold;
+    padding: 15px 20px; /* Espaciado interno */
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Efecto al pasar el mouse sobre los enlaces */
+.option-menu a:hover {
+    background-color: #4CAF50; /* Fondo verde */
+    color: #fff; /* Texto en blanco */
+    padding-left: 25px; /* Efecto de desplazamiento de texto */
+    transition: all 0.3s ease;
+}
+
+/* Eliminar borde del último elemento */
+.option-menu li:last-child {
+    border-bottom: none;
+}
+
+/* Efecto activo (clic en enlace) */
+.option-menu a:active {
+    background-color: #388E3C; /* Verde más oscuro */
+    color: #fff;
+}
+.container {
+    max-width: 800px;
+    margin: 50px auto; /* Centrado vertical y horizontal */
+    background: #ffffff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+    text-align: center; /* Centra el texto */
+}
+
+
+/* Contenedor principal */
+.container {
+    max-width: 600px;
+    margin: 20  px auto; /* Centrado vertical y horizontal */
+    background: #ffffff;
+    padding: 40px;
+    border-radius: 50px;
+    box-shadow: 20px 4px 10px rgba(0, 0, 0, 0.2);
+    text-align: left; /* Centra el texto */
+}
+
+/* Título principal */
+.container h1 {
+    color: #4CAF50;
+    font-size: 28px;
+    margin-bottom: 10px;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+/* Párrafo de bienvenida */
+.container p {
+    font-size: 18px;
+    margin-bottom: 20px;
+    color: #555;
+}
+
+/* Menú de opciones */
+.option-menu {
+    background-color: #f1f1f1;
+    border-radius: 8px;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    padding: 0;
+}
+
+.option-menu ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.option-menu li {
+    border-bottom: 1px solid #ddd;
+}
+
+.option-menu li:last-child {
+    border-bottom: none; /* Elimina la línea del último elemento */
+}
+
+.option-menu a {
+    display: block;
+    text-decoration: none;
+    color: #333;
+    font-size: 18px;
+    padding: 15px 20px;
+    transition: background-color 0.3s ease, color 0.3s ease, padding-left 0.3s ease;
+}
+
+.option-menu a:hover {
+    background-color: #4CAF50;
+    color: #ffffff;
+    padding-left: 25px;
+}
+    </style>
+</head>
+<header>
+    <div class="container">
+        <h1>Logistica y distribucion - Grupo L</h1>
+        <p>Bienvenido a la herramienta de Ruteos automaticos.</p>
+        
+        <!-- Menú de opciones -->
+        <div class="option-menu">
+            <ul>
+                
+                <li>
+                    <a href="#" id="addPlan">Agregar Nueva Planificación</a>
+                    <input type="file" id="file-input" accept=".csv" style="display: none;">
+                </li>
+                <li><a href="index.html" id="menu.">Menu</a></li>
+                <li><a href="calcular_peso.html" id="menu.">Calcular Peso</a></li>
+                <li><a href="moreno.html" id="menu.">Moreno</a></li>
+                <li><a href="planificacion-fruver.html" id="menu.">Planificacion Fru-ver</a></li>
+             
+            </ul>
+        </div>
+</header>
+<body>
+    <div id="controls">
+        <h2>Consolidación de Puntos y Generación de Rutas</h2>
+        <label>Subir Excel: <input type="file" id="fileInput" accept=".xlsx, .xls"></label>
+        <label>Máximo de kilos por ruta: <input type="number" id="maxKilos" value="1000"></label>
+        <label>Cantidad máxima de puntos por ruta: <input type="number" id="maxPoints" value="5"></label>
+        <button onclick="processExcel()">Procesar Archivo y Generar Rutas</button>
+        <button onclick="exportToExcel()">Exportar Rutas a Excel</button>
+    </div>
+    <h3>Resumen de Rutas</h3>
+    <table id="routesTable">
+        <thead>
+            <tr>
+                <th>Ruta</th>
+                <th>Puntos</th>
+                <th>Total Kilos</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+    <div id="map"></div>
+
+    <div id="instructions">
+        <h3>Modo de Uso:</h3>
+        <ol>
+            <li><b>Subir un archivo Excel:</b> El archivo debe contener las siguientes columnas:
+                <ul>
+                    <li><b>sucursal:</b> Nombre de la sucursal.</li>
+                    <li><b>latitud:</b> Coordenada latitudinal.</li>
+                    <li><b>longitud:</b> Coordenada longitudinal.</li>
+                    <li><b>kilos:</b> Peso asociado al punto.</li>
+                </ul>
+            </li>
+            <li><b>Configurar los parámetros:</b> Ingresar el máximo de kilos por ruta y la cantidad máxima de puntos por ruta, tener en cuenta que dentro de la logica del ruteo los puntos con igual ubicaciones se consolidan en 1 solo punto.</li>
+            <li><b>Genera las rutas:</b> Click en el botón <i>"Procesar Archivo y Generar Rutas"</i>.</li>
+            <li><b>Exporta las rutas:</b> Usar el botón <i>"Exportar Rutas a Excel"</i> para descargar el resultado como un archivo Excel.</li>
+            <li><b>Mapa interactivo:</b> Ver las rutas en el mapa y los puntos consolidados.</li>
+        </ol>
+    </div>
+    <script>
+        let map;
+        let locations = [];
+        let consolidatedLocations = [];
+        let routes = [];
+        const colors = ["blue", "red", "green", "purple", "orange"];
+
+        const MAX_DISTANCE_BETWEEN_POINTS = 15; // Distancia máxima en kilómetros entre puntos
+
+        function initializeMap() {
+            map = L.map("map").setView([-34.6037, -58.3816], 12); // Buenos Aires como punto inicial
+            L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+                maxZoom: 18,
+                attribution: "© OpenStreetMap contributors"
+            }).addTo(map);
+        }
+
+        function processExcel() {
+            const fileInput = document.getElementById("fileInput");
+            const file = fileInput.files[0];
+            if (!file) {
+                alert("Por favor, selecciona un archivo Excel.");
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                const data = new Uint8Array(e.target.result);
+                const workbook = XLSX.read(data, { type: "array" });
+                const sheetName = workbook.SheetNames[0];
+                const worksheet = workbook.Sheets[sheetName];
+                const jsonData = XLSX.utils.sheet_to_json(worksheet);
+
+                if (jsonData.length === 0) {
+                    alert("El archivo Excel está vacío o no tiene datos válidos.");
+                    return;
+                }
+
+                locations = jsonData.map(row => ({
+                    name: row.sucursal,
+                    lat: parseFloat(row.latitud),
+                    lng: parseFloat(row.longitud),
+                    kilos: parseFloat(row.kilos),
+                }));
+
+                if (locations.some(loc => isNaN(loc.lat) || isNaN(loc.lng))) {
+                    alert("Verifica que todas las filas tengan coordenadas válidas (latitud y longitud).");
+                    return;
+                }
+
+                consolidateLocations();
+                generateRoutes();
+            };
+            reader.readAsArrayBuffer(file);
+        }
+
+        function consolidateLocations() {
+            const grouped = {};
+
+            locations.forEach(location => {
+                const key = `${location.lat},${location.lng}`;
+                if (!grouped[key]) {
+                    grouped[key] = { lat: location.lat, lng: location.lng, kilos: 0, names: [] };
+                }
+                grouped[key].kilos += location.kilos;
+                grouped[key].names.push(location.name);
+            });
+
+            consolidatedLocations = Object.values(grouped);
+        }
+
+        function haversineDistance(coord1, coord2) {
+            const R = 6371; // Radio de la Tierra en km
+            const dLat = (coord2.lat - coord1.lat) * Math.PI / 180;
+            const dLng = (coord2.lng - coord1.lng) * Math.PI / 180;
+            const lat1 = coord1.lat * Math.PI / 180;
+            const lat2 = coord2.lat * Math.PI / 180;
+
+            const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                      Math.sin(dLng / 2) * Math.sin(dLng / 2) * Math.cos(lat1) * Math.cos(lat2);
+            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+            return R * c; // Distancia en km
+        }
+
+        function generateRoutes() {
+            const maxKilos = parseFloat(document.getElementById("maxKilos").value);
+            const maxPoints = parseInt(document.getElementById("maxPoints").value);
+
+            if (!consolidatedLocations.length) {
+                alert("No hay puntos disponibles para generar rutas.");
+                return;
+            }
+
+            let unassignedLocations = [...consolidatedLocations];
+            routes = [];
+
+            while (unassignedLocations.length > 0) {
+                let currentRoute = [];
+                let currentKilos = 0;
+
+                let start = unassignedLocations.shift();
+                currentRoute.push(start);
+                currentKilos += start.kilos;
+
+                while (currentRoute.length < maxPoints && currentKilos < maxKilos) {
+                    let nearest = null;
+                    let nearestIndex = -1;
+                    let minDistance = Infinity;
+
+                    unassignedLocations.forEach((location, index) => {
+                        const distance = haversineDistance(currentRoute[currentRoute.length - 1], location);
+                        if (distance < minDistance && distance <= MAX_DISTANCE_BETWEEN_POINTS) {
+                            minDistance = distance;
+                            nearest = location;
+                            nearestIndex = index;
+                        }
+                    });
+
+                    if (nearest && currentKilos + nearest.kilos <= maxKilos) {
+                        currentRoute.push(nearest);
+                        currentKilos += nearest.kilos;
+                        unassignedLocations.splice(nearestIndex, 1);
+                    } else {
+                        break;
+                    }
+                }
+
+                routes.push(currentRoute);
+            }
+
+            displayRoutes();
+        }
+
+        function displayRoutes() {
+            const tableBody = document.querySelector("#routesTable tbody");
+            tableBody.innerHTML = "";
+            map.eachLayer(layer => {
+                if (layer instanceof L.Polyline || layer instanceof L.Marker) {
+                    map.removeLayer(layer);
+                }
+            });
+
+            routes.forEach((route, index) => {
+                const totalKilos = route.reduce((sum, loc) => sum + loc.kilos, 0);
+                const routeNames = route.map(loc => loc.names.join(", ")).join(" | ");
+
+                const row = document.createElement("tr");
+                row.innerHTML = `
+                    <td>Ruta ${index + 1}</td>
+                    <td>${routeNames}</td>
+                    <td>${totalKilos}kg</td>
+                `;
+                tableBody.appendChild(row);
+
+                drawRouteOnMap(route, colors[index % colors.length], `Ruta ${index + 1}`);
+            });
+        }
+
+        function drawRouteOnMap(route, color, routeName) {
+            const latLngs = route.map(loc => [loc.lat, loc.lng]);
+            const polyline = L.polyline(latLngs, { color, weight: 4 }).addTo(map);
+
+            const centerLatLng = polyline.getBounds().getCenter();
+            L.marker(centerLatLng, { interactive: false, opacity: 0.8 })
+                .addTo(map)
+                .bindTooltip(routeName, { permanent: true, direction: "center" });
+            
+            route.forEach(loc => {
+                L.marker([loc.lat, loc.lng])
+                    .addTo(map)
+                    .bindPopup(`<b>${loc.names.join(", ")}</b><br>${loc.kilos}kg`);
+            });
+        }
+
+        function exportToExcel() {
+            const workbook = XLSX.utils.book_new();
+            const sheetData = routes.map((route, index) => {
+                const totalKilos = route.reduce((sum, loc) => sum + loc.kilos, 0);
+                const routeNames = route.map(loc => loc.names.join(", ")).join(" | ");
+                return {
+                    Ruta: `Ruta ${index + 1}`,
+                    Puntos: routeNames,
+                    TotalKilos: totalKilos
+                };
+            });
+
+            const worksheet = XLSX.utils.json_to_sheet(sheetData);
+            XLSX.utils.book_append_sheet(workbook, worksheet, "Rutas");
+            XLSX.writeFile(workbook, "rutas_optimas.xlsx");
+        }
+
+        window.onload = initializeMap;
+    </script>
+</body>
+</html>
