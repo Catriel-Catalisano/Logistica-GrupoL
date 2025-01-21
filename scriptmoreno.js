@@ -9429,3 +9429,55 @@ function displayExcludedArticles(data) {
         tableBody.appendChild(row);
     });
 }
+document.getElementById('exportExcel').addEventListener('click', () => {
+    const table = document.querySelector('#recorridosTable'); // Selecciona la tabla
+    if (!table) {
+        alert('No se encontró la tabla para exportar.');
+        return;
+    }
+
+    // Crear un arreglo para almacenar los datos procesados
+    const processedData = [];
+
+    // Recorrer las filas de la tabla (excluyendo el encabezado)
+    const rows = table.querySelectorAll('tbody tr');
+    rows.forEach(row => {
+        const cells = row.querySelectorAll('td');
+        const flete = cells[0]?.innerText || '';
+        const kilos = cells[1]?.innerText || '';
+        const deposito = cells[2]?.innerText || '';
+        const categorias = cells[3]?.innerText || '';
+        const chofer = cells[4]?.innerText || '';
+        const ayudante = cells[5]?.innerText || '';
+        const horario = cells[6]?.innerText || '';
+        const patente = cells[7]?.innerText || '';
+
+        // Dividir las categorías en líneas separadas
+        const categoriasArray = categorias.split('\n').map(categoria => categoria.trim());
+        categoriasArray.forEach(categoriaLinea => {
+            const [categoria, kilosCategoria] = categoriaLinea.split(':').map(part => part.trim());
+            if (categoria && kilosCategoria) {
+                processedData.push({
+                    Flete: flete,
+                    Kilos: kilosCategoria,
+                    Depósito: deposito,
+                    Categoría: categoria,
+                    Chofer: chofer,
+                    Ayudante: ayudante,
+                    Horario: horario,
+                    Patente: patente
+                });
+            }
+        });
+    });
+
+    // Crear un libro de Excel
+    const workbook = XLSX.utils.book_new();
+    const worksheet = XLSX.utils.json_to_sheet(processedData);
+
+    // Agregar la hoja al libro
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'Recorridos');
+
+    // Exportar el archivo Excel
+    XLSX.writeFile(workbook, 'recorridos_categorias.xlsx');
+});
