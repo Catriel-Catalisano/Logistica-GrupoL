@@ -5863,7 +5863,7 @@ const baseDataFruver = {
 "7790321020166": { peso: 1, descripcion: "BOLSA CAMISETA 50 x 70 X 100 U", categoria: "DESCARTABLES" },
 "7790398100088": { peso: 0.2, descripcion: "MANTECA x 200GR PAULINA", categoria: "FRESCOS" },
 "7792350006650": { peso: 0.35, descripcion: "JARDINERA x 350 GRS INALPA", categoria: "SECOS" },
-"7798011977000": { peso: 1836, descripcion: "MERM IND DIET DUZ X17GX108U ABEDUL", categoria: "SECOS" },
+"7798011977000": { peso: 1.8, descripcion: "MERM IND DIET DUZ X17GX108U ABEDUL", categoria: "SECOS" },
 "7793046080046": { peso: 0.82, descripcion: "COCTEL DE FRUTAS x820GR DULCOR", categoria: "SECOS" },
 "7798073420971": { peso: 0.4, descripcion: "PAN DULCE S/FRUTA x 400G VIMAR", categoria: "SECOS" },
 "7790480089741": { peso: 1, descripcion: "YERBA MATE X 1KG LA TRANQUERA", categoria: "SECOS" },
