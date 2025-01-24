@@ -26,7 +26,7 @@ const baseDataFruver = {
 { sucursal: 'LEVEL 3', recorrido: 'Caba Centro', direccion: 'ALFEREZ PAREJA 256, CABA, 07 A 12 HS' },
 { sucursal: 'HSBC FINE DINING', recorrido: 'Caba Centro', direccion: 'Av. E. Madero 540. Piso 23. Caba, CABA, 6 a 15 hs ' },
 { sucursal: 'NOVARTIS', recorrido: 'Caba Norte', direccion: 'RAMALLO 1851 1851, CABA, 6 a 9 hs ' },
-{ sucursal: 'CLINICA ZABALA', recorrido: 'Caba Norte solo 1', direccion: 'Av. Cabildo 1295, CABA, 6 a 9 hs (DE SER NECESARIO ENTREGAR SOLO)' },
+{ sucursal: 'CLINICA ZABALA', recorrido: 'Caba Norte', direccion: 'Av. Cabildo 1295, CABA, 6 a 9 hs (DE SER NECESARIO ENTREGAR SOLO)' },
 { sucursal: 'JP MORGAN BELGRANO', recorrido: 'Caba Centro', direccion: 'belgrano 955, CABA 06 A 11 HS' },
 { sucursal: 'JOHNSON & JOHNSON FOOD BELGRANO', recorrido: 'Caba Norte', direccion: 'OLAZABAL 1260, CABA, 07 a 10hs' },
 { sucursal: 'INST. ALEXANDER FLEMING', recorrido: 'Caba Norte', direccion: 'ZABALA 2836, CABA, 6 a 11 :30 hs ' },
@@ -87,7 +87,7 @@ const baseDataFruver = {
 { sucursal: 'PEUGEOT PACHECO', recorrido: 'talar de pacheco', direccion: 'Marcos Sastre 1014, EL TALAR DE PACHECO, 07 a 15hs' },
 { sucursal: 'TETRA PAK', recorrido: 'tigre', direccion: 'Uruguay 2887, VICTORIA, 6 a 7' },
 { sucursal: 'LAB. GLAXO SMITH KLINE S.A.', recorrido: 'tigre', direccion: 'CARLOS CASARES 3690, VICTORIA, 6 a 8 máximo 11hs' },
-{ sucursal: 'SAN ANDRES CAMPUS', recorrido: 'TIGRE solo 1', direccion: 'CALLE DON MARIANO. ALTURA URUG, SAN FERNANDO, 6 a 7, 9 a 11 y 13 a 15 (DE SER NECESARIO ENTREGARLO SOLO)' },
+{ sucursal: 'SAN ANDRES CAMPUS', recorrido: 'tigre', direccion: 'CALLE DON MARIANO. ALTURA URUG, SAN FERNANDO, 6 a 7, 9 a 11 y 13 a 15 (DE SER NECESARIO ENTREGARLO SOLO)' },
 { sucursal: 'LINDE FOOD', recorrido: 'tigre', direccion: 'SAAVEDRA 2251, TIGRE, 6 a 10' },
 { sucursal: 'MONDELEZ VICTORIA', recorrido: 'tigre', direccion: 'Uruguay 3911, VICTORIA, 6 a 12' },
 { sucursal: 'GESTAMP PLANTA III', recorrido: 'Tortuguitas', direccion: 'Panamericana km 48,, ESCOBAR, 06:30 a 08 hasta las 10hs maximo' },
@@ -108,7 +108,12 @@ const baseDataFruver = {
 { sucursal: 'MONSANTO ZARATE CONTRATISTAS', recorrido: 'ZARATE', direccion: 'RUTA 6 KM 83,1. (PROVEEDORES), ZARATE, 07 a 19hs' },
 { sucursal: 'MONSANTO ZARATE', recorrido: 'ZARATE', direccion: 'RUTA 6 KM 83,1. PUERTA 2 (PROV, ZARATE, 07 a 19hs' },
 { sucursal: 'QBOX', recorrido: 'ZARATE', direccion: 'Ruta Nac.Nro.6. KM 193,5, CAMPANA, 7 a 18' },
-{ sucursal: 'SWIFT PONTEVEDRA', recorrido: 'Sur oeste', direccion: 'Av. Otero 5250, Pontevedra, 07 a 12hs' }
+{ sucursal: 'SWIFT PONTEVEDRA', recorrido: 'Sur oeste', direccion: 'Av. Otero 5250, Pontevedra, 07 a 12hs' },
+{ sucursal: 'JOHNSON & JOHNSON FOOD BELGRAN', recorrido: 'Caba Norte', direccion: 'OLAZABAL 1260, CABA, 07 a 10hs' },
+{ sucursal: 'CATALENT', recorrido: 'Oeste 1', direccion: 'Av. Bernabe Marquez 691, LOMA HERMOSA, 06 a 11' },
+{ sucursal: 'JPMORGAN MADERO', recorrido: 'Caba Centro', direccion: 'AV. MADERO 900. PIS0 23, CABA, 7 a 10 hs ' },
+{ sucursal: 'P&G', recorrido: 'MUNRO', direccion: 'GOB. UGARTE 3561, MUNRO, 06 a 10hs' }
+
 
   
     ]

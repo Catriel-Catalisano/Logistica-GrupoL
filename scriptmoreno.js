@@ -185,7 +185,7 @@ const choferesFijos = {
 "FINOCHIE-4": "Alamo Jorge",
 "H BALESTRA": "FOLLA ARNALDO",
 "H E PERON": "Aguero Daniel",
-"H OBLIGADO": "Diez Nahuel",
+"H Obligado": "Diez Nahuel",
 "HOSPITAL THOMPSON": "De Quesada Lucas",
 "HTALES CABA X 1": "Ramos Juan",
 "HTALES CABA X 2": "RIVERA ENZO",
@@ -9055,87 +9055,87 @@ const baseDataFruver = {
 "7798021570222": { peso: 0.200, descripcion: "PAN DE MIGA X20U PUERTO MIGA", categoria: "SECOS" },
 "7798105120602": { peso: 1, descripcion: "CREMA PASTELE POLVO X1K LEDE", categoria: "FRESCOS" },
 "LIM000292": { peso: 0.200, descripcion: "GUANTE NITRILO X100U", categoria: "DESCARTABLES" },
-"7798011976829": { peso: 3, descripcion: "SALSA BARBACOA X3KG ABEDUL.", categoria: "SIN AGREGAR EN LA BASE DE DATOS" },
-"7798162250038": { peso: 0.8, descripcion: "ANANA RODAJAS X 850G SIERRA", categoria: "SIN AGREGAR EN LA BASE DE DATOS" },
-"707273300115": { peso: 0.2, descripcion: "BANDEJA 105 X200U CELPAK", categoria: "SIN AGREGAR EN LA BASE DE DATOS" },
-"7798290581875": { peso: 1, descripcion: "LECHE ALMENDRAS X1L BIBA.", categoria: "SIN AGREGAR EN LA BASE DE DATOS" },
-"7790216020086": { peso: 1, descripcion: "MELON x KG", categoria: "SIN AGREGAR EN LA BASE DE DATOS" },
-"7790321020304": { peso: 0.3, descripcion: "TAPA 101 PET X100U CELPAK", categoria: "SIN AGREGAR EN LA BASE DE DATOS" },
-"7790350007063": { peso: 0.3, descripcion: "SALCHICHA SUPERCHANCHO X12U SW", categoria: "SIN AGREGAR EN LA BASE DE DATOS" },
-"7790522011983": { peso: 0.2, descripcion: "PAN SUPER PANCHO X6UMENDIA", categoria: "SIN AGREGAR EN LA BASE DE DATOS" },
-"7790580143237": { peso: 0.15, descripcion: "JUGO POLVO NARAN X15GR ARCOR", categoria: "SIN AGREGAR EN LA BASE DE DATOS" },
-"7790670052388": { peso: 0.3, descripcion: "SALCHICHAS X6U PATY", categoria: "SIN AGREGAR EN LA BASE DE DATOS" },
-"7790696000301": { peso: 0.8, descripcion: "DURAZNO MITAD X820G ABETO", categoria: "SIN AGREGAR EN LA BASE DE DATOS" },
-"77911018": { peso: 0.6, descripcion: "ALFAJOR TRIPLE BCO X60G TURIMAR", categoria: "SIN AGREGAR EN LA BASE DE DATOS" },
-"7791337008366": { peso: 1, descripcion: "YOGUR DESC VAIN X 1L LA SERE", categoria: "SIN AGREGAR EN LA BASE DE DATOS" },
-"7791890004874": { peso: 0.2, descripcion: "TAPA PASCUALINA X2U SIGLO DE O", categoria: "SIN AGREGAR EN LA BASE DE DATOS" },
-"7792180140586": { peso: 0.1, descripcion: "PURE PAPA INST X125G MAMA COCINA", categoria: "SIN AGREGAR EN LA BASE DE DATOS" },
-"7792378000814": { peso: 1, descripcion: "VINAGRE ALCOHOL X1L COMENSAL", categoria: "SIN AGREGAR EN LA BASE DE DATOS" },
-"7792860005655": { peso: 0.1, descripcion: "POSTRE DE MANI X110GR LHERITIE", categoria: "SIN AGREGAR EN LA BASE DE DATOS" },
-"7792900009063": { peso: 0.5, descripcion: "AJI MOLIDO x 50 G DOS ANCLAS", categoria: "SIN AGREGAR EN LA BASE DE DATOS" },
-"7794990880416": { peso: 1, descripcion: "QUESO PORT SALUD S/SAL x KG PAULINA", categoria: "SIN AGREGAR EN LA BASE DE DATOS" },
-"7797470199367": { peso: 0.5, descripcion: "FIDEO SPAGHETTI X500G MAROLIO", categoria: "SIN AGREGAR EN LA BASE DE DATOS" },
-"7798138555518": { peso: 0.5, descripcion: "FIDEO SPAGHETTI X500G STA ISABEL", categoria: "SIN AGREGAR EN LA BASE DE DATOS" },
-"7798181510113": { peso: 0.2, descripcion: "BUDIN S/TACC MARMO X250G SMAMS", categoria: "SIN AGREGAR EN LA BASE DE DATOS" },
-"7798411011236": { peso: 0.8, descripcion: "GARRAPIÑADA MANI X80G GOLOMASTER", categoria: "SIN AGREGAR EN LA BASE DE DATOS" },
-"7716253096457": { peso: 0.2, descripcion: "PAPEL HIGIENICO 80MTX40U", categoria: "SIN AGREGAR EN LA BASE DE DATOS" },
-"7790216012991": { peso: 10, descripcion: "BALDE NEGRO X10LTXU", categoria: "SIN AGREGAR EN LA BASE DE DATOS" },
-"7790629000606": { peso: 0.8, descripcion: "ACEITUNA NEGRA S/C X800G EL MA", categoria: "SIN AGREGAR EN LA BASE DE DATOS" },
-"7791270013755": { peso: 0.5, descripcion: "BIZCOCHUELO VAINILLA X500G KEUKEN", categoria: "SIN AGREGAR EN LA BASE DE DATOS" },
-"7792459456134": { peso: 0.2, descripcion: "FIBRA ESPONJA CHICA XU", categoria: "SIN AGREGAR EN LA BASE DE DATOS" },
-"7793890259384": { peso: 0.4, descripcion: "PAN LACTAL CERE/SEM X400G FARGO", categoria: "SIN AGREGAR EN LA BASE DE DATOS" },
-"7793890260885": { peso: 0.5, descripcion: "PAN LACTAL ARTESANO X500G BIMB", categoria: "SIN AGREGAR EN LA BASE DE DATOS" },
-"7794000003897": { peso: 1, descripcion: "MOUSSE CHOCOLATE X1KG CARTE D'", categoria: "SIN AGREGAR EN LA BASE DE DATOS" },
-"7797390401458": { peso: 0.3, descripcion: "CEPILLO ERGONOMICO XU SCHEZ", categoria: "SIN AGREGAR EN LA BASE DE DATOS" },
-"7798023697873": { peso: 0.25, descripcion: "AJI MOLIDO X25G SYP", categoria: "SIN AGREGAR EN LA BASE DE DATOS" },
-"7798044610226": { peso: 0.5, descripcion: "ACEITE DE OLIVA X500CC DEL VAL", categoria: "SIN AGREGAR EN LA BASE DE DATOS" },
-"7798072290070": { peso: 0.2, descripcion: "TRAPO PISO BCO 50X60XU CLEAN T", categoria: "SIN AGREGAR EN LA BASE DE DATOS" },
-"7798128410087": { peso: 0.5, descripcion: "REBOZADOR S/TACC X450G AGLU", categoria: "SIN AGREGAR EN LA BASE DE DATOS" },
-"7798164191585": { peso: 1, descripcion: "CAJA NAVIDEÑA XU", categoria: "SIN AGREGAR EN LA BASE DE DATOS" },
-"7798558162146": { peso: 1, descripcion: "COLITA DE CUADRIL XKG TECNOCAR", categoria: "SIN AGREGAR EN LA BASE DE DATOS" },
-"790212030078": { peso: 1, descripcion: "BOLA FETEADA ESP XKG", categoria: "SIN AGREGAR EN LA BASE DE DATOS" },
-"LIC1823": { peso: 0.2, descripcion: "ESPONJA  DOBLE FAZ X UNIDAD", categoria: "SIN AGREGAR EN LA BASE DE DATOS" },
-"7791813800774": { peso: 0.3, descripcion: "GAS TONICA LATA X 310CC PASO D", categoria: "SIN AGREGAR EN LA BASE DE DATOS" },
-"7792100016281": { peso: 1, descripcion: "VINO OPORTO X 1L FLORIO", categoria: "SIN AGREGAR EN LA BASE DE DATOS" },
-"7793890020045": { peso: 0.2, descripcion: "MADALENAS VAINI X200G BIMBO", categoria: "SIN AGREGAR EN LA BASE DE DATOS" },
-"06131016A": { peso: 1, descripcion: "ROMERO X KG", categoria: "SIN AGREGAR EN LA BASE DE DATOS" },
-"7790206007509": { peso: 0.5, descripcion: "BOCADITO RELL X26GX20U DOS CORAZONES", categoria: "SIN AGREGAR EN LA BASE DE DATOS" },
-"7790216012001": { peso: 1, descripcion: "MENTA XKG", categoria: "SIN AGREGAR EN LA BASE DE DATOS" },
-"7790216012622": { peso: 0.5, descripcion: "MENTA x PAQUETE", categoria: "SIN AGREGAR EN LA BASE DE DATOS" },
-"7790216020085": { peso: 1, descripcion: "FRUTA DURAZNO x KG", categoria: "SIN AGREGAR EN LA BASE DE DATOS" },
-"7798080660179": { peso: 0.2, descripcion: "PIONONO X180G VALIDO", categoria: "SIN AGREGAR EN LA BASE DE DATOS" },
-"T431": { peso: 0.5, descripcion: "BUDIN LIMON/ARAND X3U SELYGEL", categoria: "SIN AGREGAR EN LA BASE DE DATOS" },
-"7798138554016": { peso: 1, descripcion: "JUGO LIMON X 1L MOLTO", categoria: "SIN AGREGAR EN LA BASE DE DATOS" },
-"7790213012208": { peso: 0.5, descripcion: "PAN LACTAL X560 G LACTAL", categoria: "SIN AGREGAR EN LA BASE DE DATOS" },
-"7790670045663": { peso: 0.5, descripcion: "SALCHICHA SUPERCHANCHO X18U PA", categoria: "SIN AGREGAR EN LA BASE DE DATOS" },
-"7791270014011": { peso: 3, descripcion: "MOUSSE CHOCOLATE X3KG KEUKEN", categoria: "SIN AGREGAR EN LA BASE DE DATOS" },
-"7798165392639": { peso: 1, descripcion: "PAN X KG", categoria: "SIN AGREGAR EN LA BASE DE DATOS" },
-"7790212030047": { peso: 1, descripcion: "POLLO T7 XU", categoria: "SIN AGREGAR EN LA BASE DE DATOS" },
-"7790641000523": { peso: 0.5, descripcion: "SAL FINA x 500G COLOSAL", categoria: "SIN AGREGAR EN LA BASE DE DATOS" },
-"7791113006241": { peso: 0.5, descripcion: "FLAN VAINILLA X500G EMETH", categoria: "SIN AGREGAR EN LA BASE DE DATOS" },
-"7792459501049": { peso: 0.3, descripcion: "CABO SANITARIO DE COLORES XU", categoria: "SIN AGREGAR EN LA BASE DE DATOS" },
-"7793360103018": { peso: 0.3, descripcion: "KETCHUP X250G LA CAMPAGNOLA", categoria: "SIN AGREGAR EN LA BASE DE DATOS" },
-"7794820000489": { peso: 2.3, descripcion: "QUESO CHEDAR FETAS X2.37KG MILKAUT", categoria: "SIN AGREGAR EN LA BASE DE DATOS" },
-"7794820902387": { peso: 0.5, descripcion: "QUESO CHEDAR FETAS X192U MILKA", categoria: "SIN AGREGAR EN LA BASE DE DATOS" },
-"7798430440667": { peso: 0.2, descripcion: "PAPEL HIGIENI CONO GDE 300MX8U", categoria: "SIN AGREGAR EN LA BASE DE DATOS" },
-"7799132966556": { peso: 0.5, descripcion: "MEDIALUN GRASA PREF X40GX180U SELYGEL", categoria: "SIN AGREGAR EN LA BASE DE DATOS" },
-"7794450008268": { peso: 0.7, descripcion: "VINO CHARDONAY X750CC ANGELICA", categoria: "SIN AGREGAR EN LA BASE DE DATOS" },
-"7791113006395": { peso: 0.5, descripcion: "DULCE BATATA LIGHT X500G EMETH", categoria: "SIN AGREGAR EN LA BASE DE DATOS" },
-"7791113006401": { peso: 0.5, descripcion: "DULCE MEMBRILLO LIGHT X500G EMETH", categoria: "SIN AGREGAR EN LA BASE DE DATOS" },
-"7791679000417": { peso: 0.5, descripcion: "TAPA PASCUAL CRI REDONDA X2U L", categoria: "SIN AGREGAR EN LA BASE DE DATOS" },
-"7793323002358": { peso: 1, descripcion: "SESAMO INTEGRAL DICOMERE X 1KG", categoria: "SIN AGREGAR EN LA BASE DE DATOS" },
-"7798092900096": { peso: 1, descripcion: "CAFE TORRADO MOL X1KG NOBLEZA", categoria: "SIN AGREGAR EN LA BASE DE DATOS" },
-"7790991126353": { peso: 0.3, descripcion: "BANDEJA 102 X200U COTNYL", categoria: "SIN AGREGAR EN LA BASE DE DATOS" },
-"7793360123474": { peso: 0.2, descripcion: "SALSA BARBACOA X250G LA CAMPAG", categoria: "SIN AGREGAR EN LA BASE DE DATOS" },
-"7792180145352": { peso: 3, descripcion: "PURE DE PAPA DESH X3KG CAÑUELA", categoria: "SIN AGREGAR EN LA BASE DE DATOS" },
-"7622201812652": { peso: 0.1, descripcion: "POSTRE MANI X111G MANTECOL.", categoria: "SIN AGREGAR EN LA BASE DE DATOS" },
-"7792360096146": { peso: 0.2, descripcion: "BUDIN VAINILLA X200G BONAFIDE", categoria: "SIN AGREGAR EN LA BASE DE DATOS" },
-"7792360097129": { peso: 0.8, descripcion: "CEREAL BAÑADO CHOCO X80G BONAF", categoria: "SIN AGREGAR EN LA BASE DE DATOS" },
-"7793806000192": { peso: 0.4, descripcion: "PAN DULCE S/FRUTAS X400G LA SANTIAGUEÑA", categoria: "SIN AGREGAR EN LA BASE DE DATOS" },
-"7798029715304": { peso: 0.7, descripcion: "MANI BAÑADO CHOCO X70G SIRALA", categoria: "SIN AGREGAR EN LA BASE DE DATOS" },
-"7798094222035": { peso: 0.25, descripcion: "BUDIN VAINI MARMOLADOS X250G NEVARES", categoria: "SIN AGREGAR EN LA BASE DE DATOS" },
-"7798094222714": { peso: 0.25, descripcion: "BUDIN VAINI C/FRUTAS X250G NEVARES", categoria: "SIN AGREGAR EN LA BASE DE DATOS" },
-"7798094222721": { peso: 0.25, descripcion: "BUDIN SIN FRUTAS  x 250 gr NEVARES", categoria: "SIN AGREGAR EN LA BASE DE DATOS" },
+"7798011976829": { peso: 3, descripcion: "SALSA BARBACOA X3KG ABEDUL.", categoria: "SECOS" },
+"7798162250038": { peso: 0.8, descripcion: "ANANA RODAJAS X 850G SIERRA", categoria: "FRUTA" },
+"707273300115": { peso: 0.2, descripcion: "BANDEJA 105 X200U CELPAK", categoria: "DESCARTABLES" },
+"7798290581875": { peso: 1, descripcion: "LECHE ALMENDRAS X1L BIBA.", categoria: "SECOS" },
+"7790216020086": { peso: 1, descripcion: "MELON x KG", categoria: "FRUTA" },
+"7790321020304": { peso: 0.3, descripcion: "TAPA 101 PET X100U CELPAK", categoria: "DESCARTABLES" },
+"7790350007063": { peso: 0.3, descripcion: "SALCHICHA SUPERCHANCHO X12U SW", categoria: "FRESCOS" },
+"7790522011983": { peso: 0.2, descripcion: "PAN SUPER PANCHO X6UMENDIA", categoria: "PANIFICADOS" },
+"7790580143237": { peso: 0.15, descripcion: "JUGO POLVO NARAN X15GR ARCOR", categoria: "SECOS" },
+"7790670052388": { peso: 0.3, descripcion: "SALCHICHAS X6U PATY", categoria: "FRESCOS" },
+"7790696000301": { peso: 0.8, descripcion: "DURAZNO MITAD X820G ABETO", categoria: "FRUTA" },
+"77911018": { peso: 0.6, descripcion: "ALFAJOR TRIPLE BCO X60G TURIMAR", categoria: "SECOS" },
+"7791337008366": { peso: 1, descripcion: "YOGUR DESC VAIN X 1L LA SERE", categoria: "FRESCOS" },
+"7791890004874": { peso: 0.2, descripcion: "TAPA PASCUALINA X2U SIGLO DE O", categoria: "FRESCOS" },
+"7792180140586": { peso: 0.1, descripcion: "PURE PAPA INST X125G MAMA COCINA", categoria: "SECOS" },
+"7792378000814": { peso: 1, descripcion: "VINAGRE ALCOHOL X1L COMENSAL", categoria: "SECOS" },
+"7792860005655": { peso: 0.1, descripcion: "POSTRE DE MANI X110GR LHERITIE", categoria: "SECOS" },
+"7792900009063": { peso: 0.5, descripcion: "AJI MOLIDO x 50 G DOS ANCLAS", categoria: "SECOS" },
+"7794990880416": { peso: 1, descripcion: "QUESO PORT SALUD S/SAL x KG PAULINA", categoria: "FRESCOS" },
+"7797470199367": { peso: 0.5, descripcion: "FIDEO SPAGHETTI X500G MAROLIO", categoria: "SECOS" },
+"7798138555518": { peso: 0.5, descripcion: "FIDEO SPAGHETTI X500G STA ISABEL", categoria: "SECOS" },
+"7798181510113": { peso: 0.2, descripcion: "BUDIN S/TACC MARMO X250G SMAMS", categoria: "SECOS" },
+"7798411011236": { peso: 0.8, descripcion: "GARRAPIÑADA MANI X80G GOLOMASTER", categoria: "SECOS" },
+"7716253096457": { peso: 0.2, descripcion: "PAPEL HIGIENICO 80MTX40U", categoria: "DESCARTABLES" },
+"7790216012991": { peso: 10, descripcion: "BALDE NEGRO X10LTXU", categoria: "DESCARTABLES" },
+"7790629000606": { peso: 0.8, descripcion: "ACEITUNA NEGRA S/C X800G EL MA", categoria: "FRESCOS" },
+"7791270013755": { peso: 0.5, descripcion: "BIZCOCHUELO VAINILLA X500G KEUKEN", categoria: "SECOS" },
+"7792459456134": { peso: 0.2, descripcion: "FIBRA ESPONJA CHICA XU", categoria: "DESCARTABLES" },
+"7793890259384": { peso: 0.4, descripcion: "PAN LACTAL CERE/SEM X400G FARGO", categoria: "PANIFICADOS" },
+"7793890260885": { peso: 0.5, descripcion: "PAN LACTAL ARTESANO X500G BIMB", categoria: "PANIFICADOS" },
+"7794000003897": { peso: 1, descripcion: "MOUSSE CHOCOLATE X1KG CARTE D'", categoria: "SECOS" },
+"7797390401458": { peso: 0.3, descripcion: "CEPILLO ERGONOMICO XU SCHEZ", categoria: "DESCARTABLES" },
+"7798023697873": { peso: 0.25, descripcion: "AJI MOLIDO X25G SYP", categoria: "SECOS" },
+"7798044610226": { peso: 0.5, descripcion: "ACEITE DE OLIVA X500CC DEL VAL", categoria: "SECOS" },
+"7798072290070": { peso: 0.2, descripcion: "TRAPO PISO BCO 50X60XU CLEAN T", categoria: "DESCARTABLES" },
+"7798128410087": { peso: 0.5, descripcion: "REBOZADOR S/TACC X450G AGLU", categoria: "SECOS" },
+"7798164191585": { peso: 1, descripcion: "CAJA NAVIDEÑA XU", categoria: "SECOS" },
+"7798558162146": { peso: 1, descripcion: "COLITA DE CUADRIL XKG TECNOCAR", categoria: "FRESCOS" },
+"790212030078": { peso: 1, descripcion: "BOLA FETEADA ESP XKG", categoria: "FRESCOS" },
+"LIC1823": { peso: 0.2, descripcion: "ESPONJA  DOBLE FAZ X UNIDAD", categoria: "DESCARTABLES" },
+"7791813800774": { peso: 0.3, descripcion: "GAS TONICA LATA X 310CC PASO D", categoria: "SECOS" },
+"7792100016281": { peso: 1, descripcion: "VINO OPORTO X 1L FLORIO", categoria: "SECOS" },
+"7793890020045": { peso: 0.2, descripcion: "MADALENAS VAINI X200G BIMBO", categoria: "SECOS" },
+"06131016A": { peso: 1, descripcion: "ROMERO X KG", categoria: "SECOS" },
+"7790206007509": { peso: 0.5, descripcion: "BOCADITO RELL X26GX20U DOS CORAZONES", categoria: "SECOS" },
+"7790216012001": { peso: 1, descripcion: "MENTA XKG", categoria: "FRUTAS" },
+"7790216012622": { peso: 0.5, descripcion: "MENTA x PAQUETE", categoria: "FRUTAS" },
+"7790216020085": { peso: 1, descripcion: "FRUTA DURAZNO x KG", categoria: "FRUTAS" },
+"7798080660179": { peso: 0.2, descripcion: "PIONONO X180G VALIDO", categoria: "SECOS" },
+"T431": { peso: 0.5, descripcion: "BUDIN LIMON/ARAND X3U SELYGEL", categoria: "SECOS" },
+"7798138554016": { peso: 1, descripcion: "JUGO LIMON X 1L MOLTO", categoria: "SECOS" },
+"7790213012208": { peso: 0.5, descripcion: "PAN LACTAL X560 G LACTAL", categoria: "PANIFICADOS" },
+"7790670045663": { peso: 0.5, descripcion: "SALCHICHA SUPERCHANCHO X18U PA", categoria: "FRESCOS" },
+"7791270014011": { peso: 3, descripcion: "MOUSSE CHOCOLATE X3KG KEUKEN", categoria: "SECOS" },
+"7798165392639": { peso: 1, descripcion: "PAN X KG", categoria: "PANIFICADOS" },
+"7790212030047": { peso: 1, descripcion: "POLLO T7 XU", categoria: "FRESCOS" },
+"7790641000523": { peso: 0.5, descripcion: "SAL FINA x 500G COLOSAL", categoria: "SECOS" },
+"7791113006241": { peso: 0.5, descripcion: "FLAN VAINILLA X500G EMETH", categoria: "SECOS" },
+"7792459501049": { peso: 0.3, descripcion: "CABO SANITARIO DE COLORES XU", categoria: "DESCARTABLES" },
+"7793360103018": { peso: 0.3, descripcion: "KETCHUP X250G LA CAMPAGNOLA", categoria: "SECOS" },
+"7794820000489": { peso: 2.3, descripcion: "QUESO CHEDAR FETAS X2.37KG MILKAUT", categoria: "FRESCOS" },
+"7794820902387": { peso: 0.5, descripcion: "QUESO CHEDAR FETAS X192U MILKA", categoria: "FRESCOS" },
+"7798430440667": { peso: 0.2, descripcion: "PAPEL HIGIENI CONO GDE 300MX8U", categoria: "DESCARTABLES" },
+"7799132966556": { peso: 0.5, descripcion: "MEDIALUN GRASA PREF X40GX180U SELYGEL", categoria: "CONGELADOS" },
+"7794450008268": { peso: 0.7, descripcion: "VINO CHARDONAY X750CC ANGELICA", categoria: "SECOS" },
+"7791113006395": { peso: 0.5, descripcion: "DULCE BATATA LIGHT X500G EMETH", categoria: "SECOS" },
+"7791113006401": { peso: 0.5, descripcion: "DULCE MEMBRILLO LIGHT X500G EMETH", categoria: "SECOS" },
+"7791679000417": { peso: 0.5, descripcion: "TAPA PASCUAL CRI REDONDA X2U L", categoria: "FRESCOS" },
+"7793323002358": { peso: 1, descripcion: "SESAMO INTEGRAL DICOMERE X 1KG", categoria: "SECOS" },
+"7798092900096": { peso: 1, descripcion: "CAFE TORRADO MOL X1KG NOBLEZA", categoria: "SECOS" },
+"7790991126353": { peso: 0.3, descripcion: "BANDEJA 102 X200U COTNYL", categoria: "DESCARTABLES" },
+"7793360123474": { peso: 0.2, descripcion: "SALSA BARBACOA X250G LA CAMPAG", categoria: "SECOS" },
+"7792180145352": { peso: 3, descripcion: "PURE DE PAPA DESH X3KG CAÑUELA", categoria: "SECOS" },
+"7622201812652": { peso: 0.1, descripcion: "POSTRE MANI X111G MANTECOL.", categoria: "SECOS" },
+"7792360096146": { peso: 0.2, descripcion: "BUDIN VAINILLA X200G BONAFIDE", categoria: "SECOS" },
+"7792360097129": { peso: 0.8, descripcion: "CEREAL BAÑADO CHOCO X80G BONAF", categoria: "SECOS" },
+"7793806000192": { peso: 0.4, descripcion: "PAN DULCE S/FRUTAS X400G LA SANTIAGUEÑA", categoria: "SECOS" },
+"7798029715304": { peso: 0.7, descripcion: "MANI BAÑADO CHOCO X70G SIRALA", categoria: "SECOS" },
+"7798094222035": { peso: 0.25, descripcion: "BUDIN VAINI MARMOLADOS X250G NEVARES", categoria: "SECOS" },
+"7798094222714": { peso: 0.25, descripcion: "BUDIN VAINI C/FRUTAS X250G NEVARES", categoria: "SECOS" },
+"7798094222721": { peso: 0.25, descripcion: "BUDIN SIN FRUTAS  x 250 gr NEVARES", categoria: "SECOS" },
 "06158008A": { peso: 0.2, descripcion: "PIMIENTA NEGRA GRANO x200G", categoria: "SECOS" },
 "541253212006": { peso: 1, descripcion: "CHAUCHA TROZADA CONGE X1KG BIOMAC", categoria: "FRESCOS" },
 "7790321020300": { peso: 0.2, descripcion: "TAPA 102 X100U CELPAK", categoria: "DESCARTABLES" },
@@ -9230,6 +9230,7 @@ function groupByFlete(data) {
         const codArticulo = item['Cod. Artículo'];
         const cantidad = parseFloat(item['Cantidad']) || 0;
         const deposito = item['Ubicacion'];
+        const sucursal = item['Sucursal']; // Asegúrate de tener esta columna en el CSV
         const articulo = baseDataFruver[codArticulo];
 
         if (!flete || cantidad <= 0) return;
@@ -9244,6 +9245,7 @@ function groupByFlete(data) {
                 flete,
                 kilos: 0,
                 deposito,
+                sucursales: new Set(), // Usamos Set para evitar duplicados
                 categorias: {},
                 articles: []
             };
@@ -9263,9 +9265,17 @@ function groupByFlete(data) {
             cantidad,
             pesoTotal: pesoTotalArticulo
         });
+
+        if (sucursal) {
+            grouped[flete].sucursales.add(sucursal); // Agregar sucursal
+        }
     });
 
-    return Object.values(grouped);
+    // Convertir Set a Array para manipulación más sencilla
+    return Object.values(grouped).map(group => ({
+        ...group,
+        sucursales: Array.from(group.sucursales)
+    }));
 }
 
 // Mostrar datos agrupados en la tabla principal
@@ -9273,12 +9283,18 @@ function displayGroupedData(data) {
     const tableBody = document.querySelector('#recorridosTable tbody');
     tableBody.innerHTML = '';
 
-    data.forEach(({ flete, kilos, deposito, categorias, articles }) => {
-        // Buscar chofer fijo, ayudante fijo y horario según el recorrido
+    data.forEach(({ flete, kilos, deposito, categorias, articles, sucursales }) => {
+        // Obtener chofer fijo
         const choferFijo = choferesFijos[flete] || 'Sin asignar';
-        const ayudanteFijo = ayudantes.find(a => a.recorrido === flete)?.ayudante || 'Sin ayudante';
-        const horario = horarios.find(h => h.recorrido === flete)?.horario || 'Sin horario';
-        const choferUnidad = choferesUnidades.find(c => c.chofer === choferFijo) || {};
+
+        // Buscar ayudante asociado al recorrido
+        const ayudanteFijo = ayudantes.find(a => a.recorrido.trim() === flete.trim())?.ayudante || 'Sin ayudante';
+
+        // Buscar horario asociado al recorrido
+        const horario = horarios.find(h => h.recorrido.trim() === flete.trim())?.horario || 'Sin horario';
+
+        // Buscar datos adicionales del chofer (unidad y patente)
+        const choferUnidad = choferesUnidades.find(c => c.chofer.trim() === choferFijo.trim()) || {};
 
         const row = document.createElement('tr');
 
@@ -9289,6 +9305,7 @@ function displayGroupedData(data) {
             <td>${Object.entries(categorias)
                 .map(([categoria, kilos]) => `${categoria}: ${Math.round(kilos)} kg`)
                 .join('<br>')}</td>
+            <td>${sucursales.length || 0} sucursal(es)</td>
             <td>${choferFijo}</td>
             <td>${ayudanteFijo}</td>
             <td>${horario}</td>
@@ -9305,6 +9322,8 @@ function displayGroupedData(data) {
         });
     });
 }
+
+
 
 // Mostrar artículos en un modal o alerta
 function displayArticlesModal(articles) {
