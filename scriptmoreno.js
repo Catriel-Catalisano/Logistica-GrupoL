@@ -9676,15 +9676,18 @@ function displayGroupedData(data) {
 
 function displayExcludedArticles(data) {
     const tbody = document.querySelector('#excludedArticlesTable tbody');
-
     tbody.innerHTML = ''; // Limpiar la tabla
 
     const excluidos = [];
 
     data.forEach(item => {
         const codArticulo = item['Cod. Artículo'];
-        const cantidad = parseFloat(item['Cantidad']) || 0;
+        const cantidad = parseFloat(item['Cantidad']?.replace(',', '.')) || 0;
+
         const flete = item['Flete'];
+        const descripcion = item['Descripción Artículo'] || 'Desconocido';
+        const categoria = item['Rubro 2'] || 'Sin categoría';
+
         const articulo = baseDataFruver[codArticulo];
 
         let razon = '';
@@ -9702,8 +9705,8 @@ function displayExcludedArticles(data) {
         if (razon) {
             excluidos.push({
                 codigo: codArticulo || 'Desconocido',
-                descripcion: articulo?.descripcion || 'Desconocido',
-                categoria: articulo?.categoria || 'Sin categoría',
+                descripcion,
+                categoria,
                 cantidad,
                 razon
             });
@@ -9714,12 +9717,13 @@ function displayExcludedArticles(data) {
         const row = document.createElement('tr');
         row.appendChild(crearCeldaTexto(ex.codigo));
         row.appendChild(crearCeldaTexto(ex.descripcion));
-        row.appendChild(crearCeldaTexto(ex.category));
+        row.appendChild(crearCeldaTexto(ex.categoria));
         row.appendChild(crearCeldaTexto(ex.cantidad));
         row.appendChild(crearCeldaTexto(ex.razon));
         tbody.appendChild(row);
     });
 }
+
 
 function exportarTablaAExcel(nombreArchivo = 'recorridos.xlsx') {
     const tabla = document.getElementById('recorridosTable');
