@@ -11,7 +11,7 @@ const choferesUnidades = [
 { chofer: 'Alaluf Laudan', capacidad: 10000, patente: 'KNZ200', centro: 'AMBOS', telefono: '+5491160221623' },
 { chofer: 'Alconi Nicole', capacidad: 500, patente: 'LMG882', centro: 'AMBOS', telefono: '+5491125879683' },
 { chofer: 'Aldo Echeverry', capacidad: 4000, patente: 'FAB734', centro: 'AMBOS', telefono: '+5491160426686' },
-{ chofer: 'ALEX GUTIERREZ', capacidad: 8000, patente: 'UIG735', centro: 'AMBOS', telefono: '+5491166381108' },
+{ chofer: 'ALEX GUTIERREZ', capacidad: 8000 , patente: 'UIG735', centro: 'AMBOS', telefono: '+5491166381108' },
 { chofer: 'ALMIRON CARLOS', capacidad: 500, patente: 'KJZ410', centro: 'AMBOS', telefono: '+5491162313413' },
 { chofer: 'Ambrosio Gerardo', capacidad: 3700, patente: 'AVL751', centro: 'AMBOS', telefono: '+5491141850976' },
 { chofer: 'Ambrossi Norberto', capacidad: 10000, patente: 'AB876BM', centro: 'AMBOS', telefono: '+5491158764829' },
@@ -3122,7 +3122,7 @@ const horarios = [
     
 ];
 
-// Base de datos real para pesos de artículos
+// Base de datos para pesos de artículos
 const baseDataFruver = {
 "7791813420583": { peso: 0.5, descripcion: "7UP FREE X 500CC", categoria: "SECOS" },
 "7791813421528": { peso: 1.5, descripcion: "7UP REG X 1.5 L", categoria: "SECOS" },
@@ -9177,65 +9177,159 @@ const baseDataFruver = {
 "77909930": { peso: 0.038, descripcion: "ALFAJOR BLANCO 38G TURIMAR", categoria: "SECOS" },
 "7793450000128": { peso: 0.15, descripcion: "GALLE HOJALDRE TRIANG X150G HOJALMAR", categoria: "SECOS" },
 "7793591040144": { peso: 0.5, descripcion: "GRASA VACUNA X500G DOÑA FLORA", categoria: "FRESCOS" },
+"RAC20001": { peso: 0.4, descripcion: "ADULTOS-MERIENDAS", categoria: "SERVICIOS VENDIDOS" },
+"RAC20002": { peso: 0.4, descripcion: "ADULTOS - ALMUERZOS", categoria: "SERVICIOS VENDIDOS" },
+"RAC20003": { peso: 0.4, descripcion: "ADULTOS - CENAS", categoria: "SERVICIOS VENDIDOS" },
+"RAC20004": { peso: 0.4, descripcion: "ADULTOS-DESAYUNOS", categoria: "SERVICIOS VENDIDOS" },
+"RAC20005": { peso: 0.4, descripcion: "INFANTILES-ALMUERZOS", categoria: "SERVICIOS VENDIDOS" },
+"RAC20006": { peso: 0.2, descripcion: "INFANTILES-DESAYUNOS", categoria: "SERVICIOS VENDIDOS" },
+"RAC20007": { peso: 0.2, descripcion: "INFANTILES-MERIENDAS", categoria: "SERVICIOS VENDIDOS" },
+"RAC20009": { peso: 0.4, descripcion: "ALMUERZO ADULTO F/S", categoria: "SERVICIOS VENDIDOS" },
+"RAC20011": { peso: 0.4, descripcion: "ALMUERZO ADULTO F/S", categoria: "SERVICIOS VENDIDOS" },
+"RAC20129": { peso: 0.4, descripcion: "INFANTILES-ALMUERZOS1", categoria: "SERVICIOS VENDIDOS" },
+"RAC20136": { peso: 0.2, descripcion: "INFANTILES-DESAYUNOS", categoria: "SERVICIOS VENDIDOS" },
+"RAC20164": { peso: 0.2, descripcion: "LECHES MATERNIZADAS 1", categoria: "SERVICIOS VENDIDOS" },
+"RAC20165": { peso: 0.2, descripcion: "LECHES MATERNIZADAS 2", categoria: "SERVICIOS VENDIDOS" },
+"RAC20166": { peso: 0.2, descripcion: "LECHES MATERNIZADAS 3", categoria: "SERVICIOS VENDIDOS" },
+"RACACS-DIP-01": { peso: 0.2, descripcion: "Postres 1", categoria: "SERVICIOS VENDIDOS" },
+"RACACS-DIP-02": { peso: 0.2, descripcion: "Postres 2", categoria: "SERVICIOS VENDIDOS" },
+"RACACS-DIP-03": { peso: 0.2, descripcion: "Postres 3", categoria: "SERVICIOS VENDIDOS" },
+"RACACS-DIP-04": { peso: 0.2, descripcion: "Postres 4", categoria: "SERVICIOS VENDIDOS" },
+"RACACS-DIP-05": { peso: 0.2, descripcion: "Postres 5", categoria: "SERVICIOS VENDIDOS" },
+"RACACS-DIP-11": { peso: 0.2, descripcion: "Postres 6", categoria: "SERVICIOS VENDIDOS" },
+"RACACS-DIP-12": { peso: 0.2, descripcion: "Postres 7", categoria: "SERVICIOS VENDIDOS" },
+"RACACS-DIP-13": { peso: 0.2, descripcion: "Postres 8", categoria: "SERVICIOS VENDIDOS" },
+"RACACS-DIP-14": { peso: 0.2, descripcion: "Postres 9", categoria: "SERVICIOS VENDIDOS" },
+"RACACS-DIP-15": { peso: 0.2, descripcion: "Postres 10", categoria: "SERVICIOS VENDIDOS" },
+"RAC20012": { peso: 0, descripcion: "RACIONES DIA ESPECIAL", categoria: "SERVICIOS VENDIDOS" },
+"RAC20013": { peso: 0, descripcion: "RACIONES TOTALES", categoria: "SERVICIOS VENDIDOS" },
+"RAC20016": { peso: 0, descripcion: "INFANTILES-LÁCTEOS", categoria: "SERVICIOS VENDIDOS" },
+"RAC20022": { peso: 0, descripcion: "RACIONES COMIDA CS 7 a 11", categoria: "SERVICIOS VENDIDOS" },
+"RAC20023": { peso: 0, descripcion: "RACIONES COMIDA DMC 7 a 11", categoria: "SERVICIOS VENDIDOS" },
+"RAC20028": { peso: 0, descripcion: "LACTANTES", categoria: "SERVICIOS VENDIDOS" },
+"RAC20107": { peso: 0, descripcion: "ADULTOS-MERIENDAS I", categoria: "SERVICIOS VENDIDOS" },
+"RAC20108": { peso: 0, descripcion: "ADULTOS - ALMUERZOS", categoria: "SERVICIOS VENDIDOS" },
+"RAC20123": { peso: 0, descripcion: "ADULTOS-DESAYUNOS", categoria: "SERVICIOS VENDIDOS" },
+"RAC20124": { peso: 0, descripcion: "ADULTOS-DESAYUNOS", categoria: "SERVICIOS VENDIDOS" },
+"RAC20195": { peso: 0, descripcion: "RACION LACTEA ALM/ADULTO", categoria: "SERVICIOS VENDIDOS" },
+"RAC20197": { peso: 0, descripcion: "RACION LACTEA CEN/ADULTO", categoria: "SERVICIOS VENDIDOS" },
+"RAC20214": { peso: 0, descripcion: "ADULTOS DESAYUNOS", categoria: "SERVICIOS VENDIDOS" },
+"RAC20215": { peso: 0, descripcion: "INFANTILES MERIENDAS", categoria: "SERVICIOS VENDIDOS" },
+"RAC20219": { peso: 0, descripcion: "ADULTOS-DESAYUNOS I", categoria: "SERVICIOS VENDIDOS" },
+"RAC20230": { peso: 0, descripcion: "RACIONES DESAYUNOS", categoria: "SERVICIOS VENDIDOS" },
+"RAC20243": { peso: 0, descripcion: "RACIONES", categoria: "SERVICIOS VENDIDOS" },
+"RAC20249": { peso: 0, descripcion: "RACION LACTEA DIA ESPECIAL", categoria: "SERVICIOS VENDIDOS" },
+"RAC20259": { peso: 0, descripcion: "BLANDO B - ALMUERZO", categoria: "SERVICIOS VENDIDOS" },
+"RAC20261": { peso: 0, descripcion: "DBT - ALMUERZO", categoria: "SERVICIOS VENDIDOS" },
+"RAC20262": { peso: 0, descripcion: "DBT - CENA", categoria: "SERVICIOS VENDIDOS" },
+"RAC20263": { peso: 0, descripcion: "HEPATO - ALMUERZO", categoria: "SERVICIOS VENDIDOS" },
+"RAC20265": { peso: 0, descripcion: "PACIENTE - ALMUERZO", categoria: "SERVICIOS VENDIDOS" },
+"RAC20266": { peso: 0, descripcion: "PACIENTE - CENA", categoria: "SERVICIOS VENDIDOS" },
+"RAC20269": { peso: 0, descripcion: "VEGETARIANO - ALMUERZO", categoria: "SERVICIOS VENDIDOS" },
+"RAC20273": { peso: 0, descripcion: "DIETA LIQUIDA", categoria: "SERVICIOS VENDIDOS" },
+"RAC20289": { peso: 0, descripcion: "ALMUERZO FDS", categoria: "SERVICIOS VENDIDOS" },
+"RAC20290": { peso: 0, descripcion: "VIANDA GENERAL", categoria: "SERVICIOS VENDIDOS" },
+"RAC20291": { peso: 0, descripcion: "VIANDA LIGHT", categoria: "SERVICIOS VENDIDOS" },
+"RAC20292": { peso: 0, descripcion: "VIANDA ENSALADA", categoria: "SERVICIOS VENDIDOS" },
+"RAC20293": { peso: 0, descripcion: "VIANDA GUARNICION", categoria: "SERVICIOS VENDIDOS" },
+"RAC20294": { peso: 0, descripcion: "CENA FDS", categoria: "SERVICIOS VENDIDOS" },
+"RAC20297": { peso: 0, descripcion: "REG GENRAL HIPOSODICO", categoria: "SERVICIOS VENDIDOS" },
+"RAC20299": { peso: 0, descripcion: "REG ASTRINGENTE", categoria: "SERVICIOS VENDIDOS" },
+"RAC20300": { peso: 0, descripcion: "DIETA BLANDA 2", categoria: "SERVICIOS VENDIDOS" },
+"RAC20301": { peso: 0, descripcion: "DIETA BLANDA 1", categoria: "SERVICIOS VENDIDOS" },
+"RAC20302": { peso: 0, descripcion: "REG BLANDO", categoria: "SERVICIOS VENDIDOS" },
+"RAC20303": { peso: 0, descripcion: "REG DIABETICOS", categoria: "SERVICIOS VENDIDOS" },
+"RAC20304": { peso: 0, descripcion: "VIANDA POSTRE", categoria: "SERVICIOS VENDIDOS" },
+"RAC20311": { peso: 0, descripcion: "RACIONES COMIDA CS 12 A 18", categoria: "SERVICIOS VENDIDOS" },
+"RAC20315": { peso: 0, descripcion: "VIANDAS RACIONES ALMUERZO", categoria: "SERVICIOS VENDIDOS" },
+"RAC20323": { peso: 0, descripcion: "RAC-PRIV-POSTRE 01", categoria: "SERVICIOS VENDIDOS" },
+"RAC20324": { peso: 0, descripcion: "RAC-PRIV-POSTRE 02", categoria: "SERVICIOS VENDIDOS" },
+"RAC20325": { peso: 0, descripcion: "RACIONES COMIDA DMC 3 a 6 II", categoria: "SERVICIOS VENDIDOS" },
+"RAC20326": { peso: 0, descripcion: "RACIONES COMIDA DMC 7 a 11 II", categoria: "SERVICIOS VENDIDOS" },
+"RAC20327": { peso: 0, descripcion: "RACIONES COMIDA DMC 12 a 18 II", categoria: "SERVICIOS VENDIDOS" },
+"RAC20333": { peso: 0, descripcion: "RACIONES CELIACOS", categoria: "SERVICIOS VENDIDOS" },
+"RAC20340": { peso: 0, descripcion: "ENTRADA", categoria: "Sin categoría" },
+"RAC20403": { peso: 0, descripcion: "Almuerzo Menu Especiales", categoria: "SERVICIOS VENDIDOS" },
+"RAC20453": { peso: 0, descripcion: "MENU TARTA", categoria: "SERVICIOS VENDIDOS" },
+"RAC20454": { peso: 0, descripcion: "MENU TARTA FDS", categoria: "SERVICIOS VENDIDOS" },
+"RAC20455": { peso: 0, descripcion: "VIANDA GENERAL FDS", categoria: "SERVICIOS VENDIDOS" },
+"RAC20456": { peso: 0, descripcion: "VIANDA LIGHT FDS", categoria: "SERVICIOS VENDIDOS" },
+"RAC20459": { peso: 0, descripcion: "MENU PIZZA", categoria: "SERVICIOS VENDIDOS" },
+"RAC20461": { peso: 0, descripcion: "VIANDA ENSALADA FDS", categoria: "SERVICIOS VENDIDOS" },
+"RAC20462": { peso: 0, descripcion: "VIANDA GUARNICION FDS", categoria: "SERVICIOS VENDIDOS" },
+"RAC20463": { peso: 0, descripcion: "SALAD BAR.", categoria: "SERVICIOS VENDIDOS" },
+"RAC20469": { peso: 0, descripcion: "MENU BLANDO CON POLLO", categoria: "SERVICIOS VENDIDOS" },
+"RAC20470": { peso: 0, descripcion: "MENU PROCESADO", categoria: "SERVICIOS VENDIDOS" },
+"RAC20471": { peso: 0, descripcion: "MENU RENAL", categoria: "SERVICIOS VENDIDOS" },
+"RAC20477": { peso: 0, descripcion: "SOPA FDS", categoria: "SERVICIOS VENDIDOS" },
+"RAC20479": { peso: 0, descripcion: "VIANDA LIGH CENA FDS", categoria: "SERVICIOS VENDIDOS" },
+"RAC20480": { peso: 0, descripcion: "BIFE DDS", categoria: "SERVICIOS VENDIDOS" },
+"RAC20481": { peso: 0, descripcion: "BIFE FDS", categoria: "SERVICIOS VENDIDOS" },
+"RAC20482": { peso: 0, descripcion: "GRILLE DDS", categoria: "SERVICIOS VENDIDOS" },
+"RAC20484": { peso: 0, descripcion: "REG BLANDO CARNES", categoria: "SERVICIOS VENDIDOS" },
+"RAC20511": { peso: 0, descripcion: "RAC LISTO CONSUMO CS", categoria: "SERVICIOS VENDIDOS" },
+"RACACS-3FEB-08": { peso: 0, descripcion: "RACIONES COMIDA CS 9 a 11", categoria: "SERVICIOS VENDIDOS" },
+"RACACS-COLF-01": { peso: 0, descripcion: "MENU ALTERNATIVO 1", categoria: "SERVICIOS VENDIDOS" },
+"RACACS-COLF-02": { peso: 0, descripcion: "MENU ALTERNATIVO 2", categoria: "SERVICIOS VENDIDOS" },
+"RACACS-COLF-03": { peso: 0, descripcion: "MENU ALTERNATIVO 3", categoria: "SERVICIOS VENDIDOS" },
+"RACACS-DIP-06": { peso: 0, descripcion: "Minuta 1", categoria: "SERVICIOS VENDIDOS" },
+"RACACS-DIP-07": { peso: 0, descripcion: "Minuta 2", categoria: "SERVICIOS VENDIDOS" },
+"RACACS-DIP-08": { peso: 0, descripcion: "Minuta 3", categoria: "SERVICIOS VENDIDOS" },
+"RACACS-DIP-09": { peso: 0, descripcion: "Minuta 4", categoria: "SERVICIOS VENDIDOS" },
+
+
 
 
 };
 
+// === VARIABLES GLOBALES ===
+let groupedData = [];
+let datosOriginales = [];
+
+// === LECTURA DEL CSV ===
 document.getElementById('processFile').addEventListener('click', () => {
     const fileInput = document.getElementById('csvFile');
     const file = fileInput.files[0];
-
-    if (!file) {
-        alert('Por favor, selecciona un archivo CSV.');
-        return;
-    }
+    if (!file) return alert('Por favor, selecciona un archivo CSV.');
 
     const reader = new FileReader();
-
-    reader.onload = (event) => {
-        const csvData = event.target.result;
-        processCSV(csvData);
-    };
-
+    reader.onload = (event) => processCSV(event.target.result);
     reader.readAsText(file);
 });
 
-let groupedData = [];
-
-// Procesar el archivo CSV
 function processCSV(csvData) {
     const rows = csvData.trim().split('\n');
-    const headers = rows.shift().split(',');
+    const headers = rows.shift().split(',').map(h => h.trim());
 
     const data = rows.map(row => {
         const values = row.split(',');
         return headers.reduce((acc, header, index) => {
-            acc[header.trim()] = values[index]?.trim();
+            acc[header] = values[index]?.trim();
             return acc;
         }, {});
     });
 
+    datosOriginales = data;
     groupedData = groupByFlete(data);
     populateRecorridoFilter(groupedData);
     displayGroupedData(groupedData);
-    displayExcludedArticles(data); // Unificar artículos excluidos
+    displayExcludedArticles(data);
+
+    
 }
 
-// Agrupar datos por recorrido (flete)
+
 function groupByFlete(data) {
     const grouped = {};
-
     data.forEach(item => {
         const flete = item['Flete'];
         const codArticulo = item['Cod. Artículo'];
         const cantidad = parseFloat(item['Cantidad']) || 0;
         const deposito = item['Ubicacion'];
-        const sucursal = item['Sucursal']; // Asegúrate de tener esta columna en el CSV
+        const sucursal = item['Sucursal'];
         const articulo = baseDataFruver[codArticulo];
 
-        if (!flete || cantidad <= 0) return;
-
-        if (!articulo) return;
+        if (!flete || cantidad <= 0 || !articulo) return;
 
         const categoria = articulo.categoria || "Sin categoría";
         const pesoTotalArticulo = articulo.peso * cantidad;
@@ -9245,147 +9339,243 @@ function groupByFlete(data) {
                 flete,
                 kilos: 0,
                 deposito,
-                sucursales: new Set(), // Usamos Set para evitar duplicados
+                sucursales: new Set(),
                 categorias: {},
                 articles: []
             };
         }
 
         grouped[flete].kilos += pesoTotalArticulo;
-
-        if (!grouped[flete].categorias[categoria]) {
-            grouped[flete].categorias[categoria] = 0;
-        }
-
-        grouped[flete].categorias[categoria] += pesoTotalArticulo;
-
-        grouped[flete].articles.push({
-            codigoArticulo: codArticulo,
-            descripcion: articulo.descripcion,
-            cantidad,
-            pesoTotal: pesoTotalArticulo
-        });
-
-        if (sucursal) {
-            grouped[flete].sucursales.add(sucursal); // Agregar sucursal
-        }
+        grouped[flete].categorias[categoria] = (grouped[flete].categorias[categoria] || 0) + pesoTotalArticulo;
+        grouped[flete].articles.push({ codigoArticulo: codArticulo, descripcion: articulo.descripcion, cantidad, pesoTotal: pesoTotalArticulo });
+        if (sucursal) grouped[flete].sucursales.add(sucursal);
     });
 
-    // Convertir Set a Array para manipulación más sencilla
     return Object.values(grouped).map(group => ({
         ...group,
         sucursales: Array.from(group.sucursales)
     }));
 }
 
-// Mostrar datos agrupados en la tabla principal
-function displayGroupedData(data) {
-    const tableBody = document.querySelector('#recorridosTable tbody');
-    tableBody.innerHTML = '';
+function fusionarPorRecorridoManual(filtro1, filtro2) {
+    const filas = Array.from(document.querySelectorAll('#recorridosTable tbody tr'));
 
-    data.forEach(({ flete, kilos, deposito, categorias, articles, sucursales }) => {
-        // Obtener chofer fijo
-        const choferFijo = choferesFijos[flete] || 'Sin asignar';
+    const seleccionadas = filas.filter(f => {
+        const recorrido = f.cells[9].innerText.trim().toUpperCase();
+        return recorrido === filtro1.trim().toUpperCase() || recorrido === filtro2.trim().toUpperCase();
+    });
 
-        // Buscar ayudante asociado al recorrido
-        const ayudanteFijo = ayudantes.find(a => a.recorrido.trim() === flete.trim())?.ayudante || 'Sin ayudante';
+    if (filtro1.trim().toUpperCase() === filtro2.trim().toUpperCase()) {
+        alert('Seleccioná dos recorridos distintos para fusionar.');
+        return;
+    }
 
-        // Buscar horario asociado al recorrido
-        const horario = horarios.find(h => h.recorrido.trim() === flete.trim())?.horario || 'Sin horario';
+    if (seleccionadas.length < 2) {
+        alert('No se encontraron suficientes recorridos exactos para fusionar.\nAsegurate de escribir el nombre *exacto* de ambos recorridos.');
+        return;
+    }
 
-        // Buscar datos adicionales del chofer (unidad y patente)
-        const choferUnidad = choferesUnidades.find(c => c.chofer.trim() === choferFijo.trim()) || {};
+    let recorridoFusionado = [];
+    let clienteFusionado = [];
+    let totalKilos = 0;
 
-        const row = document.createElement('tr');
+    seleccionadas.forEach(fila => {
+        recorridoFusionado.push(fila.cells[9].innerText.trim());  // Recorrido
+        clienteFusionado.push(fila.cells[8].innerText.trim());    // Cliente
+        const kilos = parseFloat(fila.cells[13].innerText.replace('kg', '').replace(',', '.')) || 0;
+        totalKilos += kilos;
+    }); 
 
-        row.innerHTML = `
-            <td>${flete}</td>
-            <td>${kilos.toFixed(2)} kg</td>
-            <td>${deposito || "Sin ubicación"}</td>
-            <td>${Object.entries(categorias)
-                .map(([categoria, kilos]) => `${categoria}: ${Math.round(kilos)} kg`)
-                .join('<br>')}</td>
-            <td>${sucursales.length || 0} sucursal(es)</td>
-            <td>${choferFijo}</td>
-            <td>${ayudanteFijo}</td>
-            <td>${horario}</td>
-            <td>${choferUnidad.patente || 'Sin patente'}</td>
-            <td><button class="view-articles">Ver Artículos</button></td>
-        `;
+    const nuevaFila = document.createElement('tr');
 
-        tableBody.appendChild(row);
+    nuevaFila.appendChild(crearCeldaTexto('PLANIFICADO'));
+    nuevaFila.appendChild(crearCeldaTexto('PLANIFICADO'));
+    nuevaFila.appendChild(crearCeldaTexto('Fusionado'));
+    nuevaFila.appendChild(crearCeldaTexto('Fusionado'));
+    const tdHorario = crearCeldaEditable('');
+    nuevaFila.appendChild(tdHorario);
+    nuevaFila.appendChild(crearCeldaEditable(''));
+    const tdChofer = document.createElement('td');
+    const selectChofer = crearDesplegableChofer();
+    tdChofer.appendChild(selectChofer);
+    nuevaFila.appendChild(tdChofer);
+    const tdPatente = crearCeldaTexto('');
+    nuevaFila.appendChild(tdPatente);
+    nuevaFila.appendChild(crearCeldaTexto(clienteFusionado.join(' / ')));
+    nuevaFila.appendChild(crearCeldaTexto(recorridoFusionado.join(' / ')));
+    const tdVuelta = crearCeldaTexto('');
+    nuevaFila.appendChild(tdVuelta);
+    nuevaFila.appendChild(crearCeldaEditable(''));
+    nuevaFila.appendChild(crearCeldaEditable(''));
+    nuevaFila.appendChild(crearCeldaTexto(`${totalKilos.toFixed(2)} kg`));
+    nuevaFila.appendChild(crearCeldaTexto(`${seleccionadas.length} recorridos`));
+    const tdTelefono = crearCeldaTexto('');
+    nuevaFila.appendChild(tdTelefono);
+    const tdCapacidad = crearCeldaTexto('');
+    nuevaFila.appendChild(tdCapacidad);
+    const tdPorcentaje = crearCeldaTexto('');
+    nuevaFila.appendChild(tdPorcentaje);
+    nuevaFila.appendChild(crearCeldaEditable(''));
 
-        // Añadir evento al botón "Ver Artículos"
-        const viewButton = row.querySelector('.view-articles');
-        viewButton.addEventListener('click', () => {
-            displayArticlesModal(articles);
+    selectChofer.addEventListener('change', () => {
+        const unidad = choferesUnidades.find(c => c.chofer === selectChofer.value);
+        tdPatente.innerText = unidad?.patente || 'Sin patente';
+        tdTelefono.innerText = unidad?.telefono || 'Sin dato';
+        tdCapacidad.innerText = unidad?.capacidad || 'Sin dato';
+        const cap = parseFloat(unidad?.capacidad || 0);
+        tdPorcentaje.innerText = cap ? `${((totalKilos / cap) * 100).toFixed(1)} %` : 'Sin dato';
+    });
+
+    tdHorario.addEventListener('input', () => {
+        tdVuelta.innerText = calcularVuelta(tdHorario.innerText);
+    });
+
+    seleccionadas.forEach(f => f.remove());
+    document.querySelector('#recorridosTable tbody').appendChild(nuevaFila);
+
+    alert('Recorridos fusionados manualmente.');
+}
+
+
+function mostrarInputsFusionManual() {
+    console.log("🧪 Inyectando módulo de fusión manual...");
+    const contenedor = document.getElementById('fusionManualInputs');
+    if (!contenedor) {
+        console.warn("❌ No se encontró #fusionManualInputs en el DOM");
+        return;
+    }
+
+    const filas = Array.from(document.querySelectorAll('#recorridosTable tbody tr'));
+
+    // Validación segura de columna
+    const recorridosUnicos = Array.from(new Set(
+        filas
+            .map(f => f.cells[9]?.innerText?.trim())
+            .filter(rec => rec && rec !== '')
+    ));
+
+    console.log("✅ Recorridos únicos detectados:", recorridosUnicos);
+
+    contenedor.innerHTML = ''; // Limpiar contenido anterior
+
+    if (recorridosUnicos.length === 0) {
+        contenedor.innerHTML = '<span style="color: white;">⚠️ No hay recorridos disponibles para fusionar.</span>';
+        return;
+    }
+
+    // Crear contenedor visual
+    const cont = document.createElement('div');
+    cont.style.display = 'flex';
+    cont.style.alignItems = 'center';
+    cont.style.flexWrap = 'wrap';
+    cont.style.gap = '10px';
+    cont.style.backgroundColor = '#1e3a8a';
+    cont.style.padding = '10px';
+    cont.style.borderRadius = '8px';
+
+    const selector1 = document.createElement('select');
+    selector1.id = 'recorrido1';
+    const selector2 = document.createElement('select');
+    selector2.id = 'recorrido2';
+
+    [selector1, selector2].forEach(select => {
+        select.style.padding = '10px';
+        select.style.borderRadius = '8px';
+        select.style.backgroundColor = '#0ea5e9';
+        select.style.color = 'white';
+        select.style.minWidth = '150px';
+
+        const opt = document.createElement('option');
+        opt.value = '';
+        opt.textContent = '-- Seleccionar --';
+        select.appendChild(opt);
+
+        recorridosUnicos.forEach(rec => {
+            const option = document.createElement('option');
+            option.value = rec;
+            option.textContent = rec;
+            select.appendChild(option);
         });
     });
+
+    const botonFusionar = document.createElement('button');
+    botonFusionar.innerText = 'Fusionar manualmente';
+    botonFusionar.style.padding = '10px 15px';
+    botonFusionar.style.borderRadius = '8px';
+    botonFusionar.style.backgroundColor = '#14b8a6';
+    botonFusionar.style.color = 'white';
+    botonFusionar.style.border = 'none';
+    botonFusionar.style.cursor = 'pointer';
+    botonFusionar.style.fontWeight = 'bold';
+
+    botonFusionar.onclick = () => {
+        const r1 = selector1.value;
+        const r2 = selector2.value;
+
+        if (!r1 || !r2) {
+            alert('Por favor seleccioná dos recorridos.');
+            return;
+        }
+        if (r1 === r2) {
+            alert('Los recorridos seleccionados deben ser distintos.');
+            return;
+        }
+
+        fusionarPorRecorridoManual(r1, r2);
+    };
+
+    cont.appendChild(selector1);
+    cont.appendChild(selector2);
+    cont.appendChild(botonFusionar);
+
+    contenedor.appendChild(cont);
 }
 
 
-
-// Mostrar artículos en un modal o alerta
-function displayArticlesModal(articles) {
-    const modalContent = articles.map(article => `
-        <p style="color: black;">
-            <strong>Código:</strong> ${article.codigoArticulo}<br>
-            <strong>Descripción:</strong> ${article.descripcion}<br>
-            <strong>Cantidad:</strong> ${article.cantidad}<br>
-            <strong>Peso Total:</strong> ${article.pesoTotal.toFixed(2)} kg
-        </p>
-    `).join('<hr>');
-
-    // Crear fondo oscuro para el modal
-    const overlay = document.createElement('div');
-    overlay.style.position = 'fixed';
-    overlay.style.top = '0';
-    overlay.style.left = '0';
-    overlay.style.width = '100%';
-    overlay.style.height = '100%';
-    overlay.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
-    overlay.style.zIndex = '999';
-
-    // Crear modal
-    const modal = document.createElement('div');
-    modal.style.position = 'fixed';
-    modal.style.top = '50%';
-    modal.style.left = '50%';
-    modal.style.transform = 'translate(-50%, -50%)';
-    modal.style.backgroundColor = 'white';
-    modal.style.padding = '20px';
-    modal.style.borderRadius = '10px';
-    modal.style.boxShadow = '0 4px 8px rgba(0, 0, 0, 0.2)';
-    modal.style.zIndex = '1000';
-    modal.style.maxWidth = '500px';
-    modal.style.width = '90%';
-    modal.style.maxHeight = '80vh';
-    modal.style.overflowY = 'auto';
-
-    modal.innerHTML = `
-        <h2>Artículos del Recorrido</h2>
-        ${modalContent}
-        <br>
-        <button id="closeModal" style="padding: 10px 20px; background-color: #f44336; color: black; border: none; border-radius: 5px; cursor: pointer;">Cerrar</button>
-    `;
-
-    document.body.appendChild(overlay);
-    document.body.appendChild(modal);
-
-    // Cerrar modal al hacer clic en el botón
-    document.getElementById('closeModal').addEventListener('click', () => {
-        document.body.removeChild(modal);
-        document.body.removeChild(overlay);
-    });
-
-    // Cerrar modal al hacer clic fuera de él
-    overlay.addEventListener('click', () => {
-        document.body.removeChild(modal);
-        document.body.removeChild(overlay);
-    });
+function calcularVuelta(horario) {
+    if (!horario || horario === 'Sin horario') return '';
+    const match = horario.match(/(\d{1,2}):(\d{2})/);
+    if (!match) return '';
+    const hora = parseInt(match[1]);
+    if (hora < 7) return '1°';
+    if (hora < 12) return '2°';
+    return '3°';
 }
 
-// Popular el filtro de recorridos
+function crearCeldaTexto(texto) {
+    const td = document.createElement('td');
+    td.innerText = texto;
+    return td;
+}
+
+function crearCeldaEditable(texto) {
+    const td = document.createElement('td');
+    td.contentEditable = true;
+    td.innerText = texto;
+    td.style.backgroundColor = '#fff6e5';
+    td.style.color = '#333';
+    return td;
+}
+
+function crearDesplegableChofer(choferSeleccionado = "") {
+    const select = document.createElement("select");
+    const sinAsignar = document.createElement("option");
+    sinAsignar.value = "";
+    sinAsignar.text = "Sin asignar";
+    if (!choferSeleccionado || choferSeleccionado === "Sin asignar") sinAsignar.selected = true;
+    select.appendChild(sinAsignar);
+
+    choferesUnidades.forEach(ch => {
+        const option = document.createElement("option");
+        option.value = ch.chofer;
+        option.text = ch.chofer;
+        if (ch.chofer === choferSeleccionado) option.selected = true;
+        select.appendChild(option);
+    });
+
+    return select;
+}
+
 function populateRecorridoFilter(groupedData) {
     const filterSelect = document.getElementById('recorridoFilter');
     filterSelect.innerHTML = '<option value="all">Todos</option>';
@@ -9399,104 +9589,162 @@ function populateRecorridoFilter(groupedData) {
 
     filterSelect.addEventListener('change', () => {
         const selectedFlete = filterSelect.value;
-        const filteredData = selectedFlete === 'all'
-            ? groupedData
-            : groupedData.filter(group => group.flete === selectedFlete);
-
+        const filteredData = selectedFlete === 'all' ? groupedData : groupedData.filter(group => group.flete === selectedFlete);
         displayGroupedData(filteredData);
     });
 }
-
-// Mostrar artículos excluidos
-function displayExcludedArticles(data) {
-    const tableBody = document.querySelector('#excludedArticlesTable tbody');
+function displayGroupedData(data) {
+    const tableBody = document.querySelector('#recorridosTable tbody');
     tableBody.innerHTML = '';
 
-    // Artículos no encontrados
-    const unknownItems = data.filter(item => !baseDataFruver[item['Cod. Artículo']]);
+    data.forEach(({ flete, kilos, deposito, categorias, articles, sucursales }) => {
+        const choferFijo = choferesFijos[flete] || 'Sin asignar';
+        const ayudanteFijo = ayudantes.find(a => a.recorrido.trim() === flete.trim())?.ayudante || 'Sin ayudante';
+        const horario = horarios.find(h => h.recorrido.trim() === flete.trim())?.horario || 'Sin horario';
+        const unidad = choferesUnidades.find(c => c.chofer.trim() === choferFijo.trim()) || {};
+        const cliente = datosOriginales.find(item => item['Flete'] === flete)?.['Cliente'] || 'Desconocido';
+        const fecha = datosOriginales.find(item => item['Flete'] === flete)?.['Fecha'] || 'Sin fecha';
 
-    // Artículos faltantes (excluidos)
-    const missingArticles = data.filter(item => !baseDataFruver[item['Cod. Artículo']]);
-
-    // Combinar ambos tipos de artículos en una tabla
-    const excludedArticles = [
-        ...unknownItems.map(item => ({
-            codigo: item['Cod. Artículo'],
-            descripcion: item['Descripción Artículo'] || "Sin descripción",
-            categoria: item['Rubro 2'] || "Sin categoría",
-            cantidad: item['Cantidad'] || "0",
-            razon: "No encontrado en base de datos"
-        })),
-        ...missingArticles.map(item => ({
-            codigo: item['Cod. Artículo'],
-            descripcion: item['Descripción Artículo'] || "Sin descripción",
-            categoria: item['Rubro 2'] || "Sin categoría",
-            cantidad: item['Cantidad'] || "0",
-            razon: "Faltante"
-        }))
-    ];
-
-    excludedArticles.forEach(({ codigo, descripcion, categoria, cantidad, razon }) => {
         const row = document.createElement('tr');
-        row.innerHTML = `
-            <td>${codigo}</td>
-            <td>${descripcion}</td>
-            <td>${categoria}</td>
-            <td>${cantidad}</td>
-            <td>${razon}</td>
-        `;
+
+        row.appendChild(crearCeldaTexto('PLANIFICADO'));
+        row.appendChild(crearCeldaTexto('PLANIFICADO'));
+        row.appendChild(crearCeldaTexto(fecha));
+        row.appendChild(crearCeldaTexto(deposito || 'Sin ubicación'));
+
+        const tdHorario = crearCeldaEditable(horario);
+        row.appendChild(tdHorario);
+
+        const tdAyudante = crearCeldaEditable(ayudanteFijo);
+        row.appendChild(tdAyudante);
+
+        const tdChofer = document.createElement('td');
+        const selectChofer = crearDesplegableChofer(choferFijo);
+        tdChofer.appendChild(selectChofer);
+        row.appendChild(tdChofer);
+
+        const tdPatente = crearCeldaTexto(unidad.patente || 'Sin patente');
+        row.appendChild(tdPatente);
+
+        row.appendChild(crearCeldaTexto(cliente));
+        row.appendChild(crearCeldaTexto(flete));
+
+        const tdVuelta = crearCeldaTexto(calcularVuelta(horario));
+        row.appendChild(tdVuelta);
+
+        row.appendChild(crearCeldaEditable(''));
+        row.appendChild(crearCeldaEditable(''));
+
+        row.appendChild(crearCeldaTexto(`${kilos.toFixed(2)} kg`));
+        row.appendChild(crearCeldaTexto(`${sucursales.length} sucursal(es)`));
+
+        const tdTelefono = crearCeldaTexto(unidad.telefono || 'Sin dato');
+        row.appendChild(tdTelefono);
+
+        const tdCapacidad = crearCeldaTexto(unidad.capacidad || 'Sin dato');
+        row.appendChild(tdCapacidad);
+
+        const porcentaje = unidad.capacidad ? `${((kilos / unidad.capacidad) * 100).toFixed(1)} %` : 'Sin dato';
+        const tdPorcentaje = crearCeldaTexto(porcentaje);
+        row.appendChild(tdPorcentaje);
+
+        row.appendChild(crearCeldaEditable(''));
+
+        // === LISTENERS DINÁMICOS ===
+        selectChofer.addEventListener('change', () => {
+            const nuevo = choferesUnidades.find(c => c.chofer === selectChofer.value);
+            tdPatente.innerText = nuevo?.patente || 'Sin patente';
+            tdTelefono.innerText = nuevo?.telefono || 'Sin dato';
+            tdCapacidad.innerText = nuevo?.capacidad || 'Sin dato';
+            const nuevaCapacidad = parseFloat(nuevo?.capacidad || 0);
+            tdPorcentaje.innerText = nuevaCapacidad ? `${((kilos / nuevaCapacidad) * 100).toFixed(1)} %` : 'Sin dato';
+        });
+
+        tdHorario.addEventListener('input', () => {
+            tdVuelta.innerText = calcularVuelta(tdHorario.innerText);
+        });
+
+        // Agregar fila
         tableBody.appendChild(row);
     });
+    mostrarInputsFusionManual(); // 💥 Se ejecuta luego de pintar las filas
+
 }
-document.getElementById('exportExcel').addEventListener('click', () => {
-    const table = document.querySelector('#recorridosTable'); // Selecciona la tabla
-    if (!table) {
-        alert('No se encontró la tabla para exportar.');
+
+
+function displayExcludedArticles(data) {
+    const tbody = document.querySelector('#excludedArticlesTable tbody');
+
+    tbody.innerHTML = ''; // Limpiar la tabla
+
+    const excluidos = [];
+
+    data.forEach(item => {
+        const codArticulo = item['Cod. Artículo'];
+        const cantidad = parseFloat(item['Cantidad']) || 0;
+        const flete = item['Flete'];
+        const articulo = baseDataFruver[codArticulo];
+
+        let razon = '';
+
+        if (!codArticulo) {
+            razon = 'Sin código de artículo';
+        } else if (!articulo) {
+            razon = 'Artículo no registrado en la base';
+        } else if (cantidad <= 0) {
+            razon = 'Cantidad cero o negativa';
+        } else if (!flete) {
+            razon = 'Sin flete';
+        }
+
+        if (razon) {
+            excluidos.push({
+                codigo: codArticulo || 'Desconocido',
+                descripcion: articulo?.descripcion || 'Desconocido',
+                categoria: articulo?.categoria || 'Sin categoría',
+                cantidad,
+                razon
+            });
+        }
+    });
+
+    excluidos.forEach(ex => {
+        const row = document.createElement('tr');
+        row.appendChild(crearCeldaTexto(ex.codigo));
+        row.appendChild(crearCeldaTexto(ex.descripcion));
+        row.appendChild(crearCeldaTexto(ex.category));
+        row.appendChild(crearCeldaTexto(ex.cantidad));
+        row.appendChild(crearCeldaTexto(ex.razon));
+        tbody.appendChild(row);
+    });
+}
+
+function exportarTablaAExcel(nombreArchivo = 'recorridos.xlsx') {
+    const tabla = document.getElementById('recorridosTable');
+    if (!tabla) {
+        alert('No se encontró la tabla de recorridos.');
         return;
     }
 
-    // Crear un arreglo para almacenar los datos procesados
-    const processedData = [];
+    // Extraer encabezados desde el thead
+    const headers = Array.from(tabla.querySelectorAll('thead th')).map(th => th.innerText.trim());
 
-    // Recorrer las filas de la tabla (excluyendo el encabezado)
-    const rows = table.querySelectorAll('tbody tr');
-    rows.forEach(row => {
-        const cells = row.querySelectorAll('td');
-        const flete = cells[0]?.innerText || '';
-        const kilos = cells[1]?.innerText || '';
-        const deposito = cells[2]?.innerText || '';
-        const categorias = cells[3]?.innerText || '';
-        const chofer = cells[4]?.innerText || '';
-        const ayudante = cells[5]?.innerText || '';
-        const horario = cells[6]?.innerText || '';
-        const patente = cells[7]?.innerText || '';
-
-        // Dividir las categorías en líneas separadas
-        const categoriasArray = categorias.split('\n').map(categoria => categoria.trim());
-        categoriasArray.forEach(categoriaLinea => {
-            const [categoria, kilosCategoria] = categoriaLinea.split(':').map(part => part.trim());
-            if (categoria && kilosCategoria) {
-                processedData.push({
-                    Flete: flete,
-                    Kilos: kilosCategoria,
-                    Depósito: deposito,
-                    Categoría: categoria,
-                    Chofer: chofer,
-                    Ayudante: ayudante,
-                    Horario: horario,
-                    Patente: patente
-                });
-            }
+    // Extraer las filas del tbody
+    const rows = Array.from(tabla.querySelectorAll('tbody tr')).map(tr => {
+        return Array.from(tr.cells).map((td, i) => {
+            const select = td.querySelector('select');
+            return select ? select.value : td.innerText.trim();
         });
     });
 
-    // Crear un libro de Excel
-    const workbook = XLSX.utils.book_new();
-    const worksheet = XLSX.utils.json_to_sheet(processedData);
+    // Armar matriz con encabezado y datos
+    const dataFinal = [headers, ...rows];
 
-    // Agregar la hoja al libro
-    XLSX.utils.book_append_sheet(workbook, worksheet, 'Recorridos');
+    // Crear el archivo Excel
+    const wb = XLSX.utils.book_new();
+    const ws = XLSX.utils.aoa_to_sheet(dataFinal);
+    XLSX.utils.book_append_sheet(wb, ws, 'Recorridos');
+    XLSX.writeFile(wb, nombreArchivo);
+}
 
-    // Exportar el archivo Excel
-    XLSX.writeFile(workbook, 'recorridos_categorias.xlsx');
-});
+

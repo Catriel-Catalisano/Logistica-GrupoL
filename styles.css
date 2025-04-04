@@ -471,3 +471,30 @@ button:active {
     color: black;
 
 }
+td[contenteditable="true"] {
+    background-color: #fff6e5 !important;  /* Fondo suave */
+    color: #333 !important;                /* Texto bien visible */
+    outline: 1px dashed #bbb;              /* Borde al enfocar */
+    cursor: text;
+}
+#recorridosTable th,
+#recorridosTable td {
+    white-space: nowrap;
+    padding: 4px 8px;
+    text-align: center;
+}
+
+#recorridosTable th:nth-child(3),
+#recorridosTable td:nth-child(3) {
+    min-width: 150px; /* FECHA */
+}
+
+#recorridosTable th:nth-child(4),
+#recorridosTable td:nth-child(4) {
+    min-width: 150px; /* SITE */
+}
+
+#recorridosTable th:nth-child(18),
+#recorridosTable td:nth-child(18) {
+    min-width: 100px; /* % de ocupa */
+}
