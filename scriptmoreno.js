@@ -9314,6 +9314,8 @@ function processCSV(csvData) {
     populateRecorridoFilter(groupedData);
     displayGroupedData(groupedData);
     displayExcludedArticles(data);
+    habilitarOrdenamientoTabla('recorridosTable');
+
 
     
 }
@@ -9746,5 +9748,39 @@ function exportarTablaAExcel(nombreArchivo = 'recorridos.xlsx') {
     XLSX.utils.book_append_sheet(wb, ws, 'Recorridos');
     XLSX.writeFile(wb, nombreArchivo);
 }
+function habilitarOrdenamientoTabla(idTabla) {
+    const tabla = document.getElementById(idTabla);
+    const headers = tabla.querySelectorAll('th');
 
+    headers.forEach((th, index) => {
+        th.style.cursor = 'pointer';
+        let asc = true;
+
+        th.addEventListener('click', () => {
+            const tbody = tabla.querySelector('tbody');
+            const filas = Array.from(tbody.querySelectorAll('tr'));
+
+            filas.sort((a, b) => {
+                const aText = a.cells[index].innerText.trim();
+                const bText = b.cells[index].innerText.trim();
+
+                // Si son números, ordená como número
+                const aNum = parseFloat(aText.replace(',', '.'));
+                const bNum = parseFloat(bText.replace(',', '.'));
+                const esNumero = !isNaN(aNum) && !isNaN(bNum);
+
+                if (esNumero) {
+                    return asc ? aNum - bNum : bNum - aNum;
+                } else {
+                    return asc ? aText.localeCompare(bText) : bText.localeCompare(aText);
+                }
+            });
+
+            // Aplicar orden
+            filas.forEach(fila => tbody.appendChild(fila));
+
+            asc = !asc;
+        });
+    });
+}
 

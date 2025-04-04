@@ -1,258 +1,192 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gestión de Recorridos</title>
-    <link rel="stylesheet" href="styles.css">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Gestión de Recorridos</title>
+  <link rel="stylesheet" href="styles.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
 
-    <style>
-        body {
-            font-family: 'Segoe UI', Roboto, Arial, sans-serif;
-            margin: 20px;
-            padding: 0;
-            background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
-            color: #e0e0e0;
-            animation: fadeIn 1s ease-in-out;
-        }
-    
-        h1, h2 {
-            color: #00ffe7;
-            text-shadow: 0 0 5px #00ffe7, 0 0 10px #00ffe7;
-        }
-    
-        #file-upload,
-        #filters {
-            margin-bottom: 20px;
-            background-color: #1e293b;
-            padding: 15px;
-            border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0, 255, 255, 0.2);
-        }
-    
-        label {
-            font-weight: bold;
-        }
-    
-        input[type="file"],
-        select,
-        button {
-            padding: 10px;
-            border-radius: 8px;
-            border: none;
-            margin-right: 10px;
-            font-size: 14px;
-            background-color: #0ea5e9;
-            color: white;
-            transition: all 0.3s ease;
-        }
-    
-        input[type="file"]:hover,
-        select:hover,
-        button:hover {
-            background-color: #0284c7;
-            transform: scale(1.03);
-        }
-    
-        /* 🚀 Contenedor con scroll horizontal para tablas grandes */
-        .table-wrapper {
-            overflow-x: auto;
-            width: 100%;
-        }
-    
-        table {
-            min-width: 1400px; /* Forzamos un ancho mínimo útil */
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-            background-color: #1e293b;
-            border-radius: 12px;
-            overflow: hidden;
-            box-shadow: 0 0 10px rgba(0, 255, 255, 0.1);
-        }
-    
-        table th, table td {
-            border: 1px solid #334155;
-            padding: 10px;
-            text-align: left;
-            color: #e2e8f0;
-            white-space: nowrap; /* ❗ Para que no se corte texto */
-        }
-    
-        table th {
-            background-color: #0f172a;
-            color: #67e8f9;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-        }
-    
-        table tbody tr:hover {
-            background-color: #334155;
-            transition: background-color 0.3s ease;
-        }
-    
-        td[contenteditable="true"] {
-            background-color: #0f766e;
-            color: #f1f5f9;
-        }
-    
-        #output {
-            margin-top: 30px;
-            animation: fadeIn 0.8s ease-in-out;
-        }
-    
-        #btnFusionar,
-        #exportExcel {
-            margin-top: 15px;
-            padding: 12px 25px;
-            background-color: #14b8a6;
-            color: #fff;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: bold;
-            transition: all 0.3s ease-in-out;
-            box-shadow: 0 0 10px rgba(20, 184, 166, 0.5);
-        }
-    
-        #btnFusionar:hover,
-        #exportExcel:hover {
-            background-color: #0d9488;
-            transform: translateY(-2px);
-            box-shadow: 0 0 15px rgba(20, 184, 166, 0.7);
-        }
-    
-        .toggle-button {
-            cursor: pointer;
-            color: #38bdf8;
-            text-decoration: underline;
-        }
-    
-        .details {
-            display: none;
-            margin-left: 20px;
-            font-size: 0.9em;
-        }
-    
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-    
-        tr.fusionado {
-            background: linear-gradient(90deg, #0ea5e9, #22d3ee);
-            color: #000;
-            font-weight: bold;
-        }
-        .table-container {
-    width: 100%;
-    overflow-x: auto;
-    padding-bottom: 10px;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 255, 255, 0.2);
-    background-color: #0f172a;
-    margin-top: 20px;
+  
+  <style>
+    body {
+        font-family: 'Segoe UI', Roboto, Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+        color: #e0e0e0;
+        animation: fadeIn 1s ease-in-out;
+    }
+
+    h1, h2 {
+        color: #00ffe7;
+        text-shadow: 0 0 5px #00ffe7, 0 0 10px #00ffe7;
+    }
+
+    input[type="file"],
+    select,
+    button {
+        padding: 8px;
+        font-size: 13px;
+        border-radius: 6px;
+        border: none;
+        background-color: #0ea5e9;
+        color: white;
+        margin-right: 5px;
+    }
+
+    input[type="file"]:hover,
+    select:hover,
+    button:hover {
+        background-color: #0284c7;
+        transform: scale(1.02);
+    }
+
+    /* ✅ Tabla visible sin scroll lateral */
+    .table-wrapper {
+        width: 100%;
+        overflow-x: auto;
+        margin-top: 20px;
+    }
+
+    table {
+        width: 100%;
+        table-layout: auto; /* ⬅ permite que las columnas se ajusten al contenido */
+        border-collapse: collapse;
+        background-color: #1e293b;
+        border-radius: 10px;
+        font-size: 13px;
+    }
+
+    table th, table td {
+        padding: 8px;
+        border: 1px solid #334155;
+        color: #e2e8f0;
+        white-space: normal; /* ✅ permite salto de línea */
+        word-break: break-word; /* ✅ parte palabras largas si es necesario */
+    }
+
+    table th {
+        background-color: #0f172a;
+        color: #67e8f9;
+        text-transform: uppercase;
+        font-size: 11px;
+        letter-spacing: 0.03em;
+    }
+
+    td[contenteditable="true"] {
+        background-color: #0f766e;
+        color: #f1f5f9;
+    }
+
+    tr.fusionado {
+        background: linear-gradient(90deg, #0ea5e9, #22d3ee);
+        color: #000;
+        font-weight: bold;
+    }
+
+    #output {
+        padding: 0 10px;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    table th {
+    position: relative;
 }
 
-.table-wrapper {
-    min-width: 1600px; /* forzamos el scroll si la tabla tiene muchas columnas */
+table th::after {
+    content: ' ⇅';
+    font-size: 10px;
+    color: #67e8f9;
 }
 
-    </style>
-    
-    
+</style>
+
+
+  
 </head>
 <body>
-<header>
+  <header>
     <div class="container">
-        <h1>GRUPO L</h1>
-        <h1>Planificacion de Transportes</h1>
-        <p>Bienvenido a la herramienta de planificación de distribución.</p>
-
-        
+      <h1>GRUPO L</h1>
+      <h1>Planificación de Transportes</h1>
+      <p>Bienvenido a la herramienta de planificación de distribución.</p>
     </div>
-</header>
+  </header>
 
-<main>
+  <main>
     <h2>Gestión de Recorridos</h2>
+
     <div id="file-upload">
-        <label for="csvFile">Cargar archivo CSV: (Bajada de Modpla)</label>
-        <input type="file" id="csvFile" accept=".csv">
-        <button id="processFile">Procesar Archivo</button>
+      <label for="csvFile">Cargar archivo CSV: (Bajada de Modpla)</label>
+      <input type="file" id="csvFile" accept=".csv">
+      <button id="processFile">Procesar Archivo</button>
     </div>
 
     <h2>Filtrar Recorridos</h2>
     <select id="recorridoFilter"></select>
-    
 
     <div id="output">
-        <h2>Recorridos Generados</h2>
-        <div class="table-container">
-        <div class="table-wrapper"> 
+      <h2>Recorridos Generados</h2>
+      <div class="table-wrapper">
         <table id="recorridosTable">
-            <thead>
-                <thead>
-                    <tr>
-                      
-                      <th>Status</th>
-                      <th>Planificación</th>
-                      <th>FECHA</th>
-                      <th>Site</th>
-                      <th>HORARIO</th>
-                      <th>AYUDANTE</th>
-                      <th>CHOFER</th>
-                      <th>PATENTE</th>
-                      <th>CLIENTE</th>
-                      <th>Recorrido</th>
-                      <th>Vuelta</th>
-                      <th>Observaciones</th>
-                      <th>OBSERVACIONES 2</th>
-                      <th>KILOS</th>
-                      <th>SUCURSALES</th>
-                      <th>TELEFONO</th>
-                      <th>CAPACIDAD</th>
-                      <th>% de ocupa</th>
-                      <th>CONTROL</th>
-                    </tr>
-                </thead>
-                
-            </thead>
-            <tbody></tbody>
+          <thead>
+            <tr>
+              <th>Status</th>
+              <th>Planificación</th>
+              <th>FECHA</th>
+              <th>Site</th>
+              <th>HORARIO</th>
+              <th>AYUDANTE</th>
+              <th>CHOFER</th>
+              <th>PATENTE</th>
+              <th>CLIENTE</th>
+              <th>Recorrido</th>
+              <th>Vuelta</th>
+              <th>Observaciones</th>
+              <th>OBSERVACIONES 2</th>
+              <th>KILOS</th>
+              <th>SUCURSALES</th>
+              <th>TELEFONO</th>
+              <th>CAPACIDAD</th>
+              <th>% de ocupa</th>
+              <th>CONTROL</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
         </table>
-    </div>
-</div>
+      </div>
 
-        <div id="acciones" style="display: flex; flex-direction: column; gap: 15px; margin: 30px 0;">
-            <button id="exportExcel" onclick="exportarTablaAExcel()">Exportar a Excel</button>
-        
-            <div id="fusionManualInputs"
-                 style="display: flex; flex-wrap: wrap; align-items: center; gap: 10px;
-                        background-color: #1e3a8a; padding: 15px; border-radius: 10px;">
-                <!-- Acá se inyectan los selects y el botón desde JS -->
-            </div>
+      <div id="acciones" style="display: flex; flex-direction: column; gap: 15px; margin: 30px 0;">
+        <button id="exportExcel" onclick="exportarTablaAExcel()">Exportar a Excel</button>
+        <div id="fusionManualInputs"
+             style="display: flex; flex-wrap: wrap; align-items: center; gap: 10px;
+                    background-color: #1e3a8a; padding: 15px; border-radius: 10px;">
+          <!-- Acá se inyectan los selects y el botón desde JS -->
         </div>
-        
+      </div>
 
-
-        <h2>Artículos Excluidos</h2>
-        <table id="excludedArticlesTable">
-            <thead>
-                <tr>
-                    <th>Código</th>
-                    <th>Descripción</th>
-                    <th>Categoría</th>
-                    <th>Cantidad</th>
-                    <th>Razón</th>
-                </tr>
-            </thead>
-            <tbody></tbody>
-        </table>
+      <h2>Artículos Excluidos</h2>
+      <table id="excludedArticlesTable">
+        <thead>
+          <tr>
+            <th>Código</th>
+            <th>Descripción</th>
+            <th>Categoría</th>
+            <th>Cantidad</th>
+            <th>Razón</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
     </div>
-</main>
+  </main>
 
-<script src="scriptmoreno.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+  <script src="scriptmoreno.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 </body>
 </html>
