@@ -9053,6 +9053,8 @@ function processDataFromExcel(data) {
     displayGroupedData(groupedData);
     displayExcludedArticles(data);
     habilitarOrdenamientoTabla('recorridosTable');
+    guardarEnSheets(groupedData);
+
 }
 
 
@@ -9698,6 +9700,19 @@ function exportarTablaAExcel(nombreArchivo = 'recorridos.xlsx') {
     XLSX.utils.book_append_sheet(wb, ws, 'Recorridos');
     XLSX.writeFile(wb, nombreArchivo);
 }
+function guardarEnSheets(recorridos) {
+    fetch("https://script.google.com/macros/s/AKfycbzyZOtbDwOmxZwGGweEhQBrfxSYbQ-oGRUCuqaowLCCUUUfHD5dnFhEgIsCyRERitxdyQ/exec", {
+      method: "POST",
+      body: JSON.stringify(recorridos),
+      headers: {
+        "Content-Type": "application/json"
+      }
+    })
+    .then(res => res.text())
+    .then(data => alert("✔️ Recorridos guardados en Sheets"))
+    .catch(err => alert("❌ Error al guardar: " + err));
+  }
+  
 function habilitarOrdenamientoTabla(idTabla) {
     const tabla = document.getElementById(idTabla);
     const headers = tabla.querySelectorAll('th');
