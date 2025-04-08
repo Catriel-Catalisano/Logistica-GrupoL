@@ -9060,7 +9060,7 @@ function processDataFromExcel(data) {
 }
 
 function guardarEnSheets(recorridos) {
-    fetch("https://script.google.com/macros/library/d/1aML-oXLs1JU2HtCGuDn19bESUhZV2iL8h7uglC5czE9t_-FNEHPFczr_/1", {
+    fetch("https://script.google.com/macros/s/AKfycbziHASNHAosAm5zPozbcSAaMU8a4GeO2GDzvSgCJJr9UdBPheQ-ks8E3iYR91heLC8Z/exec", {
         method: "POST",
         body: JSON.stringify(recorridos),
         headers: {
