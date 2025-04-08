@@ -9189,56 +9189,39 @@ function fusionarPorRecorridoManual(filtro1, filtro2) {
 
 
 function mostrarInputsFusionManual() {
-    console.log("🧪 Inyectando módulo de fusión manual...");
     const contenedor = document.getElementById('fusionManualInputs');
-    if (!contenedor) {
-        console.warn("❌ No se encontró #fusionManualInputs en el DOM");
-        return;
-    }
+    if (!contenedor) return;
 
     const filas = Array.from(document.querySelectorAll('#recorridosTable tbody tr'));
 
-    // Validación segura de columna
     const recorridosUnicos = Array.from(new Set(
-        filas
-            .map(f => f.cells[9]?.innerText?.trim())
-            .filter(rec => rec && rec !== '')
+        filas.map(f => f.cells[9]?.innerText?.trim()).filter(rec => rec && rec !== '')
     ));
 
-    console.log("✅ Recorridos únicos detectados:", recorridosUnicos);
-
-    contenedor.innerHTML = ''; // Limpiar contenido anterior
+    contenedor.innerHTML = '';
 
     if (recorridosUnicos.length === 0) {
         contenedor.innerHTML = '<span style="color: white;">⚠️ No hay recorridos disponibles para fusionar.</span>';
         return;
     }
 
-    // Crear contenedor visual
     const cont = document.createElement('div');
     cont.style.display = 'flex';
-    cont.style.alignItems = 'center';
     cont.style.flexWrap = 'wrap';
     cont.style.gap = '10px';
-    cont.style.backgroundColor = '#1e3a8a';
-    cont.style.padding = '10px';
-    cont.style.borderRadius = '8px';
 
-    const selector1 = document.createElement('select');
-    selector1.id = 'recorrido1';
-    const selector2 = document.createElement('select');
-    selector2.id = 'recorrido2';
+    const selects = [];
 
-    [selector1, selector2].forEach(select => {
+    for (let i = 0; i < 6; i++) {
+        const select = document.createElement('select');
         select.style.padding = '10px';
         select.style.borderRadius = '8px';
         select.style.backgroundColor = '#0ea5e9';
         select.style.color = 'white';
-        select.style.minWidth = '150px';
 
         const opt = document.createElement('option');
         opt.value = '';
-        opt.textContent = '-- Seleccionar --';
+        opt.textContent = `-- Recorrido ${i + 1} --`;
         select.appendChild(opt);
 
         recorridosUnicos.forEach(rec => {
@@ -9247,39 +9230,156 @@ function mostrarInputsFusionManual() {
             option.textContent = rec;
             select.appendChild(option);
         });
-    });
+
+        cont.appendChild(select);
+        selects.push(select);
+    }
 
     const botonFusionar = document.createElement('button');
-    botonFusionar.innerText = 'Fusionar manualmente';
+    botonFusionar.innerText = 'Fusionar recorridos';
     botonFusionar.style.padding = '10px 15px';
     botonFusionar.style.borderRadius = '8px';
     botonFusionar.style.backgroundColor = '#14b8a6';
     botonFusionar.style.color = 'white';
-    botonFusionar.style.border = 'none';
-    botonFusionar.style.cursor = 'pointer';
     botonFusionar.style.fontWeight = 'bold';
 
     botonFusionar.onclick = () => {
-        const r1 = selector1.value;
-        const r2 = selector2.value;
+        const seleccionados = selects
+            .map(sel => sel.value.trim())
+            .filter(val => val !== "");
 
-        if (!r1 || !r2) {
-            alert('Por favor seleccioná dos recorridos.');
+        const sinDuplicados = [...new Set(seleccionados)];
+
+        if (sinDuplicados.length < 2) {
+            alert('Seleccioná al menos 2 recorridos distintos para fusionar.');
             return;
         }
-        if (r1 === r2) {
-            alert('Los recorridos seleccionados deben ser distintos.');
-            return;
-        }
 
-        fusionarPorRecorridoManual(r1, r2);
+        fusionarMultiplesRecorridos(sinDuplicados);
     };
 
-    cont.appendChild(selector1);
-    cont.appendChild(selector2);
     cont.appendChild(botonFusionar);
-
     contenedor.appendChild(cont);
+}
+
+  function fusionarMultiplesRecorridos(recorridos) {
+    const filas = Array.from(document.querySelectorAll('#recorridosTable tbody tr'));
+
+    const seleccionadas = filas.filter(f =>
+        recorridos.includes(f.cells[9].innerText.trim())
+    );
+
+    if (seleccionadas.length < 2) {
+        alert('No se encontraron suficientes recorridos exactos para fusionar.');
+        return;
+    }
+
+    let recorridoFusionado = [];
+    let clienteFusionado = [];
+    let totalKilos = 0;
+    let totalSucursales = 0;
+    let articulosFusionados = [];
+
+    seleccionadas.forEach(fila => {
+        recorridoFusionado.push(fila.cells[9].innerText.trim());
+        clienteFusionado.push(fila.cells[8].innerText.trim());
+        const kilos = parseFloat(fila.cells[14].innerText.replace('kg', '').replace(',', '.')) || 0;
+        totalKilos += kilos;
+
+        const sucursales = parseInt(fila.cells[15].innerText) || 0;
+        totalSucursales += sucursales;
+
+        const articulosTexto = fila.cells[13].innerText.trim();
+        if (articulosTexto) articulosFusionados.push(articulosTexto);
+    });
+
+    const nuevaFila = document.createElement('tr');
+    nuevaFila.appendChild(crearCeldaTexto('PLANIFICADO'));
+    nuevaFila.appendChild(crearCeldaTexto('PLANIFICADO'));
+    nuevaFila.appendChild(crearCeldaTexto('Fusionado'));
+    nuevaFila.appendChild(crearCeldaTexto('Fusionado'));
+
+    const tdHorario = crearCeldaEditable('');
+    nuevaFila.appendChild(tdHorario);
+
+    nuevaFila.appendChild(crearCeldaEditable(''));
+
+    const tdChofer = document.createElement('td');
+    const selectChofer = crearDesplegableChofer();
+    tdChofer.appendChild(selectChofer);
+    nuevaFila.appendChild(tdChofer);
+
+    const tdPatente = crearCeldaTexto('');
+    nuevaFila.appendChild(tdPatente);
+
+    nuevaFila.appendChild(crearCeldaTexto(clienteFusionado.join(' / ')));
+    nuevaFila.appendChild(crearCeldaTexto(recorridoFusionado.join(' / ')));
+
+    const tdVuelta = crearCeldaTexto('');
+    nuevaFila.appendChild(tdVuelta);
+
+    nuevaFila.appendChild(crearCeldaEditable(''));
+    nuevaFila.appendChild(crearCeldaEditable(''));
+
+    const detalleToggle = document.createElement('td');
+    const toggle = document.createElement('span');
+    toggle.textContent = '🔍 Ver';
+    toggle.style.cursor = 'pointer';
+    toggle.style.color = '#38bdf8';
+    toggle.style.textDecoration = 'underline';
+
+    const detalles = document.createElement('div');
+    detalles.style.display = 'none';
+detalles.style.marginTop = '5px';
+detalles.style.fontSize = '11px';
+detalles.style.maxHeight = '150px';
+detalles.style.overflowY = 'auto';
+detalles.style.padding = '5px';
+detalles.style.backgroundColor = '#1e293b';
+detalles.style.border = '1px solid #334155';
+detalles.style.borderRadius = '6px';
+detalles.innerHTML = articulosFusionados.join('<br>');
+
+
+    toggle.onclick = () => {
+        detalles.style.display = detalles.style.display === 'none' ? 'block' : 'none';
+    };
+
+    detalleToggle.appendChild(toggle);
+    detalleToggle.appendChild(detalles);
+    nuevaFila.appendChild(detalleToggle);
+
+    nuevaFila.appendChild(crearCeldaTexto(`${totalKilos.toFixed(2)} kg`));
+    nuevaFila.appendChild(crearCeldaTexto(`${totalSucursales} sucursales`));
+
+    const tdTelefono = crearCeldaTexto('');
+    nuevaFila.appendChild(tdTelefono);
+
+    const tdCapacidad = crearCeldaTexto('');
+    nuevaFila.appendChild(tdCapacidad);
+
+    const tdPorcentaje = crearCeldaTexto('');
+    nuevaFila.appendChild(tdPorcentaje);
+
+    nuevaFila.appendChild(crearCeldaEditable(''));
+
+    selectChofer.addEventListener('change', () => {
+        const unidad = choferesUnidades.find(c => c.chofer === selectChofer.value);
+        tdPatente.innerText = unidad?.patente || 'Sin patente';
+        tdTelefono.innerText = unidad?.telefono || 'Sin dato';
+        tdCapacidad.innerText = unidad?.capacidad || 'Sin dato';
+        const cap = parseFloat(unidad?.capacidad || 0);
+        tdPorcentaje.innerText = cap ? `${((totalKilos / cap) * 100).toFixed(1)} %` : 'Sin dato';
+    });
+
+    tdHorario.addEventListener('input', () => {
+        tdVuelta.innerText = calcularVuelta(tdHorario.innerText);
+    });
+
+    seleccionadas.forEach(f => f.remove());
+    document.querySelector('#recorridosTable tbody').appendChild(nuevaFila);
+
+    alert('Recorridos fusionados correctamente.');
 }
 
 
