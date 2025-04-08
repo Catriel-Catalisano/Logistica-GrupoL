@@ -9746,6 +9746,12 @@ function habilitarOrdenamientoTabla(idTabla) {
 
             asc = !asc;
         });
+        // ... tus funciones anteriores
+
+document.getElementById("btnEnviarNube").addEventListener("click", () => {
+    guardarEnSheets(groupedData);
+  });
+  
     });
 }
 
