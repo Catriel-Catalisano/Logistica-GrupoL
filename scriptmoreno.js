@@ -9045,6 +9045,35 @@ document.getElementById('processFile').addEventListener('click', () => {
     reader.readAsArrayBuffer(file);
 });
 
+function processDataFromExcel(data) {
+    datosOriginales = data;
+    groupedData = groupByFlete(data);
+    populateRecorridoFilter(groupedData);
+    displayGroupedData(groupedData);
+    displayExcludedArticles(data);
+    habilitarOrdenamientoTabla('recorridosTable');
+
+    // Enlazado a Google Sheets al finalizar procesamiento
+    document.getElementById("btnEnviarNube").addEventListener("click", () => {
+        guardarEnSheets(groupedData);
+    });
+}
+
+function guardarEnSheets(recorridos) {
+    fetch("https://script.google.com/macros/s/AKfycbyEhbwUA8SX7H95zxku24fVYVfIzBA6gBEAfWp-413d6IseuQsTX764YJadI90enohRFQ/exec", {
+        method: "POST",
+        body: JSON.stringify(recorridos),
+        headers: {
+            "Content-Type": "application/json"
+        }
+    })
+    .then(res => res.text())
+    .then(data => alert("✔️ Recorridos guardados en Sheets"))
+    .catch(err => alert("❌ Error al guardar: " + err));
+}
+
+// ... (el resto del código permanece sin cambios)
+
 
 function processDataFromExcel(data) {
     datosOriginales = data;
@@ -9700,25 +9729,13 @@ function exportarTablaAExcel(nombreArchivo = 'recorridos.xlsx') {
     XLSX.utils.book_append_sheet(wb, ws, 'Recorridos');
     XLSX.writeFile(wb, nombreArchivo);
 }
-function guardarEnSheets(recorridos) {
-    fetch("https://script.google.com/macros/s/AKfycbzyZOtbDwOmxZwGGweEhQBrfxSYbQ-oGRUCuqaowLCCUUUfHD5dnFhEgIsCyRERitxdyQ/exec", {
-      method: "POST",
-      body: JSON.stringify(recorridos),
-      headers: {
-        "Content-Type": "application/json"
-      }
-    })
-    .then(res => res.text())
-    .then(data => alert("✔️ Recorridos guardados en Sheets"))
-    .catch(err => alert("❌ Error al guardar: " + err));
-  }
-  
+
 function habilitarOrdenamientoTabla(idTabla) {
     const tabla = document.getElementById(idTabla);
     const headers = tabla.querySelectorAll('th');
 
     headers.forEach((th, index) => {
-        th.style.cursor = 'pointer';
+        th.style.cursor = 'pointer';    
         let asc = true;
 
         th.addEventListener('click', () => {
