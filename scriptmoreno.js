@@ -9072,7 +9072,6 @@ function guardarEnSheets(recorridos) {
     .catch(err => alert("❌ Error al guardar: " + err));
 }
 
-// ... (el resto del código permanece sin cambios)
 
 
 function processDataFromExcel(data) {
