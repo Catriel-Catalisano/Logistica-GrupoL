@@ -8,6 +8,7 @@
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
 
+
   
   <style>
     body {
@@ -122,10 +123,11 @@ table th::after {
     <h2>Gestión de Recorridos</h2>
 
     <div id="file-upload">
-      <label for="csvFile">Cargar archivo CSV: (Bajada de Modpla)</label>
-      <input type="file" id="csvFile" accept=".csv">
-      <button id="processFile">Procesar Archivo</button>
-    </div>
+        <label for="excelFile">Cargar archivo Excel: (Bajada de Modpla)</label>
+        <input type="file" id="excelFile" accept=".xlsx,.xls">
+        <button id="processFile">Procesar Archivo</button>
+      </div>
+      
 
     <h2>Filtrar Recorridos</h2>
     <select id="recorridoFilter"></select>
@@ -149,6 +151,7 @@ table th::after {
               <th>Vuelta</th>
               <th>Observaciones</th>
               <th>OBSERVACIONES 2</th>
+              <th>Articulos</th>
               <th>KILOS</th>
               <th>SUCURSALES</th>
               <th>TELEFONO</th>

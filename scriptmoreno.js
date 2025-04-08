@@ -8985,55 +8985,98 @@ const baseDataFruver = {
 let groupedData = [];
 let datosOriginales = [];
 
-// === LECTURA DEL CSV ===
+// === MODAL DE ARTÍCULOS ===
+function mostrarModalArticulos(titulo, htmlContenido) {
+    let modal = document.getElementById("modalArticulos");
+    if (!modal) {
+        modal = document.createElement("div");
+        modal.id = "modalArticulos";
+        modal.style.position = "fixed";
+        modal.style.top = "0";
+        modal.style.left = "0";
+        modal.style.width = "100%";
+        modal.style.height = "100%";
+        modal.style.backgroundColor = "rgba(0,0,0,0.6)";
+        modal.style.display = "flex";
+        modal.style.justifyContent = "center";
+        modal.style.alignItems = "center";
+        modal.style.zIndex = 9999;
+
+        const content = document.createElement("div");
+        content.style.background = "#1e293b";
+        content.style.color = "white";
+        content.style.padding = "20px";
+        content.style.borderRadius = "10px";
+        content.style.maxWidth = "600px";
+        content.style.maxHeight = "80%";
+        content.style.overflowY = "auto";
+
+        content.innerHTML = `
+            <h3 style="margin-top: 0;">${titulo}</h3>
+            <div>${htmlContenido}</div>
+            <button style="margin-top: 20px; padding: 10px 20px; background: #14b8a6; color: white; border: none; border-radius: 5px; cursor: pointer;" onclick="document.getElementById('modalArticulos').remove()">Cerrar</button>
+        `;
+
+        modal.appendChild(content);
+        document.body.appendChild(modal);
+    }
+}
+// === LECTURA DEL EXCEL ===
 document.getElementById('processFile').addEventListener('click', () => {
-    const fileInput = document.getElementById('csvFile');
+    const fileInput = document.getElementById('excelFile');
     const file = fileInput.files[0];
-    if (!file) return alert('Por favor, selecciona un archivo CSV.');
+    if (!file) return alert('Por favor, seleccioná un archivo Excel.');
 
     const reader = new FileReader();
-    reader.onload = (event) => processCSV(event.target.result);
-    reader.readAsText(file);
+    reader.onload = (event) => {
+        try {
+            const data = new Uint8Array(event.target.result);
+            const workbook = XLSX.read(data, { type: 'array' });
+            const firstSheetName = workbook.SheetNames[0];
+            const sheet = workbook.Sheets[firstSheetName];
+            const jsonData = XLSX.utils.sheet_to_json(sheet, { defval: "", raw: false });
+
+            processDataFromExcel(jsonData);
+        } catch (error) {
+            console.error("Error al procesar el archivo Excel:", error);
+            alert("Hubo un problema al leer el archivo Excel.");
+        }
+    };
+    reader.readAsArrayBuffer(file);
 });
 
-function processCSV(csvData) {
-    const rows = csvData.trim().split('\n');
-    const headers = rows.shift().split(',').map(h => h.trim());
 
-    const data = rows.map(row => {
-        const values = row.split(',');
-        return headers.reduce((acc, header, index) => {
-            acc[header] = values[index]?.trim();
-            return acc;
-        }, {});
-    });
-
+function processDataFromExcel(data) {
     datosOriginales = data;
     groupedData = groupByFlete(data);
     populateRecorridoFilter(groupedData);
     displayGroupedData(groupedData);
     displayExcludedArticles(data);
     habilitarOrdenamientoTabla('recorridosTable');
-
-
-    
 }
+
 
 
 function groupByFlete(data) {
     const grouped = {};
+
     data.forEach(item => {
-        const flete = item['Flete'];
-        const codArticulo = item['Cod. Artículo'];
-        const cantidad = parseFloat(item['Cantidad']) || 0;
-        const deposito = item['Ubicacion'];
-        const sucursal = item['Sucursal'];
+        const flete = item['Flete']?.trim();
+        const codArticulo = item['Cod. Artículo']?.trim();
+        const cantidadStr = item['Cantidad']?.trim() || '0';
+
+        // Reemplazar coma por punto para evitar errores de parseo
+        const cantidad = parseFloat(cantidadStr.replace(',', '.')) || 0;
+
+        const deposito = item['Ubicacion']?.trim();
+        const sucursal = item['Sucursal']?.trim();
         const articulo = baseDataFruver[codArticulo];
 
         if (!flete || cantidad <= 0 || !articulo) return;
 
         const categoria = articulo.categoria || "Sin categoría";
-        const pesoTotalArticulo = articulo.peso * cantidad;
+        const pesoUnitario = parseFloat(articulo.peso) || 0;
+        const pesoTotalArticulo = pesoUnitario * cantidad;
 
         if (!grouped[flete]) {
             grouped[flete] = {
@@ -9048,7 +9091,13 @@ function groupByFlete(data) {
 
         grouped[flete].kilos += pesoTotalArticulo;
         grouped[flete].categorias[categoria] = (grouped[flete].categorias[categoria] || 0) + pesoTotalArticulo;
-        grouped[flete].articles.push({ codigoArticulo: codArticulo, descripcion: articulo.descripcion, cantidad, pesoTotal: pesoTotalArticulo });
+        grouped[flete].articles.push({
+            codigoArticulo: codArticulo,
+            descripcion: articulo.descripcion,
+            cantidad,
+            pesoTotal: pesoTotalArticulo
+        });
+
         if (sucursal) grouped[flete].sucursales.add(sucursal);
     });
 
@@ -9057,6 +9106,7 @@ function groupByFlete(data) {
         sucursales: Array.from(group.sucursales)
     }));
 }
+
 
 function fusionarPorRecorridoManual(filtro1, filtro2) {
     const filas = Array.from(document.querySelectorAll('#recorridosTable tbody tr'));
@@ -9260,6 +9310,7 @@ function crearCeldaEditable(texto) {
 
 function crearDesplegableChofer(choferSeleccionado = "") {
     const select = document.createElement("select");
+
     const sinAsignar = document.createElement("option");
     sinAsignar.value = "";
     sinAsignar.text = "Sin asignar";
@@ -9269,13 +9320,39 @@ function crearDesplegableChofer(choferSeleccionado = "") {
     choferesUnidades.forEach(ch => {
         const option = document.createElement("option");
         option.value = ch.chofer;
-        option.text = ch.chofer;
-        if (ch.chofer === choferSeleccionado) option.selected = true;
+
+        // Mostrar solo el nombre si es el seleccionado
+        if (ch.chofer === choferSeleccionado) {
+            option.text = ch.chofer;
+            option.selected = true;
+        } else {
+            // Mostrar con capacidad para todos los demás
+            option.text = `${ch.chofer} - ${ch.capacidad} kg`;
+        }
+
         select.appendChild(option);
+    });
+
+    // Cada vez que cambia, actualizar el texto para mostrar solo el nombre
+    select.addEventListener("change", () => {
+        const selectedOption = select.options[select.selectedIndex];
+        const soloNombre = selectedOption.value;
+
+        // Resetear todas las opciones a nombre + capacidad
+        Array.from(select.options).forEach(opt => {
+            if (opt.value !== "") {
+                const unidad = choferesUnidades.find(c => c.chofer === opt.value);
+                opt.text = `${unidad.chofer} - ${unidad.capacidad} kg`;
+            }
+        });
+
+        // Solo el seleccionado debe mostrar solo el nombre
+        selectedOption.text = soloNombre;
     });
 
     return select;
 }
+
 
 function populateRecorridoFilter(groupedData) {
     const filterSelect = document.getElementById('recorridoFilter');
@@ -9299,7 +9376,6 @@ function displayGroupedData(data) {
     tableBody.innerHTML = '';
 
     data.forEach(({ flete, kilos, deposito, categorias, articles, sucursales }) => {
-        // 🔧 Ahora usamos .trim() para evitar errores por espacios
         const choferFijo = Object.entries(choferesFijos).find(([recorrido]) => recorrido.trim() === flete.trim())?.[1] || 'Sin asignar';
         const ayudanteFijo = ayudantes.find(a => a.recorrido.trim() === flete.trim())?.ayudante || 'Sin ayudante';
         const horario = horarios.find(h => h.recorrido.trim() === flete.trim())?.horario || 'Sin horario';
@@ -9337,6 +9413,24 @@ function displayGroupedData(data) {
         row.appendChild(crearCeldaEditable(''));
         row.appendChild(crearCeldaEditable(''));
 
+        const tdKilos = document.createElement('td');
+        const btnVer = document.createElement('button');
+        btnVer.innerText = 'Ver Artículos';
+        btnVer.style.padding = '6px 12px';
+        btnVer.style.backgroundColor = '#0ea5e9';
+        btnVer.style.color = 'white';
+        btnVer.style.border = 'none';
+        btnVer.style.borderRadius = '5px';
+        btnVer.style.cursor = 'pointer';
+
+        btnVer.onclick = () => {
+            const contenido = articles.map(a => `• ${a.descripcion} - ${a.cantidad} u. (${a.pesoTotal.toFixed(2)} kg)`).join('<br>');
+            mostrarModalArticulos(`Artículos de ${flete}`, contenido);
+        };
+
+        tdKilos.appendChild(btnVer);
+        row.appendChild(tdKilos);
+
         row.appendChild(crearCeldaTexto(`${kilos.toFixed(2)} kg`));
         row.appendChild(crearCeldaTexto(`${sucursales.length} sucursal(es)`));
 
@@ -9352,7 +9446,6 @@ function displayGroupedData(data) {
 
         row.appendChild(crearCeldaEditable(''));
 
-        // === LISTENERS DINÁMICOS ===
         selectChofer.addEventListener('change', () => {
             const nuevo = choferesUnidades.find(c => c.chofer === selectChofer.value);
             tdPatente.innerText = nuevo?.patente || 'Sin patente';
@@ -9373,6 +9466,16 @@ function displayGroupedData(data) {
 }
 
 
+function mostrarArticulos(flete) {
+    const grupo = groupedData.find(g => g.flete === flete);
+    if (!grupo) return alert('No se encontraron artículos para este recorrido.');
+
+    const detalles = grupo.articles.map(a => `• ${a.descripcion} - ${a.cantidad} u. (${a.pesoTotal.toFixed(2)} kg)`).join('\n');
+    alert(`Artículos del recorrido ${flete}:\n\n${detalles}`);
+}
+
+
+
 function displayExcludedArticles(data) {
     const tbody = document.querySelector('#excludedArticlesTable tbody');
     tbody.innerHTML = ''; // Limpiar la tabla
@@ -9380,30 +9483,34 @@ function displayExcludedArticles(data) {
     const excluidos = [];
 
     data.forEach(item => {
-        const codArticulo = item['Cod. Artículo'];
-        const cantidad = parseFloat(item['Cantidad']?.replace(',', '.')) || 0;
+        // Limpiar clave y cantidad
+        const codArticulo = (item['Cod. Artículo'] || '').trim();
+        const cantidadStr = (item['Cantidad'] || '0').replace(',', '.').trim();
+        const cantidad = parseFloat(cantidadStr);
 
-        const flete = item['Flete'];
-        const descripcion = item['Descripción Artículo'] || 'Desconocido';
-        const categoria = item['Rubro 2'] || 'Sin categoría';
+        // Tomar otras columnas necesarias
+        const flete = (item['Flete'] || '').trim();
+        const descripcion = (item['Descripción Artículo'] || '').trim() || 'Desconocido';
+        const categoria = (item['Rubro 2'] || '').trim() || 'Sin categoría';
 
+        // Buscar en base de datos
         const articulo = baseDataFruver[codArticulo];
-
         let razon = '';
 
+        // Validaciones de exclusión
         if (!codArticulo) {
             razon = 'Sin código de artículo';
         } else if (!articulo) {
             razon = 'Artículo no registrado en la base';
-        } else if (cantidad <= 0) {
-            razon = 'Cantidad cero o negativa';
         } else if (!flete) {
             razon = 'Sin flete';
+        } else if (isNaN(cantidad) || cantidad <= 0) {
+            razon = 'Cantidad cero o negativa';
         }
 
         if (razon) {
             excluidos.push({
-                codigo: codArticulo || 'Desconocido',
+                codigo: codArticulo,
                 descripcion,
                 categoria,
                 cantidad,
@@ -9412,6 +9519,7 @@ function displayExcludedArticles(data) {
         }
     });
 
+    // Mostrar en tabla
     excluidos.forEach(ex => {
         const row = document.createElement('tr');
         row.appendChild(crearCeldaTexto(ex.codigo));
@@ -9424,6 +9532,45 @@ function displayExcludedArticles(data) {
 }
 
 
+
+function crearBotonVerArticulos(articles) {
+    const td = document.createElement('td');
+    const boton = document.createElement('button');
+    boton.innerText = 'Ver Artículos';
+    boton.style.padding = '4px 8px';
+    boton.style.fontSize = '11px';
+    boton.style.borderRadius = '6px';
+    boton.style.backgroundColor = '#0ea5e9';
+    boton.style.color = 'white';
+    boton.style.border = 'none';
+    boton.style.cursor = 'pointer';
+
+    const contenedorDetalles = document.createElement('div');
+    contenedorDetalles.style.display = 'none';
+    contenedorDetalles.style.marginTop = '6px';
+    contenedorDetalles.style.backgroundColor = '#1e293b';
+    contenedorDetalles.style.padding = '6px';
+    contenedorDetalles.style.borderRadius = '6px';
+    contenedorDetalles.style.fontSize = '11px';
+    contenedorDetalles.style.color = '#f8fafc';
+    contenedorDetalles.style.maxWidth = '400px';
+
+    let html = '<strong>Detalle de artículos:</strong><ul style="margin: 4px 0; padding-left: 16px">';
+    articles.forEach(a => {
+        html += `<li>${a.descripcion} - ${a.cantidad} un. (${a.pesoTotal.toFixed(2)} kg)</li>`;
+    });
+    html += '</ul>';
+
+    contenedorDetalles.innerHTML = html;
+
+    boton.onclick = () => {
+        contenedorDetalles.style.display = contenedorDetalles.style.display === 'none' ? 'block' : 'none';
+    };
+
+    td.appendChild(boton);
+    td.appendChild(contenedorDetalles);
+    return td;
+}
 function exportarTablaAExcel(nombreArchivo = 'recorridos.xlsx') {
     const tabla = document.getElementById('recorridosTable');
     if (!tabla) {
