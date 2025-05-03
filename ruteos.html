@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consolidación de Puntos y Generación de Rutas</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <style>
+        /* Configuración general */
+/* Configuración general */
+body {
+    font-family: 'Roboto', sans-serif;
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(135deg, #1f1c2c, #535d80);
+    color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+}
+
+/* Encabezado */
+h2 {
+    color: #00d4ff;
+    font-size: 2.5rem;
+    text-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    margin-bottom: 1rem;
+}
+
+h3 {
+    color: #00ffa7;
+    font-size: 1.8rem;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    margin-top: 1rem;
+}
+
+/* Contenedor de controles */
+#controls {
+    background: rgba(0, 0, 0, 0.8);
+    padding: 2rem;
+    border-radius: 15px;
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.5);
+    width: 90%;
+    max-width: 1000px;
+    margin-top: 2rem;
+    transition: all 0.3s ease-in-out;
+}
+
+label {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: #f0f0f0;
+    font-size: 1rem;
+    margin-bottom: 1rem;
+}
+
+input[type="file"],
+input[type="number"],
+input[type="time"],
+select {
+    padding: 10px;
+    font-size: 1rem;
+    border-radius: 8px;
+    border: none;
+    background: rgba(255, 255, 255, 0.9);
+    color: #333;
+    outline: none;
+    transition: all 0.3s ease-in-out;
+}
+
+input[type="file"]:hover,
+input[type="number"]:hover,
+input[type="time"]:hover,
+select:hover {
+    background: rgba(255, 255, 255, 0.7);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+button {
+    padding: 12px 20px;
+    font-size: 1rem;
+    font-weight: bold;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    background: linear-gradient(45deg, #0078d7, #005eff);
+    cursor: pointer;
+    transition: all 0.4s ease-in-out;
+    margin-right: 10px;
+}
+
+button:hover {
+    background: linear-gradient(45deg, #00ffa7, #00d4ff);
+    transform: translateY(-3px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    animation: glow 1.5s infinite;
+}
+
+/* Mapa */
+#map {
+    width: 90%;
+    height: 500px;
+    margin: 2rem auto;
+    border-radius: 15px;
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.4);
+    overflow: hidden;
+    border: 2px solid #00ffa7;
+    animation: fadeIn 1.5s ease-in-out;
+}
+
+/* Tablas */
+table {
+    width: 90%;
+    border-collapse: collapse;
+    margin: 2rem auto;
+    border-radius: 15px;
+    overflow: hidden;
+    background: rgba(0, 0, 0, 0.8);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.5);
+}
+
+table th,
+table td {
+    padding: 15px;
+    text-align: left;
+    color: #f0f0f0;
+    font-size: 1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+table th {
+    background: linear-gradient(45deg, #00d4ff, #007bff);
+    color: white;
+    font-size: 1.2rem;
+    text-transform: uppercase;
+}
+
+table tr:nth-child(even) {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+table tr:hover {
+    background: rgba(255, 255, 255, 0.2);
+    cursor: pointer;
+    transform: scale(1.02);
+    transition: all 0.2s ease-in-out;
+}
+
+/* Animaciones */
+@keyframes glow {
+    0% {
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+    }
+    50% {
+        box-shadow: 0 0 20px rgba(0, 212, 255, 0.7);
+    }
+    100% {
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+    }
+}
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+    </style>
+</head>
+<body>
+    <div id="controls">
+        <h2>Consolidación de Puntos y Generación de Rutas</h2>
+        <label>Subir Excel: <input type="file" id="fileInput" accept=".xlsx, .xls"></label>
+        <label>Máximo de kilos por ruta: <input type="number" id="maxKilos" value="1000"></label>
+        <label>Cantidad máxima de puntos por ruta: <input type="number" id="maxPoints" value="5"></label>
+        <label>Distancia máxima por ruta (km): <input type="number" id="maxDistance" value="50"></label>
+        <button onclick="processExcel()">Procesar Archivo y Generar Rutas</button>
+        <button onclick="exportToExcel()">Exportar Rutas a Excel</button>
+        <label>Ver rutas: 
+            <select id="routeSelector" onchange="updateMap()">
+                <option value="all">Todas las rutas</option>
+            </select>
+        </label>
+    </div>
+    <h3>Resumen de Rutas</h3>
+    <table id="routesTable">
+        <thead>
+            <tr>
+                <th>Ruta</th>
+                <th>Puntos</th>
+                <th>Total Kilos</th>
+                <th>Distancia Total</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+    <div id="map"></div>
+    <script>
+        let map;
+        let locations = [];
+        let consolidatedLocations = [];
+        let routes = [];
+        const colors = ["blue", "red", "green", "purple", "orange"];
+        let routeLayers = [];
+
+        function initializeMap() {
+            map = L.map("map").setView([-34.6037, -58.3816], 12);
+            L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+                maxZoom: 18,
+                attribution: "© OpenStreetMap contributors"
+            }).addTo(map);
+        }
+
+        function processExcel() {
+            const fileInput = document.getElementById("fileInput");
+            const file = fileInput.files[0];
+
+            if (!file) {
+                alert("Por favor, selecciona un archivo Excel.");
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                try {
+                    const data = new Uint8Array(e.target.result);
+                    const workbook = XLSX.read(data, { type: "array" });
+                    const sheetName = workbook.SheetNames[0];
+                    const worksheet = workbook.Sheets[sheetName];
+                    const jsonData = XLSX.utils.sheet_to_json(worksheet, { defval: "" });
+
+                    if (jsonData.length === 0) {
+                        alert("El archivo Excel está vacío o no tiene datos válidos.");
+                        return;
+                    }
+
+                    const requiredColumns = ["sucursal", "latitud", "longitud", "kilos"];
+                    const missingColumns = requiredColumns.filter(col => !Object.keys(jsonData[0]).includes(col));
+                    if (missingColumns.length > 0) {
+                        alert(`El archivo Excel debe contener las siguientes columnas: ${missingColumns.join(", ")}`);
+                        return;
+                    }
+
+                    locations = jsonData.map((row, index) => {
+                        const lat = parseFloat(row.latitud);
+                        const lng = parseFloat(row.longitud);
+                        const kilos = parseFloat(row.kilos);
+                        const name = row.sucursal;
+
+                        if (isNaN(lat) || isNaN(lng) || isNaN(kilos) || !name) {
+                            console.error(`Fila inválida (número ${index + 1}):`, row);
+                            return null;
+                        }
+
+                        return { name, lat, lng, kilos };
+                    }).filter(loc => loc !== null);
+
+                    if (locations.length === 0) {
+                        alert("No se encontraron datos válidos en el archivo.");
+                        return;
+                    }
+
+                    consolidateLocations();
+                    generateRoutes();
+                } catch (error) {
+                    console.error("Error al procesar el archivo:", error);
+                    alert("Ocurrió un error al procesar el archivo. Por favor, verifica el formato.");
+                }
+            };
+            reader.readAsArrayBuffer(file);
+        }
+
+        function consolidateLocations() {
+            const grouped = {};
+            locations.forEach(location => {
+                const key = `${location.lat},${location.lng}`;
+                if (!grouped[key]) {
+                    grouped[key] = { lat: location.lat, lng: location.lng, kilos: 0, names: [] };
+                }
+                grouped[key].kilos += location.kilos;
+                grouped[key].names.push(location.name);
+            });
+            consolidatedLocations = Object.values(grouped);
+        }
+
+        function generateRoutes() {
+            const maxKilos = parseFloat(document.getElementById("maxKilos").value);
+            const maxPoints = parseInt(document.getElementById("maxPoints").value);
+            const maxDistance = parseFloat(document.getElementById("maxDistance").value);
+
+            if (!consolidatedLocations.length) {
+                alert("No hay puntos disponibles para generar rutas.");
+                return;
+            }
+
+            let unassignedLocations = [...consolidatedLocations];
+            routes = [];
+
+            while (unassignedLocations.length > 0) {
+                let currentRoute = [];
+                let currentKilos = 0;
+                let currentDistance = 0;
+
+                let start = unassignedLocations.shift();
+                currentRoute.push(start);
+                currentKilos += start.kilos;
+
+                while (currentRoute.length < maxPoints && currentKilos < maxKilos) {
+                    let nearest = null;
+                    let nearestIndex = -1;
+                    let minDistance = Infinity;
+
+                    unassignedLocations.forEach((location, index) => {
+                        const distance = haversineDistance(currentRoute[currentRoute.length - 1], location);
+                        if (
+                            distance < minDistance &&
+                            currentDistance + distance <= maxDistance
+                        ) {
+                            minDistance = distance;
+                            nearest = location;
+                            nearestIndex = index;
+                        }
+                    });
+
+                    if (
+                        nearest &&
+                        currentKilos + nearest.kilos <= maxKilos &&
+                    currentDistance + minDistance <= maxDistance
+                ) {
+                    currentRoute.push(nearest);
+                    currentKilos += nearest.kilos;
+                    currentDistance += minDistance;
+                    unassignedLocations.splice(nearestIndex, 1);
+                } else {
+                    break;
+                }
+            }
+
+            routes.push(currentRoute);
+        }
+
+        displayRoutes();
+    }
+
+    function haversineDistance(coord1, coord2) {
+        const R = 6371; // Radio de la Tierra en km
+        const dLat = (coord2.lat - coord1.lat) * Math.PI / 180;
+        const dLng = (coord2.lng - coord1.lng) * Math.PI / 180;
+        const lat1 = coord1.lat * Math.PI / 180;
+        const lat2 = coord2.lat * Math.PI / 180;
+
+        const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                  Math.cos(lat1) * Math.cos(lat2) * Math.sin(dLng / 2) * Math.sin(dLng / 2);
+        const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        return R * c; // Distancia en km
+    }
+
+    function displayRoutes() {
+        const tableBody = document.querySelector("#routesTable tbody");
+        tableBody.innerHTML = "";
+        routeLayers = [];
+        map.eachLayer(layer => {
+            if (layer instanceof L.Polyline || layer instanceof L.Marker) {
+                map.removeLayer(layer);
+            }
+        });
+
+        const routeSelector = document.getElementById("routeSelector");
+        routeSelector.innerHTML = `<option value="all">Todas las rutas</option>`;
+
+        routes.forEach((route, index) => {
+            const totalKilos = route.reduce((sum, loc) => sum + loc.kilos, 0);
+            const routeNames = route.map(loc => loc.names.join(", ")).join(" | ");
+            const routeDistance = calculateRouteDistance(route);
+
+            const row = document.createElement("tr");
+            row.innerHTML = `
+                <td>Ruta ${index + 1}</td>
+                <td>${routeNames}</td>
+                <td>${totalKilos}kg</td>
+                <td>${routeDistance.toFixed(2)} km</td>
+            `;
+            tableBody.appendChild(row);
+
+            const layerGroup = drawRouteOnMap(route, colors[index % colors.length], `Ruta ${index + 1}`);
+            routeLayers.push(layerGroup);
+
+            const option = document.createElement("option");
+            option.value = index;
+            option.text = `Ruta ${index + 1}`;
+            routeSelector.appendChild(option);
+        });
+    }
+
+    function calculateRouteDistance(route) {
+        let distance = 0;
+        for (let i = 0; i < route.length - 1; i++) {
+            distance += haversineDistance(route[i], route[i + 1]);
+        }
+        return distance;
+    }
+
+    function drawRouteOnMap(route, color, routeName) {
+        const latLngs = route.map(loc => [loc.lat, loc.lng]);
+        const polyline = L.polyline(latLngs, { color, weight: 4 }).addTo(map);
+
+        const centerLatLng = polyline.getBounds().getCenter();
+        L.marker(centerLatLng, { interactive: false, opacity: 0.8 })
+            .addTo(map)
+            .bindTooltip(routeName, { permanent: true, direction: "center" });
+
+        const markers = route.map(loc => {
+            return L.marker([loc.lat, loc.lng])
+                .addTo(map)
+                .bindPopup(`<b>${loc.names.join(", ")}</b><br>${loc.kilos}kg`);
+        });
+
+        return L.layerGroup([polyline, ...markers]); // Agrupa la capa de la ruta
+    }
+
+    function updateMap() {
+        const selectedRoute = document.getElementById("routeSelector").value;
+
+        map.eachLayer(layer => {
+            if (layer instanceof L.Polyline || layer instanceof L.Marker) {
+                map.removeLayer(layer);
+            }
+        });
+
+        if (selectedRoute === "all") {
+            routeLayers.forEach(layer => layer.addTo(map));
+        } else {
+            const routeIndex = parseInt(selectedRoute);
+            if (routeLayers[routeIndex]) {
+                routeLayers[routeIndex].addTo(map);
+            }
+        }
+    }
+
+    function exportToExcel() {
+        const workbook = XLSX.utils.book_new();
+        const sheetData = routes.map((route, index) => {
+            const totalKilos = route.reduce((sum, loc) => sum + loc.kilos, 0);
+            const routeNames = route.map(loc => loc.names.join(", ")).join(" | ");
+            const routeDistance = calculateRouteDistance(route);
+            return {
+                Ruta: `Ruta ${index + 1}`,
+                Puntos: routeNames,
+                TotalKilos: totalKilos,
+                Distancia: `${routeDistance.toFixed(2)} km`
+            };
+        });
+
+        const worksheet = XLSX.utils.json_to_sheet(sheetData);
+        XLSX.utils.book_append_sheet(workbook, worksheet, "Rutas");
+        XLSX.writeFile(workbook, "rutas_optimas.xlsx");
+    }
+
+    window.onload = initializeMap;
+    </script>
+</body>
+</html>

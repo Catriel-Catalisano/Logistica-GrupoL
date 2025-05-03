@@ -1,0 +1,500 @@
+/* Modern, Technological, and Captivating CSS Design */
+
+body {
+    font-family: 'Roboto', sans-serif;
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(135deg, #007ac2, #00c8ff);
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+header {
+    background: #004680;
+    padding: 1rem 2rem;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
+    text-align: center;
+}
+
+header h1 {
+    font-size: 3rem;
+    color: #ffc107;
+    text-transform: uppercase;
+    margin: 0.5rem 0;
+}
+
+header p {
+    color: #e0e0e0;
+    font-style: italic;
+    margin: 0;
+}
+
+main {
+    flex-grow: 1;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+section {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 15px;
+    padding: 1.5rem;
+    box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.7);
+}
+
+section h2 {
+    color: #ffc107;
+    font-size: 2rem;
+    border-bottom: 2px solid #ffc107;
+    padding-bottom: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+input[type="file"] {
+    padding: 0.5rem;
+    border: 2px dashed #ffc107;
+    border-radius: 10px;
+    background: transparent;
+    color: #fff;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+input[type="file"]:hover {
+    background: rgba(255, 193, 7, 0.2);
+}
+
+.styled-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 25px 0;
+    font-size: 1rem;
+    background: #003354;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.7);
+}
+
+.styled-table thead tr {
+    background-color: #ffc107;
+    color: #003354;
+    text-align: left;
+    font-size: 1.2rem;
+}
+
+.styled-table th, .styled-table td {
+    padding: 12px 15px;
+}
+
+.styled-table tbody tr {
+    border-bottom: 1px solid #ddd;
+}
+
+.styled-table tbody tr:nth-of-type(even) {
+    background-color: #004680;
+}
+
+.styled-table tbody tr:hover {
+    background-color: #005a9e;
+}
+
+.styled-table tbody td {
+    color: #fff;
+}
+
+button {
+    padding: 0.7rem 1.5rem;
+    border: none;
+    border-radius: 5px;
+    background: #ffc107;
+    color: #004680;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+button:hover {
+    background: #ffa000;
+}
+
+footer {
+    background: #004680;
+    padding: 1rem;
+    text-align: center;
+    color: #e0e0e0;
+    font-size: 0.9rem;
+    box-shadow: 0px -4px 10px rgba(0, 0, 0, 0.5);
+}
+
+.charts {
+    display: grid;
+    justify-content: space-around;
+    align-items: center;
+    gap: 1rem;
+}
+
+.charts canvas {
+    background: #003354;
+    border-radius: 10px;
+    box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.7);
+    width: 260px; /* Adjusted size for smaller pie chart */
+    height: 260px; /* Ensures uniformity */
+}
+
+.summary p {
+    font-size: 1.5rem;
+    margin: 0.5rem 0;
+}
+
+.summary span {
+    font-weight: bold;
+    color: #ffc107;
+}
+
+
+.login-container h1 {
+    color: black;
+}
+label {
+    color: #000000; /* Cambia este color */
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 5px;
+    display: block; /* Asegura que esté en una línea separada */
+}
+.watermark {
+    position: fixed;
+    bottom: 10px; /* Ubicación desde el fondo */
+    right: 10px; /* Ubicación desde el lado derecho */
+    font-size: 12px; /* Tamaño de la fuente */
+    color: rgba(0, 0, 0, 0.5); /* Color gris con transparencia */
+    pointer-events: none; /* Evita que interfiera con los clics */
+    z-index: 9999; /* Asegura que esté encima de otros elementos */
+}
+
+
+.login-container, .dashboard-container {
+    background: white;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    width: 350px;
+    text-align: center;
+}
+
+.login-container h1, .dashboard-container h1 {
+    margin-bottom: 20px;
+}
+
+form div {
+    margin-bottom: 15px;
+    text-align: left;
+}
+
+label {
+    display: block;
+    font-size: 14px;
+    margin-bottom: 5px;
+}
+
+input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+button {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    background-color: #4caf50;
+    color: white;
+    font-size: 16px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+.error-message {
+    color: red;
+    font-size: 12px;
+    margin-top: 10px;
+}
+
+.dashboard-container h1 {
+color: black;
+
+}
+.dashboard-container p {
+    color: black;
+    
+    }
+
+    .whatsapp-button {
+        background-color: #25D366;
+        color: rgb(14, 12, 12);
+        border: none;
+        padding: 5px 10px;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+    .whatsapp-button:hover {
+        background-color: #1EBE57;
+    }
+   
+
+
+    /* Estilos para el contenedor del menú */
+.menu-container {
+    text-align: center;
+    margin-top: 50px;
+    padding: 20px;
+    background-color: #f9f9f9;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+}
+
+/* Estilo base para la lista no ordenada */
+.menu-container ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+/* Estilos para cada elemento de la lista */
+.menu-container li {
+    margin: 15px 0; /* Espaciado entre los ítems */
+    font-size: 18px;
+}
+
+/* Estilos para los enlaces */
+.menu-container a {
+    text-decoration: none; /* Quita el subrayado */
+    color: #333; /* Color de texto predeterminado */
+    display: block; /* Ocupa toda la línea del <li> */
+    background-color: #4CAF50; /* Fondo verde */
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px; /* Bordes redondeados */
+    transition: all 0.3s ease; /* Transición suave */
+    font-weight: bold;
+}
+
+/* Estilo cuando el cursor pasa sobre el enlace */
+.menu-container a:hover {
+    background-color: #45a049; /* Cambia el fondo al pasar el mouse */
+    transform: scale(1.05); /* Efecto de agrandamiento ligero */
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2); /* Sombra para resaltar */
+}
+
+/* Estilo activo o seleccionado */
+.menu-container a:active {
+    background-color: #388e3c; /* Color más oscuro cuando se hace clic */
+}
+/* Contenedor principal del menú */
+.option-menu {
+    width: 100%;
+    max-width: 600px; /* Ancho máximo del menú */
+    margin: 40px auto; /* Centrado vertical y horizontal */
+    background-color: #f1f1f1;
+    border-radius: 8px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden; /* Evita que sobresalgan elementos */
+}
+
+/* Eliminar estilos predeterminados de la lista */
+.option-menu ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+/* Estilo de cada elemento de lista */
+.option-menu li {
+    border-bottom: 1px solid #ddd; /* Línea divisoria entre elementos */
+}
+
+/* Estilo para los enlaces */
+.option-menu a {
+    display: block;
+    text-decoration: none;
+    color: #333; /* Color de texto oscuro */
+    font-size: 18px;
+    font-weight: bold;
+    padding: 15px 20px; /* Espaciado interno */
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Efecto al pasar el mouse sobre los enlaces */
+.option-menu a:hover {
+    background-color: #4CAF50; /* Fondo verde */
+    color: #fff; /* Texto en blanco */
+    padding-left: 25px; /* Efecto de desplazamiento de texto */
+    transition: all 0.3s ease;
+}
+
+/* Eliminar borde del último elemento */
+.option-menu li:last-child {
+    border-bottom: none;
+}
+
+/* Efecto activo (clic en enlace) */
+.option-menu a:active {
+    background-color: #388E3C; /* Verde más oscuro */
+    color: #fff;
+}
+.container {
+    max-width: 800px;
+    margin: 50px auto; /* Centrado vertical y horizontal */
+    background: #ffffff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+    text-align: center; /* Centra el texto */
+}
+
+
+/* Contenedor principal */
+.container {
+    max-width: 800px;
+    margin: 50px auto; /* Centrado vertical y horizontal */
+    background: #ffffff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+    text-align: center; /* Centra el texto */
+}
+
+/* Título principal */
+.container h1 {
+    color: #4CAF50;
+    font-size: 28px;
+    margin-bottom: 10px;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+/* Párrafo de bienvenida */
+.container p {
+    font-size: 18px;
+    margin-bottom: 20px;
+    color: #555;
+}
+
+/* Menú de opciones */
+.option-menu {
+    background-color: #f1f1f1;
+    border-radius: 8px;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    padding: 0;
+}
+
+.option-menu ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.option-menu li {
+    border-bottom: 1px solid #ddd;
+}
+
+.option-menu li:last-child {
+    border-bottom: none; /* Elimina la línea del último elemento */
+}
+
+.option-menu a {
+    display: block;
+    text-decoration: none;
+    color: #333;
+    font-size: 18px;
+    padding: 15px 20px;
+    transition: background-color 0.3s ease, color 0.3s ease, padding-left 0.3s ease;
+}
+
+.option-menu a:hover {
+    background-color: #4CAF50;
+    color: #ffffff;
+    padding-left: 25px;
+}
+
+/* Estilo del botón */
+button {
+    background-color: #4CAF50;
+    color: white;
+    font-size: 16px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+/* Sombra al botón al hacer clic */
+button:active {
+    transform: scale(0.98); /* Efecto pequeño al presionar */
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+/* Responsividad para pantallas pequeñas */
+@media screen and (max-width: 600px) {
+    .container {
+        padding: 15px;
+    }
+
+    .container h1 {
+        font-size: 24px;
+    }
+
+    .option-menu a {
+        font-size: 16px;
+    }
+
+    button {
+        font-size: 14px;
+        padding: 8px 15px;
+    }
+}
+.menu-container h2{
+    color: black;
+
+}
+td[contenteditable="true"] {
+    background-color: #fff6e5 !important;  /* Fondo suave */
+    color: #333 !important;                /* Texto bien visible */
+    outline: 1px dashed #bbb;              /* Borde al enfocar */
+    cursor: text;
+}
+#recorridosTable th,
+#recorridosTable td {
+    white-space: nowrap;
+    padding: 4px 8px;
+    text-align: center;
+}
+
+#recorridosTable th:nth-child(3),
+#recorridosTable td:nth-child(3) {
+    min-width: 150px; /* FECHA */
+}
+
+#recorridosTable th:nth-child(4),
+#recorridosTable td:nth-child(4) {
+    min-width: 150px; /* SITE */
+}
+
+#recorridosTable th:nth-child(18),
+#recorridosTable td:nth-child(18) {
+    min-width: 100px; /* % de ocupa */
+}

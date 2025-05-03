@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Planificación Fru-Ver</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Planificación Fru-Ver</h1>
+        <p>Bienvenido a la herramienta de planificación de distribución de frutas y verduras.</p>
+        
+        <!-- Menú de opciones -->
+        <div class="option-menu">
+            <ul>
+                
+                <li>
+                    <a href="#" id="addPlan">Agregar Nueva Planificación</a>
+                    <input type="file" id="file-input" accept=".csv" style="display: none;">
+                </li>
+                <li><a href="index.html" id="menu.">Menu</a></li>
+                <li><a href="calcular_peso.html" id="menu.">Calcular Peso</a></li>
+                <li><a href="moreno.html" id="menu.">Moreno</a></li>
+                <li><a href="ruteos.html">Ruteos Automáticos</a></li>
+             
+            </ul>
+        </div>
+
+        <!-- Tabla para mostrar la asignación -->
+        <div id="data-display"></div>
+        <p id="message" class="error-message"></p>
+
+        <!-- Botón para volver al menú principal -->
+        <div id="data-display"></div> <!-- Aquí se mostrará la tabla de asignaciones -->
+    <div id="zone-display"></div> <!-- Aquí se mostrará la tabla de zonas -->
+    
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.4/xlsx.full.min.js"></script>
+    <script src="scriptfruver.js"></script>
+    
+
+</body>
+</html>
+
