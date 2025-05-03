@@ -10046,7 +10046,7 @@ function habilitarOrdenamientoTabla(idTabla) {
     
 }
 function guardarAsignacionesEnSheets(datos) {
-    fetch("https://script.google.com/macros/s/AKfycbwX8MGpY6UiZ5m30dPd2VUKQjaw57vNGOUVTKfg8ZgH1uz8Wim9NS4XWex3QzI5fj8r/exec", {
+    fetch("https://script.google.com/macros/s/AKfycbw2QvKWXKmRT3MVVyE1p_X2YY6G0zDgqM9tdEr-t9oo9gYCmDFJp2eOyIB1lTiCraF9/exec", {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
