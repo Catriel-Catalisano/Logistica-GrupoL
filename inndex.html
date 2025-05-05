@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Bienvenido - Logística Grupo L</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #0d1117;
+      color: #00d1d1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: 10px;
+      color: #39c1c1;
+    }
+
+    p#clock {
+      font-size: 1.2rem;
+      color: #c4c4c4;
+      margin-bottom: 40px;
+    }
+
+    .menu {
+      display: flex;
+      gap: 30px;
+    }
+
+    .menu a {
+      text-decoration: none;
+      padding: 15px 25px;
+      background-color: #161b22;
+      border: 2px solid #00d1d1;
+      border-radius: 10px;
+      color: #00d1d1;
+      font-weight: bold;
+      transition: all 0.3s ease;
+    }
+
+    .menu a:hover {
+      background-color: #00d1d1;
+      color: #0d1117;
+      transform: scale(1.1);
+      box-shadow: 0 0 10px #00d1d1;
+    }
+
+    footer {
+      position: absolute;
+      bottom: 10px;
+      font-size: 0.8rem;
+      color: #555;
+    }
+  </style>
+</head>
+<body>
+  <h1>📦 Bienvenido a la Plataforma Logística</h1>
+  <p id="clock">Cargando fecha y hora...</p>
+
+  <div class="menu">
+    <a href="Asignaciones.html">🚛 Planificación de Recorridos</a>
+    <a href="liquidaciondeviajes.html">💰 Liquidación de Viajes</a>
+  </div>
+
+  <footer>Grupo L - Sistema Interno</footer>
+
+  <script>
+    function updateClock() {
+      const now = new Date();
+      const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+      const fecha = now.toLocaleDateString('es-AR', options);
+      const hora = now.toLocaleTimeString('es-AR');
+      document.getElementById('clock').textContent = `${fecha} - ${hora}`;
+    }
+
+    setInterval(updateClock, 1000);
+    updateClock();
+  </script>
+</body>
+</html>

@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Liquidación de Viajes</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      background-color: #0a0f1a;
+      color: #ffffff;
+      font-family: 'Montserrat', sans-serif;
+      padding: 20px;
+    }
+    h2, h3 {
+      color: #00ffff;
+      margin-bottom: 10px;
+    }
+    label, select, input[type="file"] {
+      font-size: 1rem;
+      margin: 10px 0;
+    }
+    select, input[type="file"] {
+      background-color: #111827;
+      color: #00ffff;
+      border: 2px solid #00ffff;
+      padding: 6px;
+      border-radius: 5px;
+    }
+    button {
+      margin-top: 10px;
+      padding: 8px 16px;
+      background-color: #00ffff;
+      color: #0a0f1a;
+      font-weight: bold;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+    th, td {
+      padding: 10px;
+      border: 1px solid #1f2937;
+      text-align: left;
+    }
+    th {
+      background-color: #111827;
+      color: #00ffff;
+    }
+    tr:nth-child(even) {
+      background-color: #1a1f2e;
+    }
+    tr:hover {
+      background-color: #374151;
+    }
+  </style>
+</head>
+<body>
+  <h2>📋 Liquidación de Viajes</h2>
+
+  <label for="cdSelect">Centro de Distribución:</label>
+  <select id="cdSelect"></select>
+
+  <br><br>
+  <label for="fileInput">📂 Cargar Excel:</label>
+  <input type="file" id="fileInput" accept=".xlsx" />
+
+  <button id="exportBtn">Exportar a Excel</button>
+
+  <h3>Resultados:</h3>
+  <table id="resultsTable">
+    <thead>
+      <tr>
+        <th>🚗 Chofer</th>
+        <th>🗺️ Recorrido</th>
+        <th>📍 Sucursales</th>
+        <th>🗺️ Km</th>
+        <th>💲 Precio Final</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <script>
+    const precioPorKm = 150;
+
+    const centrosDistribucion = [
+      { nombre: "CD Ciudadela", lat: -34.62543247275824, lng: -58.55756186226295 },
+      { nombre: "CD Moreno", lat: -34.61541912075599, lng: -58.72405553157144 }
+    ];
+
+    const sucursales = [
+    { nombre: "Tacuarí Mixto", lat: -34.626000303796000, lng: -58.377914650650200 },
+{ nombre: "Tacuarí Julieta Lanteri", lat: -34.62719496317370, lng: -58.37689076372570 },
+{ nombre: "277-La Familia Centro Integral", lat: -34.67185796738080, lng: -58.46857929037580 },
+{ nombre: "93-Piluso", lat: -34.67185796738080, lng: -58.46857929037580 },
+{ nombre: "324 - Una Mano Amiga al Niño", lat: -34.67357785693880, lng: -58.4683332023443 },
+{ nombre: "196 - Raices", lat: -34.677383288427600, lng: -58.465853132039400 },
+{ nombre: "553-Los Leones Agrandados", lat: -34.67818651662610, lng: -58.46781314885480 },
+{ nombre: "94-Manos Latinas", lat: -34.67814627898800, lng: -58.46776357818330 },
+{ nombre: "C.C Santa María de Lujan", lat: -34.67305527506510, lng: -58.46890783318650 }
+
+    ];
+
+    
+    let exportData = [];
+
+    function calcularDistancia(lat1, lon1, lat2, lon2) {
+      const R = 6371;
+      const dLat = (lat2 - lat1) * Math.PI / 180;
+      const dLon = (lon2 - lon1) * Math.PI / 180;
+      const a = Math.sin(dLat / 2) ** 2 + Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * Math.sin(dLon / 2) ** 2;
+      const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+      return R * c;
+    }
+
+    const cdSelect = document.getElementById("cdSelect");
+    centrosDistribucion.forEach(cd => {
+      const option = document.createElement("option");
+      option.value = JSON.stringify(cd);
+      option.textContent = cd.nombre;
+      cdSelect.appendChild(option);
+    });
+
+    const normalizar = texto => texto?.toLowerCase().normalize("NFD").replace(/[^\w\s]/gi, '').replace(/\s+/g, ' ').trim();
+
+    document.getElementById("fileInput").addEventListener("change", function (e) {
+      const file = e.target.files[0];
+      const reader = new FileReader();
+
+      reader.onload = function (e) {
+        const data = new Uint8Array(e.target.result);
+        const workbook = XLSX.read(data, { type: "array" });
+        const sheet = workbook.Sheets[workbook.SheetNames[0]];
+        const json = XLSX.utils.sheet_to_json(sheet, { header: 1 });
+
+        const selectedCD = JSON.parse(cdSelect.value);
+        const tbody = document.querySelector("#resultsTable tbody");
+        tbody.innerHTML = "";
+        exportData = [];
+
+        const recorridos = {};
+
+        for (let i = 1; i < json.length; i++) {
+          const fila = json[i];
+          const chofer = fila[5];
+          const recorrido = fila[10];
+          const sucursalNombre = fila[15];
+
+          if (!recorridos[recorrido]) {
+            recorridos[recorrido] = {
+              chofer: chofer,
+              sucursales: []
+            };
+          }
+          recorridos[recorrido].sucursales.push(sucursalNombre);
+        }
+
+        for (const recorrido in recorridos) {
+          const datos = recorridos[recorrido];
+          let totalKm = 0;
+          let coordAnterior = { lat: selectedCD.lat, lng: selectedCD.lng };
+          let sucursalesNombres = [];
+
+          datos.sucursales.forEach(nombre => {
+            const nombreNorm = normalizar(nombre);
+            const suc = sucursales.find(s => {
+              const sucursalNorm = normalizar(s.nombre);
+              return nombreNorm.includes(sucursalNorm) || sucursalNorm.includes(nombreNorm);
+            });
+
+            if (suc) {
+              const dist = calcularDistancia(coordAnterior.lat, coordAnterior.lng, suc.lat, suc.lng);
+              totalKm += dist;
+              coordAnterior = { lat: suc.lat, lng: suc.lng };
+              sucursalesNombres.push(suc.nombre);
+            }
+          });
+
+          const precioFinal = totalKm * precioPorKm;
+
+          exportData.push({
+            Chofer: datos.chofer,
+            Recorrido: recorrido,
+            Sucursales: sucursalesNombres.join(" → "),
+            Km: totalKm.toFixed(2),
+            Precio: `$${precioFinal.toFixed(2)}`
+          });
+
+          const row = document.createElement("tr");
+          row.innerHTML = `
+            <td>${datos.chofer}</td>
+            <td>${recorrido}</td>
+            <td>${sucursalesNombres.join(" → ")}</td>
+            <td>${totalKm.toFixed(2)}</td>
+            <td>$${precioFinal.toFixed(2)}</td>
+          `;
+          tbody.appendChild(row);
+        }
+      };
+
+      reader.readAsArrayBuffer(file);
+    });
+
+    document.getElementById("exportBtn").addEventListener("click", () => {
+      if (exportData.length === 0) return alert("No hay datos para exportar");
+      const wb = XLSX.utils.book_new();
+      const ws = XLSX.utils.json_to_sheet(exportData);
+      XLSX.utils.book_append_sheet(wb, ws, "Liquidacion");
+      XLSX.writeFile(wb, "liquidacion_viajes.xlsx");
+    });
+  </script>
+</body>
+</html>
