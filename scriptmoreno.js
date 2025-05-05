@@ -9249,7 +9249,7 @@ function fusionarPorRecorridoManual(filtro1, filtro2) {
     const filas = Array.from(document.querySelectorAll('#recorridosTable tbody tr'));
 
     const seleccionadas = filas.filter(f => {
-        const recorrido = f.cells[9].innerText.trim().toUpperCase();
+        const recorrido = f.cells[9].innerText.trim().toUpperCase(); // Recorrido
         return recorrido === filtro1.trim().toUpperCase() || recorrido === filtro2.trim().toUpperCase();
     });
 
@@ -9268,56 +9268,108 @@ function fusionarPorRecorridoManual(filtro1, filtro2) {
     let totalKilos = 0;
 
     seleccionadas.forEach(fila => {
-        recorridoFusionado.push(fila.cells[9].innerText.trim());  // Recorrido
-        clienteFusionado.push(fila.cells[8].innerText.trim());    // Cliente
-        const kilos = parseFloat(fila.cells[13].innerText.replace('kg', '').replace(',', '.')) || 0;
+        recorridoFusionado.push(fila.cells[9].innerText.trim());    // Recorrido
+        clienteFusionado.push(fila.cells[8].innerText.trim());      // Cliente
+        const kilos = parseFloat(fila.cells[15]?.innerText.replace('kg', '').replace(',', '.') || '0');
         totalKilos += kilos;
-    }); 
+    });
 
     const nuevaFila = document.createElement('tr');
 
-    nuevaFila.appendChild(crearCeldaTexto('PLANIFICADO'));
-    nuevaFila.appendChild(crearCeldaTexto('PLANIFICADO'));
-    nuevaFila.appendChild(crearCeldaTexto('Fusionado'));
-    nuevaFila.appendChild(crearCeldaTexto('Fusionado'));
-    const tdHorario = crearCeldaEditable('');
+    // COLUMNAS (22 totales, en orden)
+    nuevaFila.appendChild(crearCeldaTexto('PLANIFICADO'));       // 0. Status
+    nuevaFila.appendChild(crearCeldaTexto('PLANIFICADO'));       // 1. Planificación
+    nuevaFila.appendChild(crearCeldaTexto('Fusionado'));         // 2. FECHA
+    nuevaFila.appendChild(crearCeldaTexto('Fusionado'));         // 3. Site
+    const tdHorario = crearCeldaEditable('');                    // 4. HORARIO
     nuevaFila.appendChild(tdHorario);
-    nuevaFila.appendChild(crearCeldaEditable(''));
+    nuevaFila.appendChild(crearCeldaEditable(''));               // 5. AYUDANTE
+
+    // 6. CHOFER (dropdown)
     const tdChofer = document.createElement('td');
     const selectChofer = crearDesplegableChofer();
     tdChofer.appendChild(selectChofer);
     nuevaFila.appendChild(tdChofer);
-    const tdPatente = crearCeldaTexto('');
-    nuevaFila.appendChild(tdPatente);
-    nuevaFila.appendChild(crearCeldaTexto(clienteFusionado.join(' / ')));
-    nuevaFila.appendChild(crearCeldaTexto(recorridoFusionado.join(' / ')));
-    const tdVuelta = crearCeldaTexto('');
-    nuevaFila.appendChild(tdVuelta);
-    nuevaFila.appendChild(crearCeldaEditable(''));
-    nuevaFila.appendChild(crearCeldaEditable(''));
-    nuevaFila.appendChild(crearCeldaTexto(`${totalKilos.toFixed(2)} kg`));
-    nuevaFila.appendChild(crearCeldaTexto(`${seleccionadas.length} recorridos`));
-    const tdTelefono = crearCeldaTexto('');
-    nuevaFila.appendChild(tdTelefono);
-    const tdCapacidad = crearCeldaTexto('');
-    nuevaFila.appendChild(tdCapacidad);
-    const tdPorcentaje = crearCeldaTexto('');
-    nuevaFila.appendChild(tdPorcentaje);
-    nuevaFila.appendChild(crearCeldaEditable(''));
 
+    const tdPatente = crearCeldaTexto('');                       // 7. PATENTE
+    nuevaFila.appendChild(tdPatente);
+
+    nuevaFila.appendChild(crearCeldaTexto(clienteFusionado.join(' / ')));    // 8. CLIENTE
+    nuevaFila.appendChild(crearCeldaTexto(recorridoFusionado.join(' / ')));  // 9. RECORRIDO
+
+    const tdVuelta = crearCeldaTexto('');                        // 10. VUELTA
+    nuevaFila.appendChild(tdVuelta);
+
+    nuevaFila.appendChild(crearCeldaEditable(''));               // 11. Observaciones
+    nuevaFila.appendChild(crearCeldaEditable(''));               // 12. Observaciones 2
+
+    // 13. Artículos (botón)
+    const tdArticulos = document.createElement('td');
+    const btnVer = document.createElement('button');
+    btnVer.innerText = 'Ver Artículos';
+    btnVer.className = 'btn-ver-articulos';
+    tdArticulos.appendChild(btnVer);
+    nuevaFila.appendChild(tdArticulos);
+
+    // 14. Resumen para citaciones (botón)
+    const tdResumen = document.createElement('td');
+    const btnResumen = document.createElement('button');
+    btnResumen.innerText = '📋 Resumen';
+    btnResumen.className = 'btn-resumen';
+    tdResumen.appendChild(btnResumen);
+    nuevaFila.appendChild(tdResumen);
+
+    nuevaFila.appendChild(crearCeldaTexto(`${totalKilos.toFixed(2)} kg`));         // 15. KILOS
+    nuevaFila.appendChild(crearCeldaTexto(`${seleccionadas.length} sucursal(es)`)); // 16. SUCURSALES
+
+    const tdTelefono = crearCeldaTexto('');          // 17. TELEFONO
+    const tdCapacidad = crearCeldaTexto('');         // 18. CAPACIDAD
+    const tdPorcentaje = crearCeldaTexto('');        // 19. % de ocupa
+    nuevaFila.appendChild(tdTelefono);
+    nuevaFila.appendChild(tdCapacidad);
+    nuevaFila.appendChild(tdPorcentaje);
+
+    nuevaFila.appendChild(crearCeldaEditable(''));   // 20. CONTROL
+
+    // 21. OCUPACIÓN (canvas)
+    const canvasOcupacion = document.createElement('canvas');
+    canvasOcupacion.width = 100;
+    canvasOcupacion.height = 30;
+    const tdOcupacion = document.createElement('td');
+    tdOcupacion.appendChild(canvasOcupacion);
+    nuevaFila.appendChild(tdOcupacion);
+
+    // BARRA INICIAL
+    const ctx = canvasOcupacion.getContext('2d');
+    ctx.fillStyle = '#e0e0e0';
+    ctx.fillRect(0, 10, 100, 10);
+    ctx.fillStyle = '#76c7c0';
+    ctx.fillRect(0, 10, 0, 10);
+
+    // EVENTOS
     selectChofer.addEventListener('change', () => {
         const unidad = choferesUnidades.find(c => c.chofer === selectChofer.value);
         tdPatente.innerText = unidad?.patente || 'Sin patente';
         tdTelefono.innerText = unidad?.telefono || 'Sin dato';
         tdCapacidad.innerText = unidad?.capacidad || 'Sin dato';
+
         const cap = parseFloat(unidad?.capacidad || 0);
-        tdPorcentaje.innerText = cap ? `${((totalKilos / cap) * 100).toFixed(1)} %` : 'Sin dato';
+        const porcentaje = cap ? (totalKilos / cap) * 100 : 0;
+        tdPorcentaje.innerText = cap ? `${porcentaje.toFixed(1)} %` : 'Sin dato';
+
+        // Redibujar barra
+        ctx.clearRect(0, 0, 100, 30);
+        ctx.fillStyle = '#e0e0e0';
+        ctx.fillRect(0, 10, 100, 10);
+        ctx.fillStyle = porcentaje < 50 ? '#4caf50' : porcentaje < 80 ? '#ff9800' : '#f44336';
+        ctx.fillRect(0, 10, Math.min(porcentaje, 100), 10);
     });
 
     tdHorario.addEventListener('input', () => {
         tdVuelta.innerText = calcularVuelta(tdHorario.innerText);
     });
 
+    // REMOVER FILAS ANTERIORES Y AGREGAR NUEVA
     seleccionadas.forEach(f => f.remove());
     document.querySelector('#recorridosTable tbody').appendChild(nuevaFila);
 
@@ -9399,7 +9451,7 @@ function mostrarInputsFusionManual() {
     contenedor.appendChild(cont);
 }
 
-  function fusionarMultiplesRecorridos(recorridos) {
+function fusionarMultiplesRecorridos(recorridos) {
     const filas = Array.from(document.querySelectorAll('#recorridosTable tbody tr'));
 
     const seleccionadas = filas.filter(f =>
@@ -9420,17 +9472,19 @@ function mostrarInputsFusionManual() {
     seleccionadas.forEach(fila => {
         recorridoFusionado.push(fila.cells[9].innerText.trim());
         clienteFusionado.push(fila.cells[8].innerText.trim());
-        const kilos = parseFloat(fila.cells[14].innerText.replace('kg', '').replace(',', '.')) || 0;
+        const kilos = parseFloat(fila.cells[15]?.innerText.replace('kg', '').replace(',', '.')) || 0;
         totalKilos += kilos;
 
-        const sucursales = parseInt(fila.cells[15].innerText) || 0;
+        const sucursales = parseInt(fila.cells[16]?.innerText) || 0;
         totalSucursales += sucursales;
 
-        const articulosTexto = fila.cells[13].innerText.trim();
+        const articulosTexto = fila.cells[13]?.innerText.trim();
         if (articulosTexto) articulosFusionados.push(articulosTexto);
     });
 
     const nuevaFila = document.createElement('tr');
+
+    // === Columnas ===
     nuevaFila.appendChild(crearCeldaTexto('PLANIFICADO'));
     nuevaFila.appendChild(crearCeldaTexto('PLANIFICADO'));
     nuevaFila.appendChild(crearCeldaTexto('Fusionado'));
@@ -9449,8 +9503,11 @@ function mostrarInputsFusionManual() {
     const tdPatente = crearCeldaTexto('');
     nuevaFila.appendChild(tdPatente);
 
-    nuevaFila.appendChild(crearCeldaTexto(clienteFusionado.join(' / ')));
-    nuevaFila.appendChild(crearCeldaTexto(recorridoFusionado.join(' / ')));
+    const cliente = clienteFusionado.join(' / ');
+    const flete = recorridoFusionado.join(' / ');
+
+    nuevaFila.appendChild(crearCeldaTexto(cliente));
+    nuevaFila.appendChild(crearCeldaTexto(flete));
 
     const tdVuelta = crearCeldaTexto('');
     nuevaFila.appendChild(tdVuelta);
@@ -9458,55 +9515,117 @@ function mostrarInputsFusionManual() {
     nuevaFila.appendChild(crearCeldaEditable(''));
     nuevaFila.appendChild(crearCeldaEditable(''));
 
-    const detalleToggle = document.createElement('td');
-    const toggle = document.createElement('span');
-    toggle.textContent = '🔍 Ver';
-    toggle.style.cursor = 'pointer';
-    toggle.style.color = '#38bdf8';
-    toggle.style.textDecoration = 'underline';
+    // === Ver Artículos con modal ===
+    const tdArticulos = document.createElement('td');
+    const btnVer = document.createElement('button');
+    btnVer.innerText = 'Ver Artículos';
+    btnVer.style.padding = '6px 12px';
+    btnVer.style.backgroundColor = '#0ea5e9';
+    btnVer.style.color = 'white';
+    btnVer.style.border = 'none';
+    btnVer.style.borderRadius = '5px';
+    btnVer.style.cursor = 'pointer';
 
-    const detalles = document.createElement('div');
-    detalles.style.display = 'none';
-detalles.style.marginTop = '5px';
-detalles.style.fontSize = '11px';
-detalles.style.maxHeight = '150px';
-detalles.style.overflowY = 'auto';
-detalles.style.padding = '5px';
-detalles.style.backgroundColor = '#1e293b';
-detalles.style.border = '1px solid #334155';
-detalles.style.borderRadius = '6px';
-detalles.innerHTML = articulosFusionados.join('<br>');
-
-
-    toggle.onclick = () => {
-        detalles.style.display = detalles.style.display === 'none' ? 'block' : 'none';
+    btnVer.onclick = () => {
+        const articles = articulosFusionados.map((text, i) => ({
+            descripcion: text,
+            cantidad: 1,
+            pesoTotal: 0 // Podés agregar peso real si lo tenés
+        }));
+        const contenido = articles.map(a => `• ${a.descripcion} - ${a.cantidad} u. (${a.pesoTotal.toFixed(2)} kg)`).join('<br>');
+        mostrarModalArticulos(`Artículos de ${flete}`, contenido);
     };
 
-    detalleToggle.appendChild(toggle);
-    detalleToggle.appendChild(detalles);
-    nuevaFila.appendChild(detalleToggle);
+    tdArticulos.appendChild(btnVer);
+    nuevaFila.appendChild(tdArticulos);
+
+    // === Botón Resumen copiar ===
+    const tdResumen = document.createElement('td');
+    const btnResumen = document.createElement('button');
+    btnResumen.innerText = '📲 Resumen';
+    btnResumen.style.marginTop = '5px';
+    btnResumen.style.padding = '4px 8px';
+    btnResumen.style.fontSize = '11px';
+    btnResumen.style.backgroundColor = '#10b981';
+    btnResumen.style.color = 'white';
+    btnResumen.style.border = 'none';
+    btnResumen.style.borderRadius = '6px';
+    btnResumen.style.cursor = 'pointer';
+
+    btnResumen.onclick = () => {
+        const horario = tdHorario.innerText || '-';
+        const ayudanteFijo = '-';
+        const unidad = choferesUnidades.find(c => c.chofer === selectChofer.value) || {};
+        const capacidad = parseFloat(unidad?.capacidad || 0);
+        const porcentaje = capacidad ? (totalKilos / capacidad) * 100 : 0;
+
+        const resumen = `
+🚛 Asignación de Recorrido
+
+🧑‍✈️ Chofer: ${selectChofer.value}
+🚐 Unidad: ${unidad.patente || 'Sin patente'}
+📞 Teléfono: ${unidad.telefono || 'Sin dato'}
+📅 Fecha: Fusionado
+📍 Recorrido: ${flete}
+🏬 Cliente: ${cliente}
+📦 Kilos: ${totalKilos.toFixed(2)} kg
+📊 Ocupación: ${capacidad ? porcentaje.toFixed(1) : 'N/A'}%
+🕐 Horario: ${horario}
+🧑‍🤝‍🧑 Ayudante: ${ayudanteFijo}
+📋 Artículos: ${articulosFusionados.length}
+Sucursales: ${totalSucursales}
+Observaciones: -
+        `.trim();
+
+        navigator.clipboard.writeText(resumen);
+        alert("📋 Resumen copiado. Pegalo en WhatsApp ✅");
+    };
+
+    tdResumen.appendChild(btnResumen);
+    nuevaFila.appendChild(tdResumen);
 
     nuevaFila.appendChild(crearCeldaTexto(`${totalKilos.toFixed(2)} kg`));
     nuevaFila.appendChild(crearCeldaTexto(`${totalSucursales} sucursales`));
 
     const tdTelefono = crearCeldaTexto('');
-    nuevaFila.appendChild(tdTelefono);
-
     const tdCapacidad = crearCeldaTexto('');
-    nuevaFila.appendChild(tdCapacidad);
-
     const tdPorcentaje = crearCeldaTexto('');
+    nuevaFila.appendChild(tdTelefono);
+    nuevaFila.appendChild(tdCapacidad);
     nuevaFila.appendChild(tdPorcentaje);
 
     nuevaFila.appendChild(crearCeldaEditable(''));
+
+    // === Canvas Ocupación ===
+    const canvasOcupacion = document.createElement('canvas');
+    canvasOcupacion.width = 100;
+    canvasOcupacion.height = 30;
+    const tdOcupacion = document.createElement('td');
+    tdOcupacion.appendChild(canvasOcupacion);
+    nuevaFila.appendChild(tdOcupacion);
+
+    const ctx = canvasOcupacion.getContext('2d');
+    ctx.fillStyle = '#e0e0e0';
+    ctx.fillRect(0, 10, 100, 10);
+    ctx.fillStyle = '#76c7c0';
+    ctx.fillRect(0, 10, 0, 10);
 
     selectChofer.addEventListener('change', () => {
         const unidad = choferesUnidades.find(c => c.chofer === selectChofer.value);
         tdPatente.innerText = unidad?.patente || 'Sin patente';
         tdTelefono.innerText = unidad?.telefono || 'Sin dato';
         tdCapacidad.innerText = unidad?.capacidad || 'Sin dato';
+
         const cap = parseFloat(unidad?.capacidad || 0);
-        tdPorcentaje.innerText = cap ? `${((totalKilos / cap) * 100).toFixed(1)} %` : 'Sin dato';
+        const porcentaje = cap ? (totalKilos / cap) * 100 : 0;
+        tdPorcentaje.innerText = cap ? `${porcentaje.toFixed(1)} %` : 'Sin dato';
+
+        // Dibujar barra
+        ctx.clearRect(0, 0, 100, 30);
+        ctx.fillStyle = '#e0e0e0';
+        ctx.fillRect(0, 10, 100, 10);
+        ctx.fillStyle = porcentaje < 50 ? '#4caf50' : porcentaje < 80 ? '#ff9800' : '#f44336';
+        ctx.fillRect(0, 10, Math.min(porcentaje, 100), 10);
     });
 
     tdHorario.addEventListener('input', () => {
@@ -9518,6 +9637,7 @@ detalles.innerHTML = articulosFusionados.join('<br>');
 
     alert('Recorridos fusionados correctamente.');
 }
+
 
 
 function calcularVuelta(horario) {
