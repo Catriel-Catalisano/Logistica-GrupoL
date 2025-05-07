@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Gestión Logística</title>
+  <style>
+    body { font-family: Arial; padding: 20px; }
+    input, textarea { display: block; margin-bottom: 10px; width: 100%; }
+    button { padding: 10px; }
+    pre { background: #f0f0f0; padding: 10px; white-space: pre-wrap; }
+  </style>
+</head>
+<body>
+  <h1>Formulario logístico</h1>
+  <form id="formulario">
+    <input type="text" id="status" placeholder="Status">
+    <input type="text" id="planificacion" placeholder="Planificación">
+    <input type="date" id="fecha">
+    <input type="text" id="site" placeholder="Site">
+    <input type="text" id="horario" placeholder="Horario">
+    <input type="text" id="ayudante" placeholder="Ayudante">
+    <input type="text" id="chofer" placeholder="Chofer">
+    <input type="text" id="patente" placeholder="Patente">
+    <input type="text" id="cliente" placeholder="Cliente">
+    <input type="text" id="recorrido" placeholder="Recorrido">
+    <input type="text" id="vuelta" placeholder="Vuelta">
+    <textarea id="observaciones" placeholder="Observaciones"></textarea>
+    <textarea id="observaciones2" placeholder="Observaciones 2"></textarea>
+    <textarea id="articulos" placeholder="Artículos"></textarea>
+    <textarea id="resumen" placeholder="Resumen para citaciones"></textarea>
+    <input type="number" id="kilos" placeholder="KILOS">
+    <input type="text" id="sucursales" placeholder="Sucursales">
+    <input type="text" id="telefono" placeholder="Teléfono">
+    <input type="text" id="capacidad" placeholder="Capacidad">
+    <input type="text" id="ocupacionPorcentaje" placeholder="% de ocupa">
+    <input type="text" id="control" placeholder="Control">
+    <input type="text" id="ocupacion" placeholder="Ocupación">
+    <button type="submit">Guardar</button>
+  </form>
+
+  <hr>
+  <button onclick="leerDatos()">Ver datos</button>
+  <pre id="salida"></pre>
+
+  <script>
+    const url = 'https://script.google.com/macros/s/AKfycbyJWVNEgYyVgaR5gjnpU2E3wB4o_XkKgBpZJO3Mtms0pSuwqcyBvspMOG9hxp3oQuR9/exec';
+
+    document.getElementById("formulario").addEventListener("submit", function(e) {
+      e.preventDefault();
+
+      const datos = {
+        action: "insertar",
+        status: get("status"),
+        planificacion: get("planificacion"),
+        fecha: get("fecha"),
+        site: get("site"),
+        horario: get("horario"),
+        ayudante: get("ayudante"),
+        chofer: get("chofer"),
+        patente: get("patente"),
+        cliente: get("cliente"),
+        recorrido: get("recorrido"),
+        vuelta: get("vuelta"),
+        observaciones: get("observaciones"),
+        observaciones2: get("observaciones2"),
+        articulos: get("articulos"),
+        resumen: get("resumen"),
+        kilos: get("kilos"),
+        sucursales: get("sucursales"),
+        telefono: get("telefono"),
+        capacidad: get("capacidad"),
+        ocupacionPorcentaje: get("ocupacionPorcentaje"),
+        control: get("control"),
+        ocupacion: get("ocupacion")
+      };
+
+      fetch(url, {
+        method: "POST",
+        body: JSON.stringify(datos),
+        headers: { "Content-Type": "application/json" }
+      })
+      .then(res => res.text())
+      .then(texto => alert(texto));
+    });
+
+    function leerDatos() {
+      fetch(url, {
+        method: "POST",
+        body: JSON.stringify({ action: "leer" }),
+        headers: { "Content-Type": "application/json" }
+      })
+      .then(res => res.json())
+      .then(data => {
+        let salida = "";
+        data.forEach((fila, i) => {
+          salida += `${i + 1}) ${fila.join(" | ")}\n`;
+        });
+        document.getElementById("salida").innerText = salida;
+      });
+    }
+
+    function get(id) {
+      return document.getElementById(id).value.trim();
+    }
+  </script>
+</body>
+</html>

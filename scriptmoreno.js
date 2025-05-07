@@ -10211,3 +10211,62 @@ function enviarAsignacionesAGoogleSheets() {
 
     guardarAsignacionesEnSheets(datos);
 }
+function guardarAsignacionesEnMySQL(datos) {
+    fetch('/guardar-asignaciones', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(datos)
+    })
+    .then(response => {
+        if (!response.ok) throw new Error('Error al guardar');
+        return response.text();
+    })
+    .then(msg => alert(msg))
+    .catch(error => {
+        console.error('Error:', error);
+        alert('No se pudo guardar en MySQL');
+    });
+}
+document.getElementById('btnGuardar').addEventListener('click', () => {
+    const datos = obtenerDatosDeLaTabla(); // Asegurate de que esta función ya existe
+    guardarAsignacionesEnMySQL(datos);
+});
+
+
+function enviarAsignacionesAMySQL() {
+    const rows = document.querySelectorAll("#recorridosTable tbody tr");
+    const datos = [];
+
+    rows.forEach(row => {
+        const cells = row.querySelectorAll("td");
+        const fila = {
+            status: cells[0]?.innerText.trim(),
+            planificacion: cells[1]?.innerText.trim(),
+            fecha: cells[2]?.innerText.trim(),
+            site: cells[3]?.innerText.trim(),
+            horario: cells[4]?.innerText.trim(),
+            ayudante: cells[5]?.innerText.trim(),
+            chofer: cells[6]?.querySelector("select")?.value || cells[6]?.innerText.trim(),
+            patente: cells[7]?.innerText.trim(),
+            cliente: cells[8]?.innerText.trim(),
+            recorrido: cells[9]?.innerText.trim(),
+            vuelta: cells[10]?.innerText.trim(),
+            observaciones: cells[11]?.innerText.trim(),
+            observaciones2: cells[12]?.innerText.trim(),
+            articulos: cells[13]?.innerText.trim(),
+            resumen_para_citaciones: cells[14]?.innerText.trim(),
+            kilos: parseFloat(cells[15]?.innerText.replace("kg", "").trim()) || 0,
+            sucursales: cells[16]?.innerText.trim(),
+            telefono: cells[17]?.innerText.trim(),
+            capacidad: cells[18]?.innerText.trim(),
+            porcentaje_ocupa: cells[19]?.innerText.trim(),
+            control: cells[20]?.innerText.trim(),
+            ocupacion: cells[21]?.innerText.trim()
+        };
+        datos.push(fila);
+    });
+
+    guardarAsignacionesEnMySQL(datos);
+}
