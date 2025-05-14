@@ -106,7 +106,8 @@
         const fechaConfirmacionStr = row["Fecha confirmacion"];
         const fechaDespachoStr = row["Fecha pedido"];
         const recorrido = row["Recorrido"];
-
+        const sucursal = (row["Sucursal"] || '').toUpperCase();
+        if (["COMEDOR CIUDADELA", "BASE OPERATIVA CIUDADELA", "CIUDADELA"].includes(sucursal)) continue;
         if (!tiposValidos.includes(tipoPedido)) continue;
 
         const fechaConfirmacion = parseFechaConHora(fechaConfirmacionStr);
