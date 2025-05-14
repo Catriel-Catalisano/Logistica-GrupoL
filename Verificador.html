@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Control de Pedidos Fuera de Horario</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/file-saver@2.0.5/dist/FileSaver.min.js"></script>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f0f4f8;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      max-width: 1100px;
+      margin: auto;
+      padding: 40px 20px;
+    }
+    h2, h3 {
+      text-align: center;
+      color: #1e3a8a;
+    }
+    input[type="file"] {
+      display: block;
+      margin: 0 auto 30px auto;
+    }
+    #resultado {
+      text-align: center;
+      background: #ffffff;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    }
+    .indicadores {
+      display: flex;
+      justify-content: space-around;
+      flex-wrap: wrap;
+      margin-top: 20px;
+    }
+    .indicador {
+      background: #e0f2fe;
+      padding: 20px;
+      border-radius: 10px;
+      margin: 10px;
+      flex: 1 1 200px;
+    }
+    canvas {
+      max-width: 100%;
+      height: auto;
+      margin-top: 30px;
+    }
+    #exportBtn {
+      margin-top: 20px;
+      background: #1e3a8a;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Control de pedidos fuera de horario</h2>
+    <input type="file" id="inputExcel" accept=".xlsx, .xls" />
+    <div id="resultado">
+      <div class="indicadores">
+        <div class="indicador"><strong>Total pedidos:</strong> <span id="total"></span></div>
+        <div class="indicador"><strong>Fuera de horario:</strong> <span id="fuera"></span></div>
+        <div class="indicador"><strong>En horario:</strong> <span id="enHorario"></span></div>
+        <div class="indicador"><strong>% fuera de horario:</strong> <span id="porcentaje"></span></div>
+      </div>
+      <button id="exportBtn">Exportar fuera de horario</button>
+      <canvas id="grafico"></canvas>
+      <h3>Pedidos fuera de horario por fecha de despacho</h3>
+      <canvas id="graficoFechas"></canvas>
+      <h3>Top 5 recorridos con más pedidos fuera de horario</h3>
+      <canvas id="graficoTopRecorridos"></canvas>
+    </div>
+  </div>
+
+  <script>
+    let fueraHorarioData = [];
+
+    document.getElementById('inputExcel').addEventListener('change', async function (e) {
+      const file = e.target.files[0];
+      const data = await file.arrayBuffer();
+      const workbook = XLSX.read(data, { type: 'buffer' });
+      const sheet = workbook.Sheets[workbook.SheetNames[0]];
+      const rows = XLSX.utils.sheet_to_json(sheet, { defval: "", raw: false });
+
+      let fueraHorario = 0;
+      let total = 0;
+      let porFechaDespacho = {};
+      let recorridos = {};
+      fueraHorarioData = [];
+
+      const tiposValidos = ["Pedido At al cliente", "Manual Planeamiento"];
+
+      for (const row of rows) {
+        const tipoPedido = row["Tipo Pedido"];
+        const fechaConfirmacionStr = row["Fecha confirmacion"];
+        const fechaDespachoStr = row["Fecha pedido"];
+        const recorrido = row["Recorrido"];
+
+        if (!tiposValidos.includes(tipoPedido)) continue;
+
+        const fechaConfirmacion = parseFechaConHora(fechaConfirmacionStr);
+        const fechaDespacho = new Date(fechaDespachoStr);
+
+        if (isNaN(fechaConfirmacion) || isNaN(fechaDespacho)) continue;
+
+        const diaHabilAnterior = getDiaHabilAnterior(fechaDespacho);
+        let horaLimite = new Date(diaHabilAnterior);
+
+        if (tipoPedido === "Pedido At al cliente") {
+          horaLimite.setHours(13, 0, 0, 0);
+        } else if (tipoPedido === "Manual Planeamiento") {
+          horaLimite.setHours(16, 0, 0, 0);
+        }
+
+        total++;
+        const keyFecha = fechaDespacho.toLocaleDateString();
+        if (!porFechaDespacho[keyFecha]) porFechaDespacho[keyFecha] = { total: 0, fuera: 0 };
+        porFechaDespacho[keyFecha].total++;
+
+        if (fechaConfirmacion > horaLimite) {
+          fueraHorario++;
+          fueraHorarioData.push(row);
+          porFechaDespacho[keyFecha].fuera++;
+          if (!recorridos[recorrido]) recorridos[recorrido] = 0;
+          recorridos[recorrido]++;
+        }
+      }
+
+      const enHorario = total - fueraHorario;
+      document.getElementById("total").innerText = total;
+      document.getElementById("fuera").innerText = fueraHorario;
+      document.getElementById("enHorario").innerText = enHorario;
+      document.getElementById("porcentaje").innerText = ((fueraHorario / total) * 100).toFixed(2) + "%";
+
+      const ctx = document.getElementById('grafico').getContext('2d');
+      new Chart(ctx, {
+        type: 'pie',
+        data: {
+          labels: ['En horario', 'Fuera de horario'],
+          datasets: [{
+            data: [enHorario, fueraHorario],
+            backgroundColor: ['#34d399', '#f87171'],
+            borderWidth: 1
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: { position: 'bottom' },
+            title: { display: true, text: 'Distribución de pedidos' }
+          }
+        }
+      });
+
+      const fechas = Object.keys(porFechaDespacho).sort((a, b) => new Date(a) - new Date(b));
+      const fueraPorFecha = fechas.map(f => porFechaDespacho[f].fuera);
+      const enHorarioPorFecha = fechas.map(f => porFechaDespacho[f].total - porFechaDespacho[f].fuera);
+
+      const ctxFechas = document.getElementById('graficoFechas').getContext('2d');
+      new Chart(ctxFechas, {
+        type: 'bar',
+        data: {
+          labels: fechas,
+          datasets: [
+            { label: 'Fuera de horario', data: fueraPorFecha, backgroundColor: '#f87171' },
+            { label: 'En horario', data: enHorarioPorFecha, backgroundColor: '#34d399' }
+          ]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: { position: 'top' },
+            title: { display: true, text: 'Pedidos por fecha de despacho' }
+          },
+          scales: { y: { beginAtZero: true } }
+        }
+      });
+
+      const topRecorridos = Object.entries(recorridos)
+        .sort((a, b) => b[1] - a[1])
+        .slice(0, 5);
+
+      const ctxTop = document.getElementById('graficoTopRecorridos').getContext('2d');
+      new Chart(ctxTop, {
+        type: 'bar',
+        data: {
+          labels: topRecorridos.map(r => r[0]),
+          datasets: [{
+            label: 'Pedidos fuera de horario',
+            data: topRecorridos.map(r => r[1]),
+            backgroundColor: '#fbbf24'
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            title: { display: true, text: 'Top 5 recorridos con más incumplimientos' }
+          },
+          scales: { y: { beginAtZero: true } }
+        }
+      });
+    });
+
+    document.getElementById('exportBtn').addEventListener('click', function () {
+      if (fueraHorarioData.length === 0) return alert("No hay pedidos fuera de horario para exportar.");
+
+      // Convertir fechas al formato DD/MM/YYYY
+      const datosConvertidos = fueraHorarioData.map(row => {
+        const nuevo = { ...row };
+        const fecha = new Date(nuevo["Fecha pedido"]);
+        if (!isNaN(fecha)) {
+          const dd = String(fecha.getDate()).padStart(2, '0');
+          const mm = String(fecha.getMonth() + 1).padStart(2, '0');
+          const yyyy = fecha.getFullYear();
+          nuevo["Fecha pedido"] = `${dd}/${mm}/${yyyy}`;
+        }
+        return nuevo;
+      });
+
+      const ws = XLSX.utils.json_to_sheet(datosConvertidos);
+      const wb = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, ws, "Fuera de horario");
+      const wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
+      saveAs(new Blob([wbout], { type: 'application/octet-stream' }), 'Pedidos_Fuera_de_Horario.xlsx');
+    });
+
+
+    function parseFechaConHora(fechaStr) {
+      const partes = fechaStr.split(",");
+      if (partes.length < 2) return new Date("invalid");
+      const fecha = partes[0].trim().split("/");
+      const hora = partes[1].trim().split(":");
+      return new Date(
+        parseInt(fecha[2]),
+        parseInt(fecha[1]) - 1,
+        parseInt(fecha[0]),
+        parseInt(hora[0]),
+        parseInt(hora[1])
+      );
+    }
+
+    function getDiaHabilAnterior(fecha) {
+      const d = new Date(fecha);
+      d.setHours(0, 0, 0, 0);
+      do {
+        d.setDate(d.getDate() - 1);
+      } while (d.getDay() === 0 || d.getDay() === 6);
+      return d;
+    }
+  </script>
+</body>
+</html>
