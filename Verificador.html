@@ -75,7 +75,7 @@
         <div class="indicador"><strong>% fuera de horario:</strong> <span id="porcentaje"></span></div>
       </div>
       <button id="exportBtn">Exportar fuera de horario</button>
-      <canvas id="grafico"></canvas>
+      <canvas id="grafico" style="max-height: 300px;"></canvas>
       <h3>Pedidos fuera de horario por fecha de despacho</h3>
       <canvas id="graficoFechas"></canvas>
       <h3>Top 5 recorridos con más pedidos fuera de horario</h3>
@@ -97,6 +97,7 @@
       let total = 0;
       let porFechaDespacho = {};
       let recorridos = {};
+      let porRemito = {};
       fueraHorarioData = [];
 
       const tiposValidos = ["Pedido At al cliente", "Manual Planeamiento"];
@@ -107,6 +108,10 @@
         const fechaDespachoStr = row["Fecha pedido"];
         const recorrido = row["Recorrido"];
         const sucursal = (row["Sucursal"] || '').toUpperCase();
+        const remito = row["Numero de remito"] || row["Remito"] || row["Q"];
+        const descripcionArticulo = row["Descripcion Articulo"] || row["Descripción de Artículo"] || row["K"];
+        const cantidad = parseFloat(row["Cantidad Confirmada"] || row["Cantidad"] || row["M"]);
+
         if (["COMEDOR CIUDADELA", "BASE OPERATIVA CIUDADELA", "CIUDADELA"].includes(sucursal)) continue;
         if (!tiposValidos.includes(tipoPedido)) continue;
 
@@ -129,12 +134,24 @@
         if (!porFechaDespacho[keyFecha]) porFechaDespacho[keyFecha] = { total: 0, fuera: 0 };
         porFechaDespacho[keyFecha].total++;
 
+        if (!porRemito[remito]) {
+          porRemito[remito] = {
+            productosTotales: 0,
+            productosFueraHorario: 0,
+            articulosFuera: []
+          };
+        }
+        porRemito[remito].productosTotales += (isNaN(cantidad) ? 1 : cantidad);
+
         if (fechaConfirmacion > horaLimite) {
           fueraHorario++;
           fueraHorarioData.push(row);
           porFechaDespacho[keyFecha].fuera++;
           if (!recorridos[recorrido]) recorridos[recorrido] = 0;
           recorridos[recorrido]++;
+
+          porRemito[remito].productosFueraHorario += (isNaN(cantidad) ? 1 : cantidad);
+          porRemito[remito].articulosFuera.push(descripcionArticulo);
         }
       }
 
@@ -157,6 +174,8 @@
         },
         options: {
           responsive: true,
+          maintainAspectRatio: false,
+          aspectRatio: 1.5,
           plugins: {
             legend: { position: 'bottom' },
             title: { display: true, text: 'Distribución de pedidos' }
@@ -211,12 +230,80 @@
           scales: { y: { beginAtZero: true } }
         }
       });
+
+      setTimeout(() => {
+  let totalRemitosFuera = 0;
+  let totalProductosFuera = 0;
+  let productosFueraMap = {};
+
+  for (const r of Object.values(porRemito)) {
+    if (r.productosFueraHorario > 0) {
+      totalRemitosFuera++;
+    }
+  }
+
+  fueraHorarioData.forEach(row => {
+    const descripcion = row["Descripcion articulo"] || row["K"] || "";
+    let cantidadStr = row["Cantidad remitida"] || row["M"] || "";
+    if (typeof cantidadStr === "string") {
+      cantidadStr = cantidadStr.replace(",", ".").trim();
+    }
+    const cantidad = parseFloat(cantidadStr);
+    if (!isNaN(cantidad) && descripcion) {
+      totalProductosFuera += cantidad;
+      if (!productosFueraMap[descripcion]) {
+        productosFueraMap[descripcion] = 0;
+      }
+      productosFueraMap[descripcion] += cantidad;
+    }
+  });
+
+  const indicadoresRemito = document.createElement("div");
+  indicadoresRemito.style.display = "flex";
+  indicadoresRemito.style.justifyContent = "space-around";
+  indicadoresRemito.style.flexWrap = "wrap";
+  indicadoresRemito.style.marginTop = "30px";
+
+  indicadoresRemito.innerHTML = `
+    <div style="background: #e0f2fe; padding: 20px; border-radius: 10px; margin: 10px; min-width: 250px; text-align: center;">
+      <strong>Total Remitos con productos fuera de horario:</strong><br>${totalRemitosFuera}
+    </div>
+    <div style="background: #e0f2fe; padding: 20px; border-radius: 10px; margin: 10px; min-width: 250px; text-align: center;">
+      <strong>Total productos fuera de horario:</strong><br>${totalProductosFuera}
+    </div>
+  `;
+
+  const listadoProductos = document.createElement("div");
+  listadoProductos.style.marginTop = "30px";
+  listadoProductos.innerHTML = `
+    <h3 style="text-align: center; margin-bottom: 10px;">Artículos fuera de horario</h3>
+    <table style="margin: auto; border-collapse: collapse; font-size: 14px;">
+      <thead>
+        <tr style="background: #1e3a8a; color: white;">
+          <th style="padding: 8px; border: 1px solid #ccc;">Descripción</th>
+          <th style="padding: 8px; border: 1px solid #ccc;">Cantidad fuera de horario</th>
+        </tr>
+      </thead>
+      <tbody>
+        ${Object.entries(productosFueraMap).map(([desc, cant]) => `
+          <tr>
+            <td style='padding: 8px; border: 1px solid #ccc;'>${desc}</td>
+            <td style='padding: 8px; border: 1px solid #ccc;'>${cant}</td>
+          </tr>
+        `).join('')}
+      </tbody>
+    </table>`;
+
+  document.getElementById("resultado").appendChild(indicadoresRemito);
+  document.getElementById("resultado").appendChild(listadoProductos);
+}, 0);
+
+
     });
 
     document.getElementById('exportBtn').addEventListener('click', function () {
       if (fueraHorarioData.length === 0) return alert("No hay pedidos fuera de horario para exportar.");
 
-      // Convertir fechas al formato DD/MM/YYYY
       const datosConvertidos = fueraHorarioData.map(row => {
         const nuevo = { ...row };
         const fecha = new Date(nuevo["Fecha pedido"]);
@@ -235,7 +322,6 @@
       const wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
       saveAs(new Blob([wbout], { type: 'application/octet-stream' }), 'Pedidos_Fuera_de_Horario.xlsx');
     });
-
 
     function parseFechaConHora(fechaStr) {
       const partes = fechaStr.split(",");
@@ -259,6 +345,7 @@
       } while (d.getDay() === 0 || d.getDay() === 6);
       return d;
     }
-  </script>
+</script>
+
 </body>
 </html>
