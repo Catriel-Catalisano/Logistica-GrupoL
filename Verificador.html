@@ -207,7 +207,7 @@
       let porRemito = {};
       fueraHorarioData = [];
 
-      const tiposValidos = ["Pedido At al cliente", "Manual Planeamiento"];
+      const tiposValidos = ["Pedido At al cliente", "Manual Planeamiento", "Planificado"];
 
       for (const row of rows) {
         const tipoPedido = row["Tipo Pedido"];
@@ -233,6 +233,9 @@
         if (tipoPedido === "Pedido At al cliente") {
           horaLimite.setHours(13, 0, 0, 0);
         } else if (tipoPedido === "Manual Planeamiento") {
+          horaLimite.setHours(16, 0, 0, 0);
+        }
+        else if (tipoPedido === "Planificado") {
           horaLimite.setHours(16, 0, 0, 0);
         }
 
