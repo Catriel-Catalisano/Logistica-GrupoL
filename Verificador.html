@@ -492,23 +492,44 @@ setTimeout(() => {
       } while (d.getDay() === 0 || d.getDay() === 6);
       return d;
     }
-    function exportarPDF() {
-  const elemento = document.body;
+    document.getElementById("exportPdfBtn").addEventListener("click", async () => {
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF("p", "mm", "a4");
 
-  const opciones = {
-    margin:       [0.2, 0.2, 0.2, 0.2], // márgenes reducidos
-    filename:     'Control_Pedidos_Fuera_Horario.pdf',
-    image:        { type: 'jpeg', quality: 0.98 },
-    html2canvas:  { scale: 3, useCORS: true, scrollY: 0 },
-    jsPDF:        { unit: 'in', format: 'a3', orientation: 'portrait' } // usar A3 para más espacio vertical
-  };
+  const elemento = document.body; // puedes cambiarlo si solo querés exportar un div específico
+  const canvas = await html2canvas(elemento, { scale: 2 });
 
-  html2pdf().set(opciones).from(elemento).save();
-}
+  const imgData = canvas.toDataURL("image/png");
+  const pageWidth = 210; // A4 en mm
+  const pageHeight = 297;
+  const imgWidth = pageWidth;
+  const imgHeight = canvas.height * imgWidth / canvas.width;
+
+  let position = 0;
+
+  if (imgHeight <= pageHeight) {
+    doc.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
+  } else {
+    // Si se pasa de una hoja, dividirlo en varias páginas
+    let heightLeft = imgHeight;
+    while (heightLeft > 0) {
+      doc.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
+      heightLeft -= pageHeight;
+      if (heightLeft > 0) {
+        doc.addPage();
+        position = - (imgHeight - heightLeft);
+      }
+    }
+  }
+
+  doc.save("Control_Pedidos_Fuera_Horario.pdf");
+});
+
 
 
 </script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
 </body>
 </html>
