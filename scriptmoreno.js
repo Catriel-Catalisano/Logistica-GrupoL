@@ -10270,3 +10270,6 @@ function enviarAsignacionesAMySQL() {
 
     guardarAsignacionesEnMySQL(datos);
 }
+document.getElementById("volverMenu").addEventListener("click", () => {
+    window.location.href = "inndex.html"; // Cambiá esto por la URL o ruta real de tu menú
+  });
