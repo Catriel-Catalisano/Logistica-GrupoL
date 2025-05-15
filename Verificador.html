@@ -9,63 +9,104 @@
   <script src="https://cdn.jsdelivr.net/npm/file-saver@2.0.5/dist/FileSaver.min.js"></script>
   <style>
     body {
-      font-family: 'Segoe UI', sans-serif;
-      background: #f0f4f8;
+      background-color: #0d1117;
+      color: #ffffff;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       margin: 0;
       padding: 0;
     }
-    .container {
-      max-width: 1100px;
-      margin: auto;
-      padding: 40px 20px;
-    }
-    h2, h3 {
+  
+    h1, h2, h3 {
+      color: #2dd4bf;
       text-align: center;
-      color: #1e3a8a;
-    }
-    input[type="file"] {
-      display: block;
-      margin: 0 auto 30px auto;
-    }
-    #resultado {
-      text-align: center;
-      background: #ffffff;
-      padding: 30px;
-      border-radius: 12px;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-    }
-    .indicadores {
-      display: flex;
-      justify-content: space-around;
-      flex-wrap: wrap;
-      margin-top: 20px;
-    }
-    .indicador {
-      background: #e0f2fe;
-      padding: 20px;
-      border-radius: 10px;
-      margin: 10px;
-      flex: 1 1 200px;
-    }
-    canvas {
-      max-width: 100%;
-      height: auto;
       margin-top: 30px;
     }
-    #exportBtn {
-      margin-top: 20px;
-      background: #1e3a8a;
+  
+    .indicadores {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 15px;
+      margin: 20px auto;
+      max-width: 1100px;
+      padding: 0 20px;
+    }
+  
+    .indicador {
+      background-color: #1e293b;
+      padding: 20px;
+      border-radius: 10px;
+      text-align: center;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+    }
+  
+    .indicador strong {
+      color: #38bdf8;
+    }
+  
+    button, .boton-personalizado {
+      background-color: #0284c7;
       color: white;
       padding: 10px 20px;
       border: none;
-      border-radius: 6px;
+      border-radius: 5px;
       cursor: pointer;
+      font-weight: bold;
+      margin: 20px auto;
+      display: block;
+    }
+  
+    button:hover, .boton-personalizado:hover {
+      background-color: #0369a1;
+    }
+  
+    table {
+      width: 95%;
+      margin: 30px auto;
+      border-collapse: collapse;
+      background-color: #1e293b;
+      color: white;
+    }
+  
+    th, td {
+      border: 1px solid #334155;
+      padding: 10px;
+      text-align: center;
+    }
+  
+    th {
+      background-color: #0ea5e9;
+      color: #ffffff;
+    }
+  
+    .grafico-container {
+      width: 95%;
+      max-width: 900px;
+      margin: 40px auto;
+      background-color: #1e293b;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 12px rgba(0, 0, 0, 0.3);
+    }
+  
+    canvas {
+      width: 100% !important;
+      height: 320px !important;
+    }
+  
+    .titulo-seccion {
+      color: #38bdf8;
+      font-size: 20px;
+      margin-bottom: 20px;
+      border-bottom: 2px solid #0ea5e9;
+      padding-bottom: 5px;
+      display: inline-block;
     }
   </style>
+  
 </head>
 <body>
   <div class="container">
-    <h2>Control de pedidos fuera de horario</h2>
+    <h2>Grupo L - Control de pedidos fuera de horario</h2>
     <input type="file" id="inputExcel" accept=".xlsx, .xls" />
     <div id="resultado">
       <div class="indicadores">
@@ -73,6 +114,9 @@
         <div class="indicador"><strong>Fuera de horario:</strong> <span id="fuera"></span></div>
         <div class="indicador"><strong>En horario:</strong> <span id="enHorario"></span></div>
         <div class="indicador"><strong>% fuera de horario:</strong> <span id="porcentaje"></span></div>
+        <div class="indicador"><strong>Remitos fuera de horario:</strong> <span id="remitosFuera"></span></div>
+<div class="indicador"><strong>Productos fuera de horario:</strong> <span id="productosFuera"></span></div>
+
       </div>
       <button id="exportBtn">Exportar fuera de horario</button>
       <canvas id="grafico" style="max-height: 300px;"></canvas>
@@ -160,6 +204,7 @@
       document.getElementById("fuera").innerText = fueraHorario;
       document.getElementById("enHorario").innerText = enHorario;
       document.getElementById("porcentaje").innerText = ((fueraHorario / total) * 100).toFixed(2) + "%";
+      
 
       const ctx = document.getElementById('grafico').getContext('2d');
       new Chart(ctx, {
@@ -188,48 +233,99 @@
       const enHorarioPorFecha = fechas.map(f => porFechaDespacho[f].total - porFechaDespacho[f].fuera);
 
       const ctxFechas = document.getElementById('graficoFechas').getContext('2d');
-      new Chart(ctxFechas, {
-        type: 'bar',
-        data: {
-          labels: fechas,
-          datasets: [
-            { label: 'Fuera de horario', data: fueraPorFecha, backgroundColor: '#f87171' },
-            { label: 'En horario', data: enHorarioPorFecha, backgroundColor: '#34d399' }
-          ]
-        },
-        options: {
-          responsive: true,
-          plugins: {
-            legend: { position: 'top' },
-            title: { display: true, text: 'Pedidos por fecha de despacho' }
-          },
-          scales: { y: { beginAtZero: true } }
+new Chart(ctxFechas, {
+  type: 'bar',
+  data: {
+    labels: fechas,
+    datasets: [
+      { label: 'Fuera de horario', data: fueraPorFecha, backgroundColor: '#f87171' },
+      { label: 'En horario', data: enHorarioPorFecha, backgroundColor: '#34d399' }
+    ]
+  },
+  options: {
+    responsive: true,
+    plugins: {
+      legend: {
+        position: 'top',
+        labels: {
+          color: '#e5e7eb'
         }
-      });
+      },
+      title: {
+        display: true,
+        text: 'Pedidos fuera de horario por fecha de despacho',
+        color: '#22d3ee',
+        font: { size: 16 }
+      }
+    },
+    scales: {
+      x: {
+        ticks: {
+          color: '#e5e7eb',
+          font: { size: 12 }
+        }
+      },
+      y: {
+        ticks: {
+          color: '#e5e7eb',
+          font: { size: 12 }
+        }
+      }
+    }
+  }
+});
+
 
       const topRecorridos = Object.entries(recorridos)
         .sort((a, b) => b[1] - a[1])
         .slice(0, 5);
 
-      const ctxTop = document.getElementById('graficoTopRecorridos').getContext('2d');
-      new Chart(ctxTop, {
-        type: 'bar',
-        data: {
-          labels: topRecorridos.map(r => r[0]),
-          datasets: [{
-            label: 'Pedidos fuera de horario',
-            data: topRecorridos.map(r => r[1]),
-            backgroundColor: '#fbbf24'
-          }]
-        },
-        options: {
-          responsive: true,
-          plugins: {
-            title: { display: true, text: 'Top 5 recorridos con más incumplimientos' }
-          },
-          scales: { y: { beginAtZero: true } }
+        const ctxTop = document.getElementById('graficoTopRecorridos').getContext('2d');
+new Chart(ctxTop, {
+  type: 'bar',
+  data: {
+    labels: topRecorridos.map(r => r[0]),
+    datasets: [{
+      label: 'Pedidos fuera de horario',
+      data: topRecorridos.map(r => r[1]),
+      backgroundColor: '#fbbf24'
+    }]
+  },
+  options: {
+    responsive: true,
+    plugins: {
+      title: {
+        display: true,
+        text: 'Top 5 recorridos con más pedidos fuera de horario',
+        color: '#22d3ee',
+        font: {
+          size: 16
         }
-      });
+      },
+      legend: {
+        labels: {
+          color: '#e5e7eb',
+          font: { size: 12 }
+        }
+      }
+    },
+    scales: {
+      x: {
+        ticks: {
+          color: '#e5e7eb',
+          font: { size: 12 }
+        }
+      },
+      y: {
+        beginAtZero: true,
+        ticks: {
+          color: '#e5e7eb',
+          font: { size: 12 }
+        }
+      }
+    }
+  }
+});
 
       setTimeout(() => {
   let totalRemitosFuera = 0;
@@ -245,10 +341,13 @@
   fueraHorarioData.forEach(row => {
     const descripcion = row["Descripcion articulo"] || row["K"] || "";
     let cantidadStr = row["Cantidad remitida"] || row["M"] || "";
+
     if (typeof cantidadStr === "string") {
       cantidadStr = cantidadStr.replace(",", ".").trim();
     }
+
     const cantidad = parseFloat(cantidadStr);
+
     if (!isNaN(cantidad) && descripcion) {
       totalProductosFuera += cantidad;
       if (!productosFueraMap[descripcion]) {
@@ -258,21 +357,17 @@
     }
   });
 
-  const indicadoresRemito = document.createElement("div");
-  indicadoresRemito.style.display = "flex";
-  indicadoresRemito.style.justifyContent = "space-around";
-  indicadoresRemito.style.flexWrap = "wrap";
-  indicadoresRemito.style.marginTop = "30px";
+  // 👉 Actualizar en los indicadores de la cabecera
+  if (document.getElementById("remitosFuera")) {
+    document.getElementById("remitosFuera").innerText = totalRemitosFuera;
+  }
 
-  indicadoresRemito.innerHTML = `
-    <div style="background: #e0f2fe; padding: 20px; border-radius: 10px; margin: 10px; min-width: 250px; text-align: center;">
-      <strong>Total Remitos con productos fuera de horario:</strong><br>${totalRemitosFuera}
-    </div>
-    <div style="background: #e0f2fe; padding: 20px; border-radius: 10px; margin: 10px; min-width: 250px; text-align: center;">
-      <strong>Total productos fuera de horario:</strong><br>${totalProductosFuera}
-    </div>
-  `;
+  if (document.getElementById("productosFuera")) {
+    document.getElementById("productosFuera").innerText = totalProductosFuera.toFixed(0);
 
+  }
+
+  // 👉 Tabla con detalle de artículos
   const listadoProductos = document.createElement("div");
   listadoProductos.style.marginTop = "30px";
   listadoProductos.innerHTML = `
@@ -292,9 +387,9 @@
           </tr>
         `).join('')}
       </tbody>
-    </table>`;
+    </table>
+  `;
 
-  document.getElementById("resultado").appendChild(indicadoresRemito);
   document.getElementById("resultado").appendChild(listadoProductos);
 }, 0);
 
