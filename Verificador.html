@@ -449,14 +449,19 @@ setTimeout(() => {
       const datosConvertidos = fueraHorarioData.map(row => {
         const nuevo = { ...row };
         const fecha = new Date(nuevo["Fecha pedido"]);
-        if (!isNaN(fecha)) {
-          const dd = String(fecha.getDate()).padStart(2, '0');
-          const mm = String(fecha.getMonth() + 1).padStart(2, '0');
-          const yyyy = fecha.getFullYear();
-          nuevo["Fecha pedido"] = `${dd}/${mm}/${yyyy}`;
-        }
-        return nuevo;
-      });
+  if (!isNaN(fecha)) {
+    const dd = String(fecha.getDate()).padStart(2, '0');
+    const mm = String(fecha.getMonth() + 1).padStart(2, '0');
+    const yyyy = fecha.getFullYear();
+    nuevo["Fecha pedido"] = `${dd}/${mm}/${yyyy}`;
+  }
+     // 👉 Corregir "Cantidad remitida" para que sea número (sumable en Excel)
+  const cantidadRaw = nuevo["Cantidad remitida"] || nuevo["M"];
+  const cantidadNumerica = parseFloat(cantidadRaw?.toString().replace(",", "."));
+  nuevo["Cantidad remitida"] = isNaN(cantidadNumerica) ? "" : cantidadNumerica;
+
+  return nuevo;
+});
 
       const ws = XLSX.utils.json_to_sheet(datosConvertidos);
       const wb = XLSX.utils.book_new();
