@@ -134,6 +134,21 @@
 .botones-exportacion button:hover {
   background-color: #1d4ed8;
 }
+.btn-volver {
+  background-color: #1e40af;
+  color: #fff;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  margin-top: 10px;
+  transition: background-color 0.3s;
+}
+
+.btn-volver:hover {
+  background-color: #2563eb;
+}
 
   </style>
   
@@ -147,6 +162,8 @@
 
       Grupo L - Control de pedidos fuera de horario
     </h1>
+    <button id="volverMenu" class="btn-volver">⬅ Volver al menú principal</button>
+
     <input type="file" id="inputExcel" accept=".xlsx, .xls" />
     <div id="resultado">
       <div class="indicadores">
@@ -161,6 +178,7 @@
       <div class="botones-exportacion">
         <button id="exportBtn">Exportar fuera de horario</button>
         <button id="exportPdfBtn">📄 Exportar como PDF</button>
+        
       </div>
       
       
@@ -525,6 +543,9 @@ setTimeout(() => {
   doc.save("Control_Pedidos_Fuera_Horario.pdf");
 });
 
+document.getElementById("volverMenu").addEventListener("click", () => {
+  window.location.href = "inndex.html"; // Cambiá esto por la URL o ruta real de tu menú
+});
 
 
 </script>
